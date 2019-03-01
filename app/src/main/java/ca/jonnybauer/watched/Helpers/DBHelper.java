@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import ca.jonnybauer.watched.Tables.WatchListTable;
+
 /**
  * This class is used to interact the the database within the application.
  *
@@ -32,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         // TODO: Create tables for the first time
-
+        db.execSQL(WatchListTable.CREATE_TABLE);
     }
 
     @Override

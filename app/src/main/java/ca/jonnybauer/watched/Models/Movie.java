@@ -13,31 +13,31 @@ import java.util.Date;
 public class Movie {
 
     // Properties
-    private int id;                 // Unique ID of the movie
-    private String title;           // Title of the movie
-    private Date release_date;      // Release date of the movie
-    private int rating;             // Rating of the movie
-    private String plot;            // Short plot of the movie
-    private int favourite = 0;      // Whether or not the movie is marked as a favourite, represented as an integer. Default of false (0)
-    private int watched = 0;        // Whether or not the movie is marked as watched, represented as an integer. Default of false (0)
-    private int deleted = 0;        // Whether or not the movie has been deleted, represented as an integer. Default of false (0)
-    private Date date_added;        // The date the user added the movie
-    private Date last_updated;      // THe date the movie has been last updated
+    private int id;                              // Unique ID of the movie
+    private String title;                        // Title of the movie
+    private Date releaseDate;                    // Release date of the movie
+    private int rating;                          // Rating of the movie
+    private String plot;                         // Short plot of the movie
+    private int favourite = 0;                   // Whether or not the movie is marked as a favourite, represented as an integer. Default of false (0)
+    private int watched = 0;                     // Whether or not the movie is marked as watched, represented as an integer. Default of false (0)
+    private int deleted = 0;                     // Whether or not the movie has been deleted, represented as an integer. Default of false (0)
+    private Date dateAdded = new Date();        // The date the user added the movie
+    private Date lastUpdated = new Date();      // THe date the movie has been last updated
 
     // Constructors
     public Movie(){}
 
-    public Movie(int id, String title, Date release_date, int rating, String plot, int favourite, int watched, int deleted, Date date_added, Date last_updated) {
+    public Movie(int id, String title, Date releaseDate, int rating, String plot, int favourite, int watched, int deleted, Date dateAdded, Date lastUpdated) {
         this.id = id;
         this.title = title;
-        this.release_date = release_date;
+        this.releaseDate = releaseDate;
         this.rating = rating;
         this.plot = plot;
         this.favourite = favourite;
         this.watched = watched;
         this.deleted = deleted;
-        this.date_added = date_added;
-        this.last_updated = last_updated;
+        this.dateAdded = dateAdded;
+        this.lastUpdated = lastUpdated;
     }
 
     // Getters and Setters
@@ -58,12 +58,12 @@ public class Movie {
         this.title = title;
     }
 
-    public Date getRelease_date() {
-        return release_date;
+    public Date getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setRelease_date(Date release_date) {
-        this.release_date = release_date;
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public int getRating() {
@@ -106,19 +106,19 @@ public class Movie {
         this.deleted = deleted;
     }
 
-    public Date getDate_added() {
-        return date_added;
+    public Date getDateAdded() {
+        return dateAdded;
     }
 
-    public void setDate_added(Date date_added) {
-        this.date_added = date_added;
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
-    public Date getLast_updated() {
-        return last_updated;
+    public Date getLastUpdated() {
+        return lastUpdated;
     }
 
-    public void setLast_updated(Date last_updated) {
-        this.last_updated = last_updated;
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }
