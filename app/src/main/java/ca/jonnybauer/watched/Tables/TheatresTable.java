@@ -55,6 +55,9 @@ public class TheatresTable {
             + COLUMN_WEBSITE + " TEXT,"
             + COLUMN_FAVOURITE + " INTEGER,";
 
+    // Delete Table Query
+    public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
     // Create Record Query
     public void addTheatre(Theatre theatre, DBHelper dbHelper){
         SQLiteDatabase db = dbHelper.getWritableDatabase();

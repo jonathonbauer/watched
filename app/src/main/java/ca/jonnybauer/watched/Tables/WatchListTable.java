@@ -62,6 +62,9 @@ public class WatchListTable {
             + COLUMN_DATE_ADDED + " INTEGER,"
             + COLUMN_LAST_UPDATED + " INTEGER)";
 
+    // Delete Table Query
+    public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
     // Create Record Query
     public void addMovie(Movie movie, DBHelper dbHelper){
         SQLiteDatabase db = dbHelper.getWritableDatabase();

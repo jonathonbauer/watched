@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import ca.jonnybauer.watched.Tables.ConfigTable;
+import ca.jonnybauer.watched.Tables.TheatresTable;
 import ca.jonnybauer.watched.Tables.WatchListTable;
 
 /**
@@ -35,6 +37,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // TODO: Create tables for the first time
         db.execSQL(WatchListTable.CREATE_TABLE);
+        db.execSQL(TheatresTable.CREATE_TABLE);
+        db.execSQL(ConfigTable.CREATE_TABLE);
     }
 
     @Override

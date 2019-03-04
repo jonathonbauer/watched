@@ -47,6 +47,10 @@ public class ConfigTable {
             + COLUMN_WATCH_LIST_STYLE + " INTEGER,"
             + COLUMN_SAVE_LOCATION + " INTEGER,";
 
+    // Delete Table Query
+    public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+
     // Create Record Query
     public void addConfig(Config config, DBHelper dbHelper){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
