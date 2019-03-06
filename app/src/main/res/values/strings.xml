@@ -3,4 +3,18 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!-- Search Page -->
+    <string name="search_page_title">Search</string>
+    <string name="search_box_placeholder">Search Movie</string>
+    <string name="search_result_title_placeholder">Title</string>
+    <string name="search_result_rating_placeholder">Rating</string>
+    <string name="search_result_plot_placeholder">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ex arcu, facilisis at sapien nec, pharetra viverra odio. Donec at est luctus,
+        vehicula urna placerat, vestibulum lorem. Etiam ullamcorper diam eu lacus dignissim, ac egestas sapien elementum. Duis pulvinar consectetur risus,
+        eget laoreet dui lobortis in. Suspendisse libero tortor, placerat et est in, tincidunt efficitur lorem. Curabitur ac viverra neque. Ut luctus,
+        justo ut lacinia pellentesque, lacus ipsum feugiat dui, ac iaculis arcu lacus in mi. Etiam accumsan molestie congue.
+    </string>
+
+
 </resources>

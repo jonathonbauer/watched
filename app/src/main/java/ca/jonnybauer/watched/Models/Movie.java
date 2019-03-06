@@ -27,6 +27,8 @@ public class Movie {
     // Constructors
     public Movie(){}
 
+
+
     public Movie(int id, String title, Date releaseDate, int rating, String plot, int favourite, int watched, int deleted, Date dateAdded, Date lastUpdated) {
         this.id = id;
         this.title = title;

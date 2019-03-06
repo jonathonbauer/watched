@@ -11,7 +11,7 @@ import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Config;
 
 /**
- * This class represents the configs table, and will be used to manipulate it.
+ * This class represents the config table, and will be used to manipulate it.
  *
  * @author Jonathon Bauer
  * @version 1.0
