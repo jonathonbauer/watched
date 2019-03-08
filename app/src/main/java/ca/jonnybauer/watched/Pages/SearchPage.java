@@ -16,9 +16,20 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.jonnybauer.watched.Helpers.APIHelper;
+import ca.jonnybauer.watched.Helpers.RequestHelper;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.R;
 
@@ -41,6 +52,8 @@ public class SearchPage extends Fragment {
     ImageView resultFavourite;
     ImageView resultWatched;
     ImageView resultAdd;
+    String output;
+    ArrayList<Movie> results;
 
     // ListViewAdapter
     SearchResultAdapter adapter;
@@ -78,6 +91,7 @@ public class SearchPage extends Fragment {
         resultWatched = view.findViewById(R.id.searchResultWatched);
         resultAdd = view.findViewById(R.id.searchResultAdd);
 
+        results = new ArrayList<>();
 
         // Search Field event handler - get the search results
         searchField.setOnTouchListener(new View.OnTouchListener() {
@@ -89,6 +103,18 @@ public class SearchPage extends Fragment {
                     if(event.getRawX() >= searchField.getRight() - searchField.getCompoundDrawables()[2].getBounds().width()){
                         // TODO: get search results method call
                         System.out.println("Searching....");
+                        String text = searchField.getText().toString();
+                        APIHelper.getInstance().searchMovie(text, getContext(), new APIHelper.RequestListener(){
+                            @Override
+                            public void onSuccess(JSONObject response) {
+                                System.out.println("Success: " + response.toString());
+                                results = APIHelper.getInstance().parseMovies(response);
+                                System.out.println("Parsed Results: " + results.size());
+                                adapter = new SearchResultAdapter(getContext(), results);
+                                listView.setAdapter(adapter);
+                            }
+                        });
+
                         return true;
                     }
                 }
@@ -96,14 +122,6 @@ public class SearchPage extends Fragment {
                 return false;
             }
         });
-
-        ArrayList<Movie> results = new ArrayList<>();
-        results.add(new Movie(1, "Title1", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-        results.add(new Movie(2, "Title2", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-        results.add(new Movie(3, "Title3", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-        results.add(new Movie(4, "Title4", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-        results.add(new Movie(5, "Title5", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-
 
 
         // Create a SearchResultAdapter
@@ -132,6 +150,32 @@ public class SearchPage extends Fragment {
 
             }
         });
+
+//        APIHelper.getInstance().getMovie(152, getContext(), new APIHelper.RequestListener(){
+//            @Override
+//            public void onSuccess(JSONObject response) {
+//
+//                Movie mov = APIHelper.getInstance().parseMovie(response);
+//                results.add(mov);
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
+
+
+//        RequestHelper.getInstance(getContext()).addToRequestQueue(request, getContext());
+//        System.out.println(APIHelper.getInstance().getMovie(55, getContext()));
+
+
+//        ArrayList<Movie> results = new ArrayList<>();
+//        results.add(new Movie(1, "Title1", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
+//        results.add(new Movie(2, "Title2", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
+//        results.add(new Movie(3, "Title3", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
+//        results.add(new Movie(4, "Title4", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
+//        results.add(new Movie(5, "Title5", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
+
+
+
+
 
         // Card View event handlers - add, mark as watched or favourite
 
@@ -187,13 +231,10 @@ public class SearchPage extends Fragment {
             TextView title = view.findViewById(R.id.resultViewTitle);
             TextView rating = view.findViewById(R.id.resultViewRating);
 
-            System.out.println(title.getText().toString());
-            System.out.println(rating.getText().toString());
 
             // Set the layout elements to the item in the current position
             Movie result = getItem(position);
 
-            System.out.println(result.getTitle());
 
             title.setText(result.getTitle());
             rating.setText(result.getRating() + "");
@@ -206,9 +247,6 @@ public class SearchPage extends Fragment {
 
 
     }
-
-
-
 
 
     @Override
@@ -232,4 +270,5 @@ public class SearchPage extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
