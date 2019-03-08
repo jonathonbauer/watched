@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import ca.jonnybauer.watched.Models.Movie;
@@ -36,6 +37,7 @@ public class APIHelper {
     private static final String POPULAR_URL = "https://api.themoviedb.org/3/movie/popular" + API_KEY + "&language=en-US&page=1";
     private static final String UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming" + API_KEY + "&language=en-US&page=1";
     private static final String TRENDING_URL = "https://api.themoviedb.org/3/trending/movie/week" + API_KEY;
+    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185/";
 
 
     // Constructor
@@ -298,13 +300,23 @@ public class APIHelper {
             // Get the needed values from the JSONObject
             int tmdbID = response.getInt("id");
             String title = response.getString("original_title");
-            String posterPath = response.getString("poster_path");
+            String posterPath = IMAGE_URL + response.getString("poster_path");
             String dateString = response.getString("release_date");
 //            2018-12-18
-            int year = Integer.parseInt(dateString.substring(0, 3));
-            int month = Integer.parseInt(dateString.substring(5,6));
-            int day = Integer.parseInt(dateString.substring(8,9));
-            Date releaseDate = new Date(year,month,day);
+            int year = Integer.parseInt(dateString.substring(0,4));
+            int month = Integer.parseInt(dateString.substring(5,7));
+            int day = Integer.parseInt(dateString.substring(8,10));
+
+            System.out.println(dateString);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, month, day);
+
+            Date releaseDate = new Date(calendar.getTimeInMillis());
+            System.out.println("title " + title);
+            System.out.println("year " + calendar.get(Calendar.YEAR));
+            System.out.println("month " + calendar.get(Calendar.MONTH));
+            System.out.println("day " + calendar.get(Calendar.DATE));
+            System.out.println("full date " + releaseDate.getMonth());
             String plot = response.getString("overview");
             int rating = response.getInt("vote_average");
 

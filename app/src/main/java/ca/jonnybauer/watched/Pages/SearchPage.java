@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -114,11 +115,9 @@ public class SearchPage extends Fragment {
                                 listView.setAdapter(adapter);
                             }
                         });
-
                         return true;
                     }
                 }
-
                 return false;
             }
         });
@@ -139,43 +138,17 @@ public class SearchPage extends Fragment {
 
                 // Update the cardview to the selected results information
                 resultTitle.setText(selectedResult.getTitle());
-                resultRating.setText(selectedResult.getRating() + "");
+                String ratingString = selectedResult.getRating() + " / 10";
+                resultRating.setText(ratingString);
                 resultPlot.setText(selectedResult.getPlot());
-
+                Picasso.get().load(selectedResult.getPosterPath()).into(resultPoster);
+                System.out.println(selectedResult.getPosterPath());
+                System.out.println(selectedResult.getReleaseDate().toString());
 
                 // TODO: Check if the movie has been added, watched or add to favourites and change the imageviews accordingly
 
-
-                // TODO: Set the card view movie poster
-
             }
         });
-
-//        APIHelper.getInstance().getMovie(152, getContext(), new APIHelper.RequestListener(){
-//            @Override
-//            public void onSuccess(JSONObject response) {
-//
-//                Movie mov = APIHelper.getInstance().parseMovie(response);
-//                results.add(mov);
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
-
-
-//        RequestHelper.getInstance(getContext()).addToRequestQueue(request, getContext());
-//        System.out.println(APIHelper.getInstance().getMovie(55, getContext()));
-
-
-//        ArrayList<Movie> results = new ArrayList<>();
-//        results.add(new Movie(1, "Title1", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-//        results.add(new Movie(2, "Title2", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-//        results.add(new Movie(3, "Title3", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-//        results.add(new Movie(4, "Title4", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-//        results.add(new Movie(5, "Title5", new Date(),5, "Short Plot", 0,0,0,new Date(), new Date()));
-
-
-
-
 
         // Card View event handlers - add, mark as watched or favourite
 
@@ -237,7 +210,8 @@ public class SearchPage extends Fragment {
 
 
             title.setText(result.getTitle());
-            rating.setText(result.getRating() + "");
+            String ratingString = result.getRating() + " / 10";
+            rating.setText(ratingString);
 
             return view;
         }
