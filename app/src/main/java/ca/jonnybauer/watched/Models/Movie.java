@@ -13,23 +13,28 @@ import java.util.Date;
 public class Movie {
 
     // Properties
-    private int id;                              // Unique ID of the movie
+    private int id = 0;                          // Unique ID of the movie
+    private int tmdbID;                         // Unique TheMovieDB ID of the movie
     private String title;                        // Title of the movie
+    private String posterPath;                   // Path to the movie poster
     private Date releaseDate;                    // Release date of the movie
     private int rating;                          // Rating of the movie
     private String plot;                         // Short plot of the movie
     private int favourite = 0;                   // Whether or not the movie is marked as a favourite, represented as an integer. Default of false (0)
     private int watched = 0;                     // Whether or not the movie is marked as watched, represented as an integer. Default of false (0)
     private int deleted = 0;                     // Whether or not the movie has been deleted, represented as an integer. Default of false (0)
-    private Date dateAdded = new Date();        // The date the user added the movie
-    private Date lastUpdated = new Date();      // THe date the movie has been last updated
+    private Date dateAdded = new Date();         // The date the user added the movie
+    private Date lastUpdated = new Date();       // THe date the movie has been last updated
 
     // Constructors
     public Movie(){}
 
-    public Movie(int id, String title, Date releaseDate, int rating, String plot, int favourite, int watched, int deleted, Date dateAdded, Date lastUpdated) {
+    public Movie(int id, int tmdbID, String title, String posterPath, Date releaseDate, int rating,
+                 String plot, int favourite, int watched, int deleted, Date dateAdded, Date lastUpdated) {
         this.id = id;
+        this.tmdbID = tmdbID;
         this.title = title;
+        this.posterPath = posterPath;
         this.releaseDate = releaseDate;
         this.rating = rating;
         this.plot = plot;
@@ -40,7 +45,17 @@ public class Movie {
         this.lastUpdated = lastUpdated;
     }
 
+    public Movie(int tmdbID, String title, String posterPath, Date releaseDate, int rating, String plot) {
+        this.tmdbID = tmdbID;
+        this.title = title;
+        this.posterPath = posterPath;
+        this.releaseDate = releaseDate;
+        this.rating = rating;
+        this.plot = plot;
+    }
+
     // Getters and Setters
+
 
     public int getId() {
         return id;
@@ -50,12 +65,28 @@ public class Movie {
         this.id = id;
     }
 
+    public int getTmdbID() {
+        return tmdbID;
+    }
+
+    public void setTmdbID(int tmdbID) {
+        this.tmdbID = tmdbID;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
     public Date getReleaseDate() {
