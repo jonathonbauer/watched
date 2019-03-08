@@ -39,7 +39,9 @@ public class WatchListTable {
     // Table Contents
     private static final String TABLE_NAME = "watch_list";
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_TMDB_ID = "tmdb_id";
     private static final String COLUMN_TITLE = "title";
+    private static final String COLUMN_POSTER_PATH = "poster_path";
     private static final String COLUMN_RELEASE_DATE = "release_date";
     private static final String COLUMN_RATING = "rating";
     private static final String COLUMN_PLOT = "plot";
@@ -52,7 +54,9 @@ public class WatchListTable {
     // Create Table Query
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY,"
+            + COLUMN_TMDB_ID + " INTEGER,"
             + COLUMN_TITLE + " TEXT,"
+            + COLUMN_POSTER_PATH + " TEXT,"
             + COLUMN_RELEASE_DATE + " INTEGER,"
             + COLUMN_RATING + " INTEGER,"
             + COLUMN_PLOT + " TEXT,"
@@ -69,7 +73,9 @@ public class WatchListTable {
     public void addMovie(Movie movie, DBHelper dbHelper){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_TMDB_ID, movie.getTmdbID());
         values.put(COLUMN_TITLE, movie.getTitle());
+        values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
         values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate().getTime());
         values.put(COLUMN_RATING, movie.getRating());
         values.put(COLUMN_PLOT, movie.getPlot());
@@ -93,7 +99,9 @@ public class WatchListTable {
 
         cursor.moveToNext();
         Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
+                cursor.getInt(cursor.getColumnIndex(COLUMN_TMDB_ID)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
                 new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_RATING)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
@@ -116,7 +124,9 @@ public class WatchListTable {
         cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY  ?", null);
         while(cursor.moveToNext()) {
             Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_TMDB_ID)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
                     new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
@@ -136,7 +146,9 @@ public class WatchListTable {
     public void updateMovie(Movie movie, DBHelper dbHelper){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_TMDB_ID, movie.getTmdbID());
         values.put(COLUMN_TITLE, movie.getTitle());
+        values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
         values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate().getTime());
         values.put(COLUMN_RATING, movie.getRating());
         values.put(COLUMN_PLOT, movie.getPlot());

@@ -17,4 +17,8 @@
     </string>
 
 
+    <!-- Credits -->
+    <string name="api_source">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
+
+
 </resources>
