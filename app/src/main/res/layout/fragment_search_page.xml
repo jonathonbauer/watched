@@ -94,14 +94,19 @@
                 app:layout_constraintStart_toEndOf="@+id/searchResultPoster"
                 app:layout_constraintTop_toTopOf="@+id/searchResultPoster" />
 
-            <TextView
+            <com.iarcuschin.simpleratingbar.SimpleRatingBar
                 android:id="@+id/searchResultRating"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/search_result_rating_placeholder"
+                android:layout_marginTop="4dp"
+                android:isIndicator="true"
                 app:layout_constraintStart_toEndOf="@+id/searchResultPoster"
-                app:layout_constraintTop_toBottomOf="@+id/searchResultTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/searchResultTitle"
+                app:srb_numberOfStars="5"
+                app:srb_starSize="15dp"
+                app:srb_stepSize="1" />
 
             <TextView
                 android:id="@+id/searchResultPlot"

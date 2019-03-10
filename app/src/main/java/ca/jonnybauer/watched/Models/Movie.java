@@ -18,7 +18,7 @@ public class Movie {
     private String title;                        // Title of the movie
     private String posterPath;                   // Path to the movie poster
     private Date releaseDate;                    // Release date of the movie
-    private int rating;                          // Rating of the movie
+    private double rating;                          // Rating of the movie
     private String plot;                         // Short plot of the movie
     private int favourite = 0;                   // Whether or not the movie is marked as a favourite, represented as an integer. Default of false (0)
     private int watched = 0;                     // Whether or not the movie is marked as watched, represented as an integer. Default of false (0)
@@ -29,7 +29,7 @@ public class Movie {
     // Constructors
     public Movie(){}
 
-    public Movie(int id, int tmdbID, String title, String posterPath, Date releaseDate, int rating,
+    public Movie(int id, int tmdbID, String title, String posterPath, Date releaseDate, double rating,
                  String plot, int favourite, int watched, int deleted, Date dateAdded, Date lastUpdated) {
         this.id = id;
         this.tmdbID = tmdbID;
@@ -45,7 +45,7 @@ public class Movie {
         this.lastUpdated = lastUpdated;
     }
 
-    public Movie(int tmdbID, String title, String posterPath, Date releaseDate, int rating, String plot) {
+    public Movie(int tmdbID, String title, String posterPath, Date releaseDate, double rating, String plot) {
         this.tmdbID = tmdbID;
         this.title = title;
         this.posterPath = posterPath;
@@ -97,11 +97,11 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

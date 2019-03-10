@@ -302,23 +302,17 @@ public class APIHelper {
             String title = response.getString("original_title");
             String posterPath = IMAGE_URL + response.getString("poster_path");
             String dateString = response.getString("release_date");
-//            2018-12-18
+
             int year = Integer.parseInt(dateString.substring(0,4));
             int month = Integer.parseInt(dateString.substring(5,7));
             int day = Integer.parseInt(dateString.substring(8,10));
 
-            System.out.println(dateString);
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, day);
 
             Date releaseDate = new Date(calendar.getTimeInMillis());
-            System.out.println("title " + title);
-            System.out.println("year " + calendar.get(Calendar.YEAR));
-            System.out.println("month " + calendar.get(Calendar.MONTH));
-            System.out.println("day " + calendar.get(Calendar.DATE));
-            System.out.println("full date " + releaseDate.getMonth());
             String plot = response.getString("overview");
-            int rating = response.getInt("vote_average");
+            double rating = response.getDouble("vote_average");
 
             // Return the movie
             return new Movie(tmdbID, title, posterPath, releaseDate, rating, plot);

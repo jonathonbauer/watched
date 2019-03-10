@@ -71,6 +71,7 @@ public class WatchListTable {
 
     // Create Record Query
     public void addMovie(Movie movie, DBHelper dbHelper){
+        System.out.println("Saving movie to database!");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_TMDB_ID, movie.getTmdbID());
@@ -97,23 +98,55 @@ public class WatchListTable {
 
         Cursor cursor = db.query(TABLE_NAME, null, selection, args, null, null, null);
 
-        cursor.moveToNext();
-        Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_TMDB_ID)),
-                cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
-                cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
-                new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_RATING)),
-                cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_FAVOURITE)),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_WATCHED)),
-                cursor.getInt(cursor.getColumnIndex(COLUMN_DELETED)),
-                new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_DATE_ADDED))),
-                new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_LAST_UPDATED))));
-        cursor.close();
-        db.close();
-        return movie;
+        if(cursor.moveToNext()) {
+            Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_TMDB_ID)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
+                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
+                    cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_FAVOURITE)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_WATCHED)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_DELETED)),
+                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_DATE_ADDED))),
+                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_LAST_UPDATED))));
+            cursor.close();
+            db.close();
+            return movie;
+        } else {
+            return null;
+        }
+    }
 
+    // Get Record via TMDB_ID
+    public Movie getMovieWithTmdbID(DBHelper dbHelper, int tmdbID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String selection = COLUMN_TMDB_ID + " = ?";
+        String[] args = { tmdbID + "" };
+
+        Cursor cursor = db.query(TABLE_NAME, null, selection, args, null, null, null);
+
+        if(cursor.moveToNext()) {
+            Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_TMDB_ID)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
+                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
+                    cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_FAVOURITE)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_WATCHED)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_DELETED)),
+                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_DATE_ADDED))),
+                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_LAST_UPDATED))));
+            cursor.close();
+            db.close();
+            return movie;
+        } else {
+            return null;
+        }
     }
 
     // Get All Records Query
@@ -128,7 +161,7 @@ public class WatchListTable {
                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
                     new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
-                    cursor.getInt(cursor.getColumnIndex(COLUMN_RATING)),
+                    cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_FAVOURITE)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_WATCHED)),
@@ -157,11 +190,11 @@ public class WatchListTable {
         values.put(COLUMN_DELETED, movie.getDeleted());
         values.put(COLUMN_DATE_ADDED, movie.getDateAdded().getTime());
         values.put(COLUMN_LAST_UPDATED, movie.getLastUpdated().getTime());
-        db.insert(TABLE_NAME, null, values);
         String selection = COLUMN_ID + " LIKE ?";
         String[] args = { movie.getId() + "" };
         db.update(TABLE_NAME, values, selection, args);
     }
+
 
     // Delete Record Query
     public void deleteMovie(DBHelper dbHelper, int movieID){

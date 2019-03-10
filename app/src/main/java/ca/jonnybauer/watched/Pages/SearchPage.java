@@ -5,15 +5,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -21,18 +24,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import ca.jonnybauer.watched.Helpers.APIHelper;
+import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Helpers.RequestHelper;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.R;
+import ca.jonnybauer.watched.Tables.WatchListTable;
 
 /**
  *
@@ -48,13 +55,16 @@ public class SearchPage extends Fragment {
     ListView listView;
     ImageView resultPoster;
     TextView resultTitle;
-    TextView resultRating;
+    SimpleRatingBar resultRating;
     TextView resultPlot;
     ImageView resultFavourite;
     ImageView resultWatched;
     ImageView resultAdd;
     String output;
     ArrayList<Movie> results;
+
+    // Database
+    DBHelper dbHelper;
 
     // ListViewAdapter
     SearchResultAdapter adapter;
@@ -80,6 +90,9 @@ public class SearchPage extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_page, container, false);
 
+        // Create the DBHelper
+        dbHelper = new DBHelper(getContext());
+
         // Layout elements
         searchField = view.findViewById(R.id.searchTextField);
         listView = view.findViewById(R.id.searchListView);
@@ -94,7 +107,7 @@ public class SearchPage extends Fragment {
 
         results = new ArrayList<>();
 
-        // Search Field event handler - get the search results
+        // Search Field event handler - when the users taps the search icon
         searchField.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -102,23 +115,26 @@ public class SearchPage extends Fragment {
                 // Make sure the event was fired on the search icon
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= searchField.getRight() - searchField.getCompoundDrawables()[2].getBounds().width()){
-                        // TODO: get search results method call
-                        System.out.println("Searching....");
-                        String text = searchField.getText().toString();
-                        APIHelper.getInstance().searchMovie(text, getContext(), new APIHelper.RequestListener(){
-                            @Override
-                            public void onSuccess(JSONObject response) {
-                                System.out.println("Success: " + response.toString());
-                                results = APIHelper.getInstance().parseMovies(response);
-                                System.out.println("Parsed Results: " + results.size());
-                                adapter = new SearchResultAdapter(getContext(), results);
-                                listView.setAdapter(adapter);
-                            }
-                        });
+                        processSearchQuery();
                         return true;
                     }
                 }
                 return false;
+            }
+        });
+
+        // Search Field event listener - when the user presses enter
+        searchField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // Make sure they key pressed was enter
+                if(keyCode == KeyEvent.KEYCODE_ENTER) {
+                    processSearchQuery();
+                    return true;
+                } else {
+                    return false;
+                }
+
             }
         });
 
@@ -129,24 +145,15 @@ public class SearchPage extends Fragment {
         // Pair the listView with the adapter
         listView.setAdapter(adapter);
 
+
+
         // List view item event handler - Set the CardView items to the selected result
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the selected result
                 selectedResult = adapter.getItem(position);
-
-                // Update the cardview to the selected results information
-                resultTitle.setText(selectedResult.getTitle());
-                String ratingString = selectedResult.getRating() + " / 10";
-                resultRating.setText(ratingString);
-                resultPlot.setText(selectedResult.getPlot());
-                Picasso.get().load(selectedResult.getPosterPath()).into(resultPoster);
-                System.out.println(selectedResult.getPosterPath());
-                System.out.println(selectedResult.getReleaseDate().toString());
-
-                // TODO: Check if the movie has been added, watched or add to favourites and change the imageviews accordingly
-
+                setCardViewValues(selectedResult);
             }
         });
 
@@ -155,7 +162,37 @@ public class SearchPage extends Fragment {
         resultAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Add the selected result to the watch list and change the imageview
+                System.out.println("Add clicked");
+
+                // Check if the movie is in the watch list and hasn't been deleted
+                Movie watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, selectedResult.getTmdbID());
+                if(watchListMovie == null) {
+                    System.out.println("Adding movie!");
+                    // Change the add imageView to mark it as added
+                    resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
+
+                    // Add it to the watchList
+                    WatchListTable.getInstance().addMovie(selectedResult, dbHelper);
+
+                } else if(watchListMovie.getDeleted() == 1) {
+                    System.out.println("Re-Adding movie!");
+                    watchListMovie.setDeleted(0);
+                    watchListMovie.setLastUpdated(new Date());
+                    WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+
+                    // Change the add imageView to mark it as added
+                    resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                } else {
+                    System.out.println("Deleting movie!");
+                    watchListMovie.setDeleted(1);
+                    watchListMovie.setWatched(0);
+                    watchListMovie.setFavourite(0);
+                    watchListMovie.setLastUpdated(new Date());
+                    WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                    resultAdd.setImageResource(R.drawable.ic_add_black_24dp);
+                    resultFavourite.setImageResource(R.drawable.ic_star_border_black_24dp);
+                    resultWatched.setImageResource(R.drawable.ic_check_black_24dp);
+                }
             }
         });
 
@@ -163,13 +200,88 @@ public class SearchPage extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO: Add the selected result to the watch list, mark it as a favourite and change the imageviews
+                System.out.println("Favourite clicked");
+                // Check if the movie is in the watch list and hasn't been deleted
+                Movie watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, selectedResult.getTmdbID());
+                if(watchListMovie == null) {
+                    System.out.println("Adding movie and marking as favourite!");
+                    // Change the add imageViews to mark it as added
+                    resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                    resultFavourite.setImageResource(R.drawable.ic_star_black_24dp);
+
+                    watchListMovie.setFavourite(1);
+
+                    // Add it to the watchList
+                    WatchListTable.getInstance().addMovie(selectedResult, dbHelper);
+
+                } else if(watchListMovie.getDeleted() == 1) {
+                    System.out.println("Re-adding movie and marking as favourite!");
+                    watchListMovie.setDeleted(0);
+                    watchListMovie.setFavourite(1);
+                    watchListMovie.setLastUpdated(new Date());
+                    WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+
+                    // Change the add imageViews to mark it as added
+                    resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                    resultFavourite.setImageResource(R.drawable.ic_star_black_24dp);
+                } else if(watchListMovie.getFavourite() == 1){
+                    System.out.println("Un-favouriting movie!");
+                    watchListMovie.setFavourite(0);
+                    watchListMovie.setLastUpdated(new Date());
+                    WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                    resultFavourite.setImageResource(R.drawable.ic_star_border_black_24dp);
+                } else {
+                    System.out.println("Favouriting movie!");
+                    watchListMovie.setFavourite(1);
+                    watchListMovie.setLastUpdated(new Date());
+                    WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                    resultFavourite.setImageResource(R.drawable.ic_star_black_24dp);
+                }
             }
         });
 
         resultWatched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("Watched clicked");
                 // TODO: Add the selected result to the watch list, mark it as watched and change the imageviews
+                // Check if the movie is in the watch list and hasn't been deleted
+                Movie watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, selectedResult.getTmdbID());
+                if(watchListMovie == null) {
+
+                    System.out.println("Adding Movie and marking as watched!");
+                    // Change the add imageViews to mark it as added
+                    resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                    resultWatched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+
+                    watchListMovie.setFavourite(1);
+
+                    // Add it to the watchList
+                    WatchListTable.getInstance().addMovie(selectedResult, dbHelper);
+
+                } else if(watchListMovie.getDeleted() == 1) {
+                    System.out.println("Re-adding and marking as watched!");
+                    watchListMovie.setDeleted(0);
+                    watchListMovie.setWatched(1);
+                    watchListMovie.setLastUpdated(new Date());
+                    WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+
+                    // Change the add imageViews to mark it as added
+                    resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                    resultWatched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+                } else if(watchListMovie.getWatched() == 1){
+                    System.out.println("Unmarking as watched");
+                    watchListMovie.setWatched(0);
+                    watchListMovie.setLastUpdated(new Date());
+                    WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                    resultWatched.setImageResource(R.drawable.ic_check_black_24dp);
+                } else {
+                    System.out.println("Marking as watched");
+                    watchListMovie.setWatched(1);
+                    watchListMovie.setLastUpdated(new Date());
+                    WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                    resultWatched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+                }
             }
         });
 
@@ -204,24 +316,79 @@ public class SearchPage extends Fragment {
             TextView title = view.findViewById(R.id.resultViewTitle);
             TextView rating = view.findViewById(R.id.resultViewRating);
 
-
             // Set the layout elements to the item in the current position
             Movie result = getItem(position);
-
-
-            title.setText(result.getTitle());
-            String ratingString = result.getRating() + " / 10";
+            Calendar release = Calendar.getInstance();
+            release.setTime(result.getReleaseDate());
+            String titleString = result.getTitle() + " (" + release.get(Calendar.YEAR) + ")";
+            title.setText(titleString);
+            String ratingString = result.getRating() + "";
             rating.setText(ratingString);
 
             return view;
         }
 
-        // getItem method
+    }
+
+    /**
+     * This function is used to set the values on the cardView to the passed in Movie object
+     * @param selectedResult the Movie that we are setting the cardview to
+     * @see Movie
+     */
+    public void setCardViewValues(Movie selectedResult){
+
+        // Update the cardview to the selected results information
+        Calendar date = Calendar.getInstance();
+        date.setTime(selectedResult.getReleaseDate());
+        String titleString = selectedResult.getTitle() + " (" + date.get(Calendar.YEAR) + ")";
+        resultTitle.setText(titleString);
+        double rating = (selectedResult.getRating() / 10.0) * 5.0;
+
+        resultRating.setRating((float) rating);
+        resultPlot.setText(selectedResult.getPlot());
+        Picasso.get().load(selectedResult.getPosterPath()).into(resultPoster);
 
 
+        // Check if the movie is in the watch list and hasn't been deleted
+        Movie watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, selectedResult.getTmdbID());
+        if(watchListMovie != null && watchListMovie.getDeleted() != 1) {
+            // Change the add imageView to mark it as added
+            resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
+
+            // Check if it's been marked as favourite, and if so change the imageview
+            if(watchListMovie.getFavourite() == 1) {
+                resultFavourite.setImageResource(R.drawable.ic_star_black_24dp);
+            }
+
+            // Check if the movie has been watched and if so change the imageview
+            if(watchListMovie.getWatched() == 1) {
+                resultWatched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+            }
+        }
 
     }
 
+    /**
+     * This function is used to hide the keyboard from the screen and process the users search query.
+     * It makes the API call and updates the listview with the results
+     */
+    public void processSearchQuery(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+        String text = searchField.getText().toString();
+        APIHelper.getInstance().searchMovie(text, getContext(), new APIHelper.RequestListener(){
+            @Override
+            public void onSuccess(JSONObject response) {
+                results = APIHelper.getInstance().parseMovies(response);
+                adapter = new SearchResultAdapter(getContext(), results);
+                listView.setAdapter(adapter);
+
+                selectedResult = adapter.getItem(0);
+                setCardViewValues(selectedResult);
+            }
+        });
+    }
 
     @Override
     public void onAttach(Context context) {
