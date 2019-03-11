@@ -75,6 +75,9 @@ public class SearchPage extends Fragment {
     ArrayList<String> movieCredits;
     ArrayList<ArrayList<String>> credits;
 
+    // Flag to determine if the user has entered a search yet
+    Boolean searchFlag = false;
+
     // ListView Elements
     TextView title;
     TextView actors;
@@ -129,8 +132,21 @@ public class SearchPage extends Fragment {
         // Hide the cardview elements by default
         toggleCardView();
 
+        // clear the title text
+        resultTitle.setText("");
 
         results = new ArrayList<>();
+
+        // Search Field event handler - when the user enters the text field
+        searchField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(resultPoster.getVisibility() == View.VISIBLE){
+                    toggleCardView();
+                }
+            }
+        });
+
 
         // Search Field event handler - when the users taps the search icon
         searchField.setOnTouchListener(new View.OnTouchListener() {
@@ -191,14 +207,18 @@ public class SearchPage extends Fragment {
         resultsCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleCardView();
+                if(searchFlag){
+                    toggleCardView();
+                }
             }
         });
 
         chevron.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleCardView();
+                if(searchFlag){
+                    toggleCardView();
+                }
             }
         });
 
@@ -394,7 +414,7 @@ public class SearchPage extends Fragment {
 
         resultRating.setRating((float) rating);
         resultPlot.setText(selectedResult.getPlot());
-        Picasso.get().load(selectedResult.getPosterPath()).into(resultPoster);
+        Picasso.get().load(selectedResult.getPosterPath()).placeholder(R.drawable.noimagefound).into(resultPoster);
 
 
         // Check if the movie is in the watch list and hasn't been deleted
@@ -429,6 +449,7 @@ public class SearchPage extends Fragment {
      * It makes the API call and updates the listview with the results
      */
     public void processSearchQuery(){
+        searchFlag = true;
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 

@@ -105,7 +105,11 @@ public class Movie {
         ArrayList<String> creditsStrings = new ArrayList<>();
         for(int i=0; i < 3; i++) {
             if(credits.size() > i) {
-                creditsStrings.add(this.credits.get(i) + " ");
+                if(i == 2) {
+                    creditsStrings.add(this.credits.get(i));
+                } else {
+                    creditsStrings.add(this.credits.get(i) + ", ");
+                }
             }
         }
         String creditsString = "";
