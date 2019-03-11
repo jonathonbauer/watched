@@ -64,6 +64,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:minHeight="40dp"
         app:cardBackgroundColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,25 +75,37 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/searchResultChevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_keyboard_arrow_up_black_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
                 android:id="@+id/searchResultPoster"
                 android:layout_width="100dp"
                 android:layout_height="180dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/poster_placeholder"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/searchResultTitle" />
 
             <TextView
                 android:id="@+id/searchResultTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/search_result_title_placeholder"
-                app:layout_constraintStart_toEndOf="@+id/searchResultPoster"
-                app:layout_constraintTop_toTopOf="@+id/searchResultPoster" />
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.iarcuschin.simpleratingbar.SimpleRatingBar
                 android:id="@+id/searchResultRating"
@@ -100,10 +113,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="16dp"
                 android:isIndicator="true"
+                android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/searchResultPoster"
-                app:layout_constraintTop_toBottomOf="@+id/searchResultTitle"
+                app:layout_constraintTop_toTopOf="@+id/searchResultPoster"
                 app:srb_numberOfStars="5"
                 app:srb_starSize="15dp"
                 app:srb_stepSize="1" />
@@ -116,19 +130,21 @@
                 android:layout_marginBottom="8dp"
                 android:maxLength="275"
                 android:text="@string/search_result_plot_placeholder"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/iconsLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/searchResultPoster"
                 app:layout_constraintTop_toBottomOf="@+id/searchResultRating" />
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/iconsLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/searchResultPoster">

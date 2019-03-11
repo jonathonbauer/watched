@@ -387,9 +387,9 @@ public class APIHelper {
     }
 
     /**
-     * This function is used to instantiate an array of Movie objects based on the JSONObject response from the API.
-     * @param response The API response that is to be parsed into a Movie object
-     * @return An array of Movie objects using the provided API response
+     * This function is used to instantiate an array of Strings representing the credits of a movie based on the JSONObject response from the API.
+     * @param response The API response that is to be parsed into an array of Strings
+     * @return An array of Strings using the provided API response
      */
     public ArrayList<String> parseCredits(JSONObject response) {
         ArrayList<String> credits = new ArrayList<>();

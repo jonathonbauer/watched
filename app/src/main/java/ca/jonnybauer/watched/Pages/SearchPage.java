@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -54,11 +56,16 @@ public class SearchPage extends Fragment {
     // Layout elements
     EditText searchField;
     ListView listView;
+
+    CardView resultsCardview;
+
+    ImageView chevron;
     ImageView resultPoster;
     TextView resultTitle;
     TextView resultActors;
     SimpleRatingBar resultRating;
     TextView resultPlot;
+    LinearLayout icons;
     ImageView resultFavourite;
     ImageView resultWatched;
     ImageView resultAdd;
@@ -107,13 +114,21 @@ public class SearchPage extends Fragment {
         searchField = view.findViewById(R.id.searchTextField);
         listView = view.findViewById(R.id.searchListView);
 
+        resultsCardview = view.findViewById(R.id.searchResultsCardView);
+
+        chevron = view.findViewById(R.id.searchResultChevron);
         resultPoster = view.findViewById(R.id.searchResultPoster);
         resultTitle = view.findViewById(R.id.searchResultTitle);
         resultRating = view.findViewById(R.id.searchResultRating);
         resultPlot = view.findViewById(R.id.searchResultPlot);
+        icons = view.findViewById(R.id.iconsLayout);
         resultFavourite = view.findViewById(R.id.searchResultFavourite);
         resultWatched = view.findViewById(R.id.searchResultWatched);
         resultAdd = view.findViewById(R.id.searchResultAdd);
+
+        // Hide the cardview elements by default
+        toggleCardView();
+
 
         results = new ArrayList<>();
 
@@ -164,6 +179,26 @@ public class SearchPage extends Fragment {
                 // Get the selected result
                 selectedResult = adapter.getItem(position);
                 setCardViewValues(selectedResult);
+                if(resultPoster.getVisibility() == View.GONE){
+                    toggleCardView();
+                }
+
+            }
+        });
+
+        // Card View and Chevron event handlers - revealing or hiding the card view
+
+        resultsCardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleCardView();
+            }
+        });
+
+        chevron.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleCardView();
             }
         });
 
@@ -209,7 +244,6 @@ public class SearchPage extends Fragment {
         resultFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Add the selected result to the watch list, mark it as a favourite and change the imageviews
                 System.out.println("Favourite clicked");
                 // Check if the movie is in the watch list and hasn't been deleted
                 Movie watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, selectedResult.getTmdbID());
@@ -254,7 +288,6 @@ public class SearchPage extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("Watched clicked");
-                // TODO: Add the selected result to the watch list, mark it as watched and change the imageviews
                 // Check if the movie is in the watch list and hasn't been deleted
                 Movie watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, selectedResult.getTmdbID());
                 if(watchListMovie == null) {
@@ -340,20 +373,6 @@ public class SearchPage extends Fragment {
                 actors.setText(result.getTopBilling());
             }
 
-
-//            if(actors.getText().toString().equals("")) {
-//                APIHelper.getInstance().getCredits(result.getTmdbID(), getContext(), new APIHelper.RequestListener() {
-//                    @Override
-//                    public void onSuccess(JSONObject response) {
-//                        movieCredits = APIHelper.getInstance().parseCredits(response);
-//                        String creditsString = movieCredits.get(0) + ", " + movieCredits.get(1) + ", " + movieCredits.get(2);
-//                        System.out.println("Changing actors to: " + creditsString);
-//                        actors.setText(creditsString);
-//                    }
-//                });
-//            }
-
-
             return view;
         }
 
@@ -415,9 +434,7 @@ public class SearchPage extends Fragment {
 
         final String searchInput = searchField.getText().toString();
 
-
-
-        if(validateInput(searchInput)) {
+        if(inputIsValid(searchInput)) {
             System.out.println("Search is valid.");
             String cleanInput = searchInput.replace(" ", "+");
             movieCredits = new ArrayList<>();
@@ -437,7 +454,6 @@ public class SearchPage extends Fragment {
                                 ArrayList<String> credits = APIHelper.getInstance().parseCredits(response);
                                 results.get(index).setCredits(credits);
                                 adapter.notifyDataSetChanged();
-                                System.out.println("Setting credits for " + results.get(index).getTitle());
                             }
                         });
                     }
@@ -460,7 +476,35 @@ public class SearchPage extends Fragment {
 
     }
 
-    public Boolean validateInput(String input){
+    /**
+     * This function is used to toggle the visibility of the elements in the search results card view
+     */
+    public void toggleCardView(){
+        if(icons.getVisibility() == View.VISIBLE) {
+            resultPoster.setVisibility(View.GONE);
+//            resultTitle.setVisibility(View.GONE);
+            resultRating.setVisibility(View.GONE);
+            resultPlot.setVisibility(View.GONE);
+            icons.setVisibility(View.GONE);
+            chevron.setImageResource(R.drawable.ic_keyboard_arrow_up_black_24dp);
+        } else {
+            resultPoster.setVisibility(View.VISIBLE);
+//            resultTitle.setVisibility(View.VISIBLE);
+            resultRating.setVisibility(View.VISIBLE);
+            resultPlot.setVisibility(View.VISIBLE);
+            icons.setVisibility(View.VISIBLE);
+            chevron.setImageResource(R.drawable.ic_keyboard_arrow_down_black_24dp);
+        }
+    }
+
+
+
+    /**
+     *  This function uses regular expression to ensure the user does not enter invalid characters into the search field.
+     * @param input The users search input
+     * @return true or false depending on whether the input is valid
+     */
+    public Boolean inputIsValid(String input){
 
         if(input.matches("[a-zA-Z0-9 ]*")) {
             return true;

@@ -159,7 +159,6 @@ public class WatchListTable {
 
         if(cursor.moveToNext()) {
             // Get the credits arraylist
-            System.out.println(cursor.getString(cursor.getColumnIndex(COLUMN_CREDITS)));
             ArrayList<String> credits = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_CREDITS)), type);
 
             Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
