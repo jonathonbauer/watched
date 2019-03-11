@@ -40,6 +40,7 @@ public class APIHelper {
     private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185/";
 
 
+
     // Constructor
     private APIHelper(){}
 
@@ -94,6 +95,7 @@ public class APIHelper {
     public void searchMovie(String query, Context context, final RequestListener requestListener) {
         // Build the query
         String url = SEARCH_URL + query + "&page=1&include_adult=false";
+        System.out.println("Search query: " + url);
 
         // Create a new request
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -288,6 +290,29 @@ public class APIHelper {
         RequestHelper.getInstance(context).addToRequestQueue(request, context);
     }
 
+    public void getCredits(int movieID, Context context, final RequestListener requestListener) {
+        // Build the query
+        String url = MOVIE_URL + movieID + "/credits" + API_KEY;
+
+        // Create a new request
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // Trigger the response listener when a response is received
+                requestListener.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Handle the error
+                // TODO: Handle errors properly
+                System.out.println(error);
+            }
+        });
+        // Add the request to the request queue
+        RequestHelper.getInstance(context).addToRequestQueue(request, context);
+    }
+
 
     /**
      * This function is used to instantiate a Movie object based on the JSONObject response from the API.
@@ -302,15 +327,23 @@ public class APIHelper {
             String title = response.getString("original_title");
             String posterPath = IMAGE_URL + response.getString("poster_path");
             String dateString = response.getString("release_date");
+            System.out.println(dateString);
 
-            int year = Integer.parseInt(dateString.substring(0,4));
-            int month = Integer.parseInt(dateString.substring(5,7));
-            int day = Integer.parseInt(dateString.substring(8,10));
+            Date releaseDate;
+            if(dateString.length() != 0) {
+                int year = Integer.parseInt(dateString.substring(0, 4));
+                int month = Integer.parseInt(dateString.substring(5, 7));
+                int day = Integer.parseInt(dateString.substring(8, 10));
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+                releaseDate = new Date(calendar.getTimeInMillis());
+            } else {
+                releaseDate = new Date(0);
+            }
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(year, month, day);
 
-            Date releaseDate = new Date(calendar.getTimeInMillis());
+
+
             String plot = response.getString("overview");
             double rating = response.getDouble("vote_average");
 
@@ -338,11 +371,12 @@ public class APIHelper {
             JSONArray results = response.getJSONArray("results");
 
             // Populate an ArrayList of movies with the parsed movie results
-            for(int i=0; i < response.getInt("total_pages"); i++) {
+            for(int i=0; i < results.length(); i++) {
                 Movie movie = parseMovie(results.getJSONObject(i));
                 movies.add(movie);
             }
 
+            System.out.println("Returning " + results.length() + " result(s)");
             // return the array of movies
             return movies;
 
@@ -352,6 +386,34 @@ public class APIHelper {
             return null;
         }
     }
+
+    /**
+     * This function is used to instantiate an array of Movie objects based on the JSONObject response from the API.
+     * @param response The API response that is to be parsed into a Movie object
+     * @return An array of Movie objects using the provided API response
+     */
+    public ArrayList<String> parseCredits(JSONObject response) {
+        ArrayList<String> credits = new ArrayList<>();
+
+        try {
+            // Get the array titled results from the response
+            JSONArray results = response.getJSONArray("cast");
+
+            // Populate an ArrayList of movies with the parsed movie results
+            for(int i=0; i < results.length(); i++) {
+                credits.add(results.getJSONObject(i).getString("name"));
+            }
+
+            // return the array of movies
+            return credits;
+
+        } catch(JSONException e){
+            System.out.println(e);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**
      * This interface is to be used to notify the calling fragment of a response from the API.

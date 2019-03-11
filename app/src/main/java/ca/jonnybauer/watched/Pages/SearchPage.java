@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -55,13 +56,22 @@ public class SearchPage extends Fragment {
     ListView listView;
     ImageView resultPoster;
     TextView resultTitle;
+    TextView resultActors;
     SimpleRatingBar resultRating;
     TextView resultPlot;
     ImageView resultFavourite;
     ImageView resultWatched;
     ImageView resultAdd;
-    String output;
     ArrayList<Movie> results;
+
+    // Define an ArrayList for the credits
+    ArrayList<String> movieCredits;
+    ArrayList<ArrayList<String>> credits;
+
+    // ListView Elements
+    TextView title;
+    TextView actors;
+    TextView rating;
 
     // Database
     DBHelper dbHelper;
@@ -209,7 +219,7 @@ public class SearchPage extends Fragment {
                     resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
                     resultFavourite.setImageResource(R.drawable.ic_star_black_24dp);
 
-                    watchListMovie.setFavourite(1);
+                    selectedResult.setFavourite(1);
 
                     // Add it to the watchList
                     WatchListTable.getInstance().addMovie(selectedResult, dbHelper);
@@ -254,7 +264,7 @@ public class SearchPage extends Fragment {
                     resultAdd.setImageResource(R.drawable.ic_add_circle_black_24dp);
                     resultWatched.setImageResource(R.drawable.ic_check_circle_black_24dp);
 
-                    watchListMovie.setFavourite(1);
+                    selectedResult.setFavourite(1);
 
                     // Add it to the watchList
                     WatchListTable.getInstance().addMovie(selectedResult, dbHelper);
@@ -313,8 +323,10 @@ public class SearchPage extends Fragment {
             }
 
             // Get the layout elements
-            TextView title = view.findViewById(R.id.resultViewTitle);
-            TextView rating = view.findViewById(R.id.resultViewRating);
+            title = view.findViewById(R.id.resultViewTitle);
+            actors = view.findViewById(R.id.resultViewActors);
+            rating = view.findViewById(R.id.resultViewRating);
+
 
             // Set the layout elements to the item in the current position
             Movie result = getItem(position);
@@ -324,6 +336,19 @@ public class SearchPage extends Fragment {
             title.setText(titleString);
             String ratingString = result.getRating() + "";
             rating.setText(ratingString);
+
+//            if(actors.getText().toString().equals("")) {
+//                APIHelper.getInstance().getCredits(result.getTmdbID(), getContext(), new APIHelper.RequestListener() {
+//                    @Override
+//                    public void onSuccess(JSONObject response) {
+//                        movieCredits = APIHelper.getInstance().parseCredits(response);
+//                        String creditsString = movieCredits.get(0) + ", " + movieCredits.get(1) + ", " + movieCredits.get(2);
+//                        System.out.println("Changing actors to: " + creditsString);
+//                        actors.setText(creditsString);
+//                    }
+//                });
+//            }
+
 
             return view;
         }
@@ -358,12 +383,20 @@ public class SearchPage extends Fragment {
             // Check if it's been marked as favourite, and if so change the imageview
             if(watchListMovie.getFavourite() == 1) {
                 resultFavourite.setImageResource(R.drawable.ic_star_black_24dp);
+            } else {
+                resultFavourite.setImageResource(R.drawable.ic_star_border_black_24dp);
             }
 
             // Check if the movie has been watched and if so change the imageview
             if(watchListMovie.getWatched() == 1) {
                 resultWatched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+            } else {
+                resultWatched.setImageResource(R.drawable.ic_check_black_24dp);
             }
+        } else {
+            resultAdd.setImageResource(R.drawable.ic_add_black_24dp);
+            resultWatched.setImageResource(R.drawable.ic_check_black_24dp);
+            resultFavourite.setImageResource(R.drawable.ic_star_border_black_24dp);
         }
 
     }
@@ -376,19 +409,46 @@ public class SearchPage extends Fragment {
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
-        String text = searchField.getText().toString();
-        APIHelper.getInstance().searchMovie(text, getContext(), new APIHelper.RequestListener(){
-            @Override
-            public void onSuccess(JSONObject response) {
-                results = APIHelper.getInstance().parseMovies(response);
-                adapter = new SearchResultAdapter(getContext(), results);
-                listView.setAdapter(adapter);
+        final String searchInput = searchField.getText().toString();
 
-                selectedResult = adapter.getItem(0);
-                setCardViewValues(selectedResult);
-            }
-        });
+
+
+        if(validateInput(searchInput)) {
+            System.out.println("Search is valid.");
+            String cleanInput = searchInput.replace(" ", "+");
+            movieCredits = new ArrayList<>();
+            credits = new ArrayList<>();
+
+            APIHelper.getInstance().searchMovie(cleanInput, getContext(), new APIHelper.RequestListener(){
+                @Override
+                public void onSuccess(JSONObject response) {
+                    results = APIHelper.getInstance().parseMovies(response);
+                    System.out.println("Found " + results.size() + " matching " + searchInput);
+                    adapter = new SearchResultAdapter(getContext(), results);
+                    listView.setAdapter(adapter);
+
+                    selectedResult = adapter.getItem(0);
+                    setCardViewValues(selectedResult);
+                }
+            });
+        } else {
+            System.out.println("Search is invalid.");
+            Toast toast = Toast.makeText(getContext(), "Please only use A-Z, 0-9 and spaces in your search query.", Toast.LENGTH_LONG);
+            toast.show();
+        }
+
+
     }
+
+    public Boolean validateInput(String input){
+
+        if(input.matches("[a-zA-Z0-9 ]*")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     @Override
     public void onAttach(Context context) {

@@ -57,6 +57,7 @@ public class WatchListTable {
             + COLUMN_TMDB_ID + " INTEGER,"
             + COLUMN_TITLE + " TEXT,"
             + COLUMN_POSTER_PATH + " TEXT,"
+            + COLUMN_POSTER_PATH + " TEXT,"
             + COLUMN_RELEASE_DATE + " INTEGER,"
             + COLUMN_RATING + " INTEGER,"
             + COLUMN_PLOT + " TEXT,"
