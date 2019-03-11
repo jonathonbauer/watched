@@ -1,5 +1,6 @@
 package ca.jonnybauer.watched.Models;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -14,11 +15,12 @@ public class Movie {
 
     // Properties
     private int id = 0;                          // Unique ID of the movie
-    private int tmdbID;                         // Unique TheMovieDB ID of the movie
+    private int tmdbID;                          // Unique TheMovieDB ID of the movie
     private String title;                        // Title of the movie
     private String posterPath;                   // Path to the movie poster
+    private ArrayList<String> credits = null;    // Credits for the movie
     private Date releaseDate;                    // Release date of the movie
-    private double rating;                          // Rating of the movie
+    private double rating;                       // Rating of the movie
     private String plot;                         // Short plot of the movie
     private int favourite = 0;                   // Whether or not the movie is marked as a favourite, represented as an integer. Default of false (0)
     private int watched = 0;                     // Whether or not the movie is marked as watched, represented as an integer. Default of false (0)
@@ -29,12 +31,13 @@ public class Movie {
     // Constructors
     public Movie(){}
 
-    public Movie(int id, int tmdbID, String title, String posterPath, Date releaseDate, double rating,
+    public Movie(int id, int tmdbID, String title, String posterPath, ArrayList<String> credits,  Date releaseDate, double rating,
                  String plot, int favourite, int watched, int deleted, Date dateAdded, Date lastUpdated) {
         this.id = id;
         this.tmdbID = tmdbID;
         this.title = title;
         this.posterPath = posterPath;
+        this.credits = credits;
         this.releaseDate = releaseDate;
         this.rating = rating;
         this.plot = plot;
@@ -88,6 +91,31 @@ public class Movie {
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
     }
+
+
+    public ArrayList<String> getCredits() {
+        return credits;
+    }
+
+    public void setCredits(ArrayList<String> credits) {
+        this.credits = credits;
+    }
+
+    public String getTopBilling(){
+        ArrayList<String> creditsStrings = new ArrayList<>();
+        for(int i=0; i < 3; i++) {
+            if(credits.size() > i) {
+                creditsStrings.add(this.credits.get(i) + " ");
+            }
+        }
+        String creditsString = "";
+        for(int i=0; i < creditsStrings.size(); i++) {
+            creditsString += creditsStrings.get(i);
+        }
+        return creditsString;
+
+    }
+
 
     public Date getReleaseDate() {
         return releaseDate;

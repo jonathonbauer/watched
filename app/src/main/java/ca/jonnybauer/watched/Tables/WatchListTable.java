@@ -5,6 +5,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,6 +46,7 @@ public class WatchListTable {
     private static final String COLUMN_TMDB_ID = "tmdb_id";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_POSTER_PATH = "poster_path";
+    private static final String COLUMN_CREDITS = "credits";
     private static final String COLUMN_RELEASE_DATE = "release_date";
     private static final String COLUMN_RATING = "rating";
     private static final String COLUMN_PLOT = "plot";
@@ -57,7 +62,7 @@ public class WatchListTable {
             + COLUMN_TMDB_ID + " INTEGER,"
             + COLUMN_TITLE + " TEXT,"
             + COLUMN_POSTER_PATH + " TEXT,"
-            + COLUMN_POSTER_PATH + " TEXT,"
+            + COLUMN_CREDITS + " TEXT,"
             + COLUMN_RELEASE_DATE + " INTEGER,"
             + COLUMN_RATING + " INTEGER,"
             + COLUMN_PLOT + " TEXT,"
@@ -78,6 +83,12 @@ public class WatchListTable {
         values.put(COLUMN_TMDB_ID, movie.getTmdbID());
         values.put(COLUMN_TITLE, movie.getTitle());
         values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
+
+        // Convert the Credits arraylist to a string using Gson
+        Gson gson = new Gson();
+        String creditsString= gson.toJson(movie.getCredits());
+
+        values.put(COLUMN_CREDITS, creditsString);
         values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate().getTime());
         values.put(COLUMN_RATING, movie.getRating());
         values.put(COLUMN_PLOT, movie.getPlot());
@@ -99,11 +110,22 @@ public class WatchListTable {
 
         Cursor cursor = db.query(TABLE_NAME, null, selection, args, null, null, null);
 
+        // Set the type to retrieve the credits array
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+
+        // Declare a new Gson to retrieve the credits array
+        Gson gson = new Gson();
+
         if(cursor.moveToNext()) {
+            // Get the credits arraylist
+            ArrayList<String> credits = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_CREDITS)), type);
+
+
             Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_TMDB_ID)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
+                    credits,
                     new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
                     cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
@@ -129,11 +151,22 @@ public class WatchListTable {
 
         Cursor cursor = db.query(TABLE_NAME, null, selection, args, null, null, null);
 
+        // Set the type to retrieve the credits array
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+
+        // Declare a new Gson to retrieve the credits array
+        Gson gson = new Gson();
+
         if(cursor.moveToNext()) {
+            // Get the credits arraylist
+            System.out.println(cursor.getString(cursor.getColumnIndex(COLUMN_CREDITS)));
+            ArrayList<String> credits = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_CREDITS)), type);
+
             Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_TMDB_ID)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
+                    credits,
                     new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
                     cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
@@ -156,11 +189,20 @@ public class WatchListTable {
         ArrayList<Movie> movies = new ArrayList<>();
         Cursor cursor;
         cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY  ?", null);
+        // Set the type to retrieve the credits array
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+
+        // Declare a new Gson to retrieve the credits array
+        Gson gson = new Gson();
+
         while(cursor.moveToNext()) {
+            // Get the credits arraylist
+            ArrayList<String> credits = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_CREDITS)), type);
             Movie movie = new Movie(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_TMDB_ID)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
+                    credits,
                     new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
                     cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
@@ -183,6 +225,12 @@ public class WatchListTable {
         values.put(COLUMN_TMDB_ID, movie.getTmdbID());
         values.put(COLUMN_TITLE, movie.getTitle());
         values.put(COLUMN_POSTER_PATH, movie.getPosterPath());
+
+        // Convert the Credits arraylist to a string using Gson
+        Gson gson = new Gson();
+        String creditsString= gson.toJson(movie.getCredits());
+
+        values.put(COLUMN_CREDITS, creditsString);
         values.put(COLUMN_RELEASE_DATE, movie.getReleaseDate().getTime());
         values.put(COLUMN_RATING, movie.getRating());
         values.put(COLUMN_PLOT, movie.getPlot());

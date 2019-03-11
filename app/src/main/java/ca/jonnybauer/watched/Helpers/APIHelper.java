@@ -327,7 +327,6 @@ public class APIHelper {
             String title = response.getString("original_title");
             String posterPath = IMAGE_URL + response.getString("poster_path");
             String dateString = response.getString("release_date");
-            System.out.println(dateString);
 
             Date releaseDate;
             if(dateString.length() != 0) {
@@ -361,7 +360,7 @@ public class APIHelper {
     /**
      * This function is used to instantiate an array of Movie objects based on the JSONObject response from the API.
      * @param response The API response that is to be parsed into a Movie object
-     * @return An instantiated array of Movie objects using the provided API response
+     * @return An array of Movie objects using the provided API response
      * @see Movie
      */
     public ArrayList<Movie> parseMovies(JSONObject response) {

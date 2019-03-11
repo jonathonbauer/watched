@@ -336,6 +336,10 @@ public class SearchPage extends Fragment {
             title.setText(titleString);
             String ratingString = result.getRating() + "";
             rating.setText(ratingString);
+            if(result.getCredits() != null) {
+                actors.setText(result.getTopBilling());
+            }
+
 
 //            if(actors.getText().toString().equals("")) {
 //                APIHelper.getInstance().getCredits(result.getTmdbID(), getContext(), new APIHelper.RequestListener() {
@@ -424,6 +428,22 @@ public class SearchPage extends Fragment {
                 public void onSuccess(JSONObject response) {
                     results = APIHelper.getInstance().parseMovies(response);
                     System.out.println("Found " + results.size() + " matching " + searchInput);
+
+                    for(int i=0; i<results.size(); i++) {
+                        final int index = i;
+                         APIHelper.getInstance().getCredits(results.get(index).getTmdbID(), getContext(), new APIHelper.RequestListener() {
+                            @Override
+                            public void onSuccess(JSONObject response) {
+                                ArrayList<String> credits = APIHelper.getInstance().parseCredits(response);
+                                results.get(index).setCredits(credits);
+                                adapter.notifyDataSetChanged();
+                                System.out.println("Setting credits for " + results.get(index).getTitle());
+                            }
+                        });
+                    }
+
+
+
                     adapter = new SearchResultAdapter(getContext(), results);
                     listView.setAdapter(adapter);
 
