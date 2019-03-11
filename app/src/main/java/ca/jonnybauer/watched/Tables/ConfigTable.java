@@ -45,7 +45,7 @@ public class ConfigTable {
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY,"
             + COLUMN_WATCH_LIST_STYLE + " INTEGER,"
-            + COLUMN_SAVE_LOCATION + " INTEGER,";
+            + COLUMN_SAVE_LOCATION + " INTEGER)";
 
     // Delete Table Query
     public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
