@@ -53,7 +53,7 @@ public class TheatresTable {
             + COLUMN_ADDRESS + " TEXT,"
             + COLUMN_PHONE + " TEXT,"
             + COLUMN_WEBSITE + " TEXT,"
-            + COLUMN_FAVOURITE + " INTEGER,";
+            + COLUMN_FAVOURITE + " INTEGER)";
 
     // Delete Table Query
     public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
