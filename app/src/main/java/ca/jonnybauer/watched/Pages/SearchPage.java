@@ -455,9 +455,16 @@ public class SearchPage extends Fragment {
 
         final String searchInput = searchField.getText().toString();
 
+        if(searchInput.length() == 0) {
+            Toast toast = Toast.makeText(getContext(), "Please enter a search query", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
+
         if(inputIsValid(searchInput)) {
             System.out.println("Search is valid.");
-            String cleanInput = searchInput.replace(" ", "+");
+            final String cleanInput = searchInput.replace(" ", "+");
             movieCredits = new ArrayList<>();
             credits = new ArrayList<>();
 
@@ -467,25 +474,29 @@ public class SearchPage extends Fragment {
                     results = APIHelper.getInstance().parseMovies(response);
                     System.out.println("Found " + results.size() + " matching " + searchInput);
 
-                    for(int i=0; i<results.size(); i++) {
-                        final int index = i;
-                         APIHelper.getInstance().getCredits(results.get(index).getTmdbID(), getContext(), new APIHelper.RequestListener() {
-                            @Override
-                            public void onSuccess(JSONObject response) {
-                                ArrayList<String> credits = APIHelper.getInstance().parseCredits(response);
-                                results.get(index).setCredits(credits);
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
+                    if(results.size() != 0) {
+                        for(int i=0; i<results.size(); i++) {
+                            final int index = i;
+                            APIHelper.getInstance().getCredits(results.get(index).getTmdbID(), getContext(), new APIHelper.RequestListener() {
+                                @Override
+                                public void onSuccess(JSONObject response) {
+                                    ArrayList<String> credits = APIHelper.getInstance().parseCredits(response);
+                                    results.get(index).setCredits(credits);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+
+                        adapter = new SearchResultAdapter(getContext(), results);
+                        listView.setAdapter(adapter);
+
+                        selectedResult = adapter.getItem(0);
+                        setCardViewValues(selectedResult);
+                    } else {
+                        String noResults = "No results for " + cleanInput;
+                        Toast toast = Toast.makeText(getContext(), noResults, Toast.LENGTH_LONG);
+                        toast.show();
                     }
-
-
-
-                    adapter = new SearchResultAdapter(getContext(), results);
-                    listView.setAdapter(adapter);
-
-                    selectedResult = adapter.getItem(0);
-                    setCardViewValues(selectedResult);
                 }
             });
         } else {
