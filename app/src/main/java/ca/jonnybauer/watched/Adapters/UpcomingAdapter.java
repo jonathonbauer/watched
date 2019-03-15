@@ -62,6 +62,8 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
         Movie currentMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
         if(currentMovie != null && currentMovie.getDeleted() == 0) {
             viewHolder.add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+        } else {
+            viewHolder.add.setImageResource(R.drawable.ic_add_black_24dp);
         }
 
         // Add button event handler
