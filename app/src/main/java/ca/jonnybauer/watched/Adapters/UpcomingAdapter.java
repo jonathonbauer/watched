@@ -1,6 +1,8 @@
 package ca.jonnybauer.watched.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
@@ -60,7 +63,8 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
         if(currentMovie != null && currentMovie.getDeleted() == 0) {
             viewHolder.add.setImageResource(R.drawable.ic_add_circle_black_24dp);
         }
-        
+
+        // Add button event handler
         viewHolder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,9 +86,20 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
             }
         });
 
+        // Calendar button event handler
         viewHolder.calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Calendar startTime = Calendar.getInstance();
+                startTime.setTimeInMillis(movie.getReleaseDate().getTime());
+
+                Intent intent = new Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis())
+                        .putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true)
+                        .putExtra(CalendarContract.Events.TITLE, movie.getTitle())
+                        .putExtra(CalendarContract.Events.DESCRIPTION, movie.getPlot());
+                context.startActivity(intent);
 
             }
         });
