@@ -63,7 +63,8 @@ public class UpcomingPage extends Fragment {
             @Override
             public void onSuccess(JSONObject response) {
                 ArrayList<Movie> upcomingMovies = APIHelper.getInstance().parseMovies(response);
-                adapter = new UpcomingAdapter(upcomingMovies, getContext());
+                ArrayList<Movie> sortedMovies = APIHelper.getInstance().sortByDate(upcomingMovies);
+                adapter = new UpcomingAdapter(sortedMovies, getContext());
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(adapter);
 

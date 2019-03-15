@@ -15,6 +15,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import ca.jonnybauer.watched.Models.Movie;
@@ -412,6 +414,27 @@ public class APIHelper {
             return null;
         }
     }
+
+    /**
+     * This function is used to sort an array of Movie objects by their release date
+     * @param movies The list of movies to be sorted.
+     * @return An ArrayList of Movie objects sorted by their release date
+     */
+    public ArrayList<Movie> sortByDate(ArrayList<Movie> movies) {
+        ArrayList<Movie> sortedMovies = new ArrayList<>();
+
+        Collections.sort(movies, new Comparator<Movie>(){
+            public int compare(Movie movie2, Movie movie1) {
+                return movie1.getReleaseDate().compareTo(movie2.getReleaseDate());
+            }
+        });
+
+
+        return movies;
+
+    }
+
+
 
 
     /**
