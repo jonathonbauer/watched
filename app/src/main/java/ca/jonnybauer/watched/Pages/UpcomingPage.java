@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
@@ -33,6 +34,7 @@ public class UpcomingPage extends Fragment {
 
     RecyclerView recyclerView;
     UpcomingAdapter adapter;
+    ProgressBar progressBar;
 
     public UpcomingPage() {
         // Required empty public constructor
@@ -58,6 +60,8 @@ public class UpcomingPage extends Fragment {
         View view = inflater.inflate(R.layout.fragment_upcoming_page, container, false);
 
         recyclerView = view.findViewById(R.id.upcomingRV);
+        progressBar = view.findViewById(R.id.upcomingProgress);
+
 
         APIHelper.getInstance().getUpcoming(getContext(), new APIHelper.RequestListener() {
             @Override
@@ -65,6 +69,8 @@ public class UpcomingPage extends Fragment {
                 ArrayList<Movie> upcomingMovies = APIHelper.getInstance().parseMovies(response);
                 ArrayList<Movie> sortedMovies = APIHelper.getInstance().sortByDate(upcomingMovies);
                 adapter = new UpcomingAdapter(sortedMovies, getContext());
+                progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(adapter);
 
