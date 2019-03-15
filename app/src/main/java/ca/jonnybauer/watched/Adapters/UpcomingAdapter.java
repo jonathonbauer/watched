@@ -14,17 +14,21 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.R;
+import ca.jonnybauer.watched.Tables.WatchListTable;
 
 public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.UpcomingViewHolder> {
     private ArrayList<Movie> upcomingMovies;
     private Context context;
+    private DBHelper dbHelper;
 
 
     public UpcomingAdapter(ArrayList<Movie> upcomingMovies, Context context) {
         this.upcomingMovies = upcomingMovies;
         this.context = context;
+        this.dbHelper = new DBHelper(context);
     }
 
 
@@ -37,8 +41,8 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UpcomingViewHolder viewHolder, int i) {
-        Movie movie = upcomingMovies.get(i);
+    public void onBindViewHolder(@NonNull final UpcomingViewHolder viewHolder, int i) {
+        final Movie movie = upcomingMovies.get(i);
 
         viewHolder.title.setText(movie.getTitle());
 
@@ -51,10 +55,30 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
 
         viewHolder.plot.setText(movie.getPlot());
 
+        // Change the add icon if it has been added already and hasn't been deleted
+        Movie currentMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
+        if(currentMovie != null && currentMovie.getDeleted() == 0) {
+            viewHolder.add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+        }
+        
         viewHolder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Movie selectedMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
+                if(selectedMovie != null) {
+                    if(selectedMovie.getDeleted() == 1) {
+                        selectedMovie.setDeleted(0);
+                        viewHolder.add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                        WatchListTable.getInstance().updateMovie(selectedMovie, dbHelper);
+                    } else {
+                        selectedMovie.setDeleted(1);
+                        viewHolder.add.setImageResource(R.drawable.ic_add_black_24dp);
+                        WatchListTable.getInstance().updateMovie(selectedMovie, dbHelper);
+                    }
+                } else {
+                    WatchListTable.getInstance().addMovie(movie, dbHelper);
+                    viewHolder.add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                }
             }
         });
 
