@@ -241,7 +241,7 @@ public class APIHelper {
 
         // Build the query
         String url = UPCOMING_URL;
-
+        System.out.println(url);
         // Create a new request
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

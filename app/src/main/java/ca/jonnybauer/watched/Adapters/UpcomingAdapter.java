@@ -44,7 +44,10 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
 
         Calendar date = Calendar.getInstance();
         date.setTime(movie.getReleaseDate());
-        viewHolder.date.setText(date.toString());
+//        String dateString = date.get(Calendar.MONTH) + "/" + date.get(Calendar.DATE) + "/" + date.get(Calendar.YEAR);
+        String dateString = String.format("%1$tb %1$te, %1$tY", date);
+//        String.format("Duke's Birthday: %1$tb %1$te, %1$tY", c)
+        viewHolder.date.setText(dateString);
 
         viewHolder.plot.setText(movie.getPlot());
 
