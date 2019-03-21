@@ -17,9 +17,15 @@
         justo ut lacinia pellentesque, lacus ipsum feugiat dui, ac iaculis arcu lacus in mi. Etiam accumsan molestie congue.
     </string>
 
+    <!-- Upcoming Page -->
+    <string name="upcoming_page_title">Upcoming</string>
+
 
     <!-- Credits -->
     <string name="api_source">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
