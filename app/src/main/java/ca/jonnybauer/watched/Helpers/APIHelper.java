@@ -39,7 +39,7 @@ public class APIHelper {
     private static final String POPULAR_URL = "https://api.themoviedb.org/3/movie/popular" + API_KEY + "&language=en-US&page=1";
     private static final String UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming" + API_KEY + "&language=en-US&page=1";
     private static final String TRENDING_URL = "https://api.themoviedb.org/3/trending/movie/week" + API_KEY;
-    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185/";
+    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
 
 
 
