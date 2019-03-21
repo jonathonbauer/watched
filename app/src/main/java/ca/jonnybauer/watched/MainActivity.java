@@ -13,9 +13,12 @@ import android.widget.TextView;
 
 import ca.jonnybauer.watched.Pages.SearchPage;
 import ca.jonnybauer.watched.Pages.UpcomingPage;
+import ca.jonnybauer.watched.Pages.WatchListPage;
 
-public class MainActivity extends AppCompatActivity implements SearchPage.OnFragmentInteractionListener,
-                                                                UpcomingPage.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements
+        SearchPage.OnFragmentInteractionListener,
+        UpcomingPage.OnFragmentInteractionListener,
+        WatchListPage.OnFragmentInteractionListener {
 
 
 
@@ -56,7 +59,17 @@ public class MainActivity extends AppCompatActivity implements SearchPage.OnFrag
                     transaction.commit();
                     return true;
 
-                case R.id.navigation_notifications:
+                case R.id.navigation_watch_list:
+                    selectedFragment = fm.findFragmentByTag("Watch List");
+                    if(selectedFragment == null) {
+                        transaction.replace(R.id.main_content, new WatchListPage(), "Watch List");
+
+                    } else if(!selectedFragment.isVisible()) {
+                        transaction.replace(R.id.main_content, selectedFragment);
+                    }
+                    setTitle(getString(R.string.watch_list_page_title));
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                     return true;
             }
             return false;

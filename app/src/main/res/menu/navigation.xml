@@ -7,9 +7,9 @@
         android:title="@string/upcoming_page_title"/>
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications"/>
+        android:id="@+id/navigation_watch_list"
+        android:icon="@drawable/ic_eye_24dp"
+        android:title="@string/watch_list_page_title" />
 
     <item
         android:id="@+id/navigation_search"

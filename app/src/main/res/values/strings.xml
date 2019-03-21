@@ -20,6 +20,8 @@
     <!-- Upcoming Page -->
     <string name="upcoming_page_title">Upcoming</string>
 
+    <!-- Watch List Page -->
+    <string name="watch_list_page_title">Watch List</string>
 
     <!-- Credits -->
     <string name="api_source">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
