@@ -119,6 +119,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             // Set the poster
             Picasso.get().load(currentMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(posterViewHolder.poster);
+            System.out.println(currentMovie.getPosterPath());
 
             // Change the add icon if it has been added already and hasn't been deleted
 
@@ -130,9 +131,9 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             // Change the add icon if it has been added already and hasn't been deleted
             if(currentMovie.getFavourite() == 1) {
-                posterViewHolder.watched.setImageResource(R.drawable.ic_star_black_24dp);
+                posterViewHolder.favourite.setImageResource(R.drawable.ic_star_black_24dp);
             } else {
-                posterViewHolder.watched.setImageResource(R.drawable.ic_star_border_black_24dp);
+                posterViewHolder.favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
             }
 
             // Event handlers
@@ -154,7 +155,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
 
             // Favourite button event handler
-            posterViewHolder.watched.setOnClickListener(new View.OnClickListener() {
+            posterViewHolder.favourite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Movie selectedMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
@@ -169,7 +170,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
         }
-        
+
     }
 
     @Override
