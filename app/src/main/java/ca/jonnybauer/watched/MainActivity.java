@@ -12,8 +12,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import ca.jonnybauer.watched.Pages.SearchPage;
+import ca.jonnybauer.watched.Pages.UpcomingPage;
 
-public class MainActivity extends AppCompatActivity implements SearchPage.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements SearchPage.OnFragmentInteractionListener,
+                                                                UpcomingPage.OnFragmentInteractionListener{
 
 
 
@@ -29,12 +31,22 @@ public class MainActivity extends AppCompatActivity implements SearchPage.OnFrag
             FragmentTransaction transaction = fm.beginTransaction();
 
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_upcoming:
+                    selectedFragment = fm.findFragmentByTag("Upcoming");
+                    if(selectedFragment == null) {
+                        transaction.replace(R.id.main_content, new UpcomingPage(), "Upcoming");
+
+                    } else if(!selectedFragment.isVisible()) {
+                        transaction.replace(R.id.main_content, selectedFragment);
+                    }
+                    setTitle(getString(R.string.upcoming_page_title));
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                     return true;
                 case R.id.navigation_search:
-                    selectedFragment = fm.findFragmentByTag("Lists");
+                    selectedFragment = fm.findFragmentByTag("Search");
                     if(selectedFragment == null) {
-                        transaction.replace(R.id.main_content, new SearchPage(), "Lists");
+                        transaction.replace(R.id.main_content, new SearchPage(), "Search");
 
                     } else if(!selectedFragment.isVisible()) {
                         transaction.replace(R.id.main_content, selectedFragment);
