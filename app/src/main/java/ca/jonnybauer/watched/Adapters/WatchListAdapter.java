@@ -41,8 +41,9 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         if(style == WatchListStyle.LIST) {
+
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.watch_list_text_view, viewGroup, false);
             listViewHolder = new ListViewHolder(view, context);
             return listViewHolder;
@@ -55,10 +56,12 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
-        final Movie movie = watchList.get(i);
         if(style == WatchListStyle.LIST) {
+            final ListViewHolder listViewHolder = (ListViewHolder)viewHolder;
             // Get the current movie
+            final Movie movie = watchList.get(listViewHolder.getAdapterPosition());
             Movie currentMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
+
 
             // Set the title
             listViewHolder.title.setText(movie.getTitle());
@@ -113,13 +116,14 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
 
 
-        } else {
+        } else if(style == WatchListStyle.POSTER) {
+            final PosterViewHolder posterViewHolder = (PosterViewHolder)viewHolder;
             // Get the current movie
+            final Movie movie = watchList.get(posterViewHolder.getAdapterPosition());
             Movie currentMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
 
             // Set the poster
             Picasso.get().load(currentMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(posterViewHolder.poster);
-            System.out.println(currentMovie.getPosterPath());
 
             // Change the add icon if it has been added already and hasn't been deleted
 
@@ -151,6 +155,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         selectedMovie.setWatched(0);
                     }
                     WatchListTable.getInstance().updateMovie(selectedMovie, dbHelper);
+                    System.out.println("Watched button clicked on: " + selectedMovie.getTitle() + " ID: " + viewHolder.getAdapterPosition());
                 }
             });
 
