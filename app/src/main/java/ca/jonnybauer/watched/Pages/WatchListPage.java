@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -14,9 +15,11 @@ import java.util.ArrayList;
 
 import ca.jonnybauer.watched.Adapters.WatchListAdapter;
 import ca.jonnybauer.watched.Helpers.DBHelper;
+import ca.jonnybauer.watched.Models.Config;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.Models.WatchListStyle;
 import ca.jonnybauer.watched.R;
+import ca.jonnybauer.watched.Tables.ConfigTable;
 import ca.jonnybauer.watched.Tables.WatchListTable;
 
 /**
@@ -56,15 +59,31 @@ public class WatchListPage extends Fragment {
 
         // TODO: Figure out which layout the user has set as preferred
 
-        // Create the adapter
-        adapter = new WatchListAdapter(watchList, getContext(), WatchListStyle.POSTER);
+        ConfigTable.getInstance().addConfig(new Config(1,1,1), dbHelper);
+        if(ConfigTable.getInstance().getConfig(dbHelper, 1).getWatchListStyle() == WatchListStyle.POSTER) {
+            // Create the adapter
+            adapter = new WatchListAdapter(watchList, getContext(), WatchListStyle.POSTER);
 
-        // Create the layout manager
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            // Create the layout manager
+            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
-        // Pair the recyclerview with the layout manager and adapter
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+            // Pair the recyclerview with the layout manager and adapter
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        } else {
+            // Create the adapter
+            adapter = new WatchListAdapter(watchList, getContext(), WatchListStyle.LIST);
+
+            // Create the layout manager
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+            // Pair the recyclerview with the layout manager and adapter
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        }
+
+
 
 
         return view;

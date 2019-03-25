@@ -74,11 +74,11 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 listViewHolder.watched.setImageResource(R.drawable.ic_check_black_24dp);
             }
 
-            // Change the add icon if it has been added already and hasn't been deleted
+            // Change the favourite icon if it has been added already and hasn't been deleted
             if(currentMovie != null && currentMovie.getFavourite() == 1) {
-                listViewHolder.watched.setImageResource(R.drawable.ic_star_black_24dp);
+                listViewHolder.favourite.setImageResource(R.drawable.ic_star_black_24dp);
             } else {
-                listViewHolder.watched.setImageResource(R.drawable.ic_star_border_black_24dp);
+                listViewHolder.favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
             }
 
             // Event handlers
@@ -100,7 +100,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
 
             // Favourite button event handler
-            listViewHolder.watched.setOnClickListener(new View.OnClickListener() {
+            listViewHolder.favourite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Movie selectedMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
