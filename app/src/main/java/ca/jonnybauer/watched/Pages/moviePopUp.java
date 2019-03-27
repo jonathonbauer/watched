@@ -156,9 +156,7 @@ public class moviePopUp extends Fragment {
                     } else {
                         watchListMovie.setFavourite(0);
                         WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
-                        add.setImageResource(R.drawable.ic_add_black_24dp);
                         favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
-                        watched.setImageResource(R.drawable.ic_check_black_24dp);
                     }
                 }
             }
@@ -179,8 +177,6 @@ public class moviePopUp extends Fragment {
                     } else {
                         watchListMovie.setWatched(0);
                         WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
-                        add.setImageResource(R.drawable.ic_add_black_24dp);
-                        favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
                         watched.setImageResource(R.drawable.ic_check_black_24dp);
                     }
                 }
