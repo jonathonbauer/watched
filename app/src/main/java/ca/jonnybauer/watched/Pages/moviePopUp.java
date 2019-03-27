@@ -7,9 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
+import com.squareup.picasso.Picasso;
+
+import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.R;
+import ca.jonnybauer.watched.Tables.WatchListTable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +30,19 @@ public class moviePopUp extends Fragment {
     private static final String ARG_MOVIE = "movie";
 
     private Movie mMovie;
+    private Movie watchListMovie;
+
+    private DBHelper dbHelper;
+
+    private TextView title;
+    private SimpleRatingBar rating;
+    private ImageView poster;
+    private TextView credits;
+    private TextView plot;
+    private ImageView favourite;
+    private ImageView watched;
+    private ImageView add;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,11 +72,120 @@ public class moviePopUp extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie_pop_up, container, false);
 
+        // Create the DB connection
+        dbHelper = new DBHelper(getContext());
+
+        // Get the XML elements
+        title = view.findViewById(R.id.moviePopUpTitle);
+        rating = view.findViewById(R.id.moviePopUpRating);
+        poster = view.findViewById(R.id.moviePopUpPoster);
+        credits = view.findViewById(R.id.moviePopUpTopBilling);
+        plot = view.findViewById(R.id.moviePopUpPlot);
+        favourite = view.findViewById(R.id.moviePopUpFavourite);
+        watched = view.findViewById(R.id.moviePopUpWatched);
+        add = view.findViewById(R.id.moviePopUpAdd);
+
+        // Set the appropriate text values to the XML
+        title.setText(mMovie.getTitle());
+        rating.setRating((float) mMovie.getRating());
+        credits.setText(mMovie.getTopBilling());
+        plot.setText(mMovie.getPlot());
+        Picasso.get().load(mMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(poster);
+
+        // Change the ImageView buttons depending on whether or not the movie has been watched, added, or favourited
+
+        watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, mMovie.getTmdbID());
+        if(watchListMovie != null && watchListMovie.getDeleted() != 1) {
+            add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+            if(watchListMovie.getFavourite() == 1) {
+                favourite.setImageResource(R.drawable.ic_star_black_24dp);
+            }
+            if(watchListMovie.getWatched() == 1) {
+                watched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+            }
+        } else {
+            add.setImageResource(R.drawable.ic_add_black_24dp);
+            favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
+            watched.setImageResource(R.drawable.ic_check_black_24dp);
+        }
 
 
+        // ImageView Button event handlers
 
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(watchListMovie == null) {
+                    WatchListTable.getInstance().addMovie(mMovie, dbHelper);
+                    add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                } else {
+                    if(watchListMovie.getDeleted() == 1) {
+                        watchListMovie.setDeleted(0);
+                        WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                        add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                        if(watchListMovie.getFavourite() == 1) {
+                            favourite.setImageResource(R.drawable.ic_star_black_24dp);
+                        }
+                        if(watchListMovie.getWatched() == 1) {
+                            watched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+                        }
+                    } else {
+                        watchListMovie.setDeleted(1);
+                        WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                        add.setImageResource(R.drawable.ic_add_black_24dp);
+                        favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
+                        watched.setImageResource(R.drawable.ic_check_black_24dp);
+                    }
 
+                }
+            }
+        });
 
+        favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(watchListMovie == null) {
+                    WatchListTable.getInstance().addMovie(mMovie, dbHelper);
+                    add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                    favourite.setImageResource(R.drawable.ic_star_black_24dp);
+                } else {
+                    if(watchListMovie.getFavourite() == 0) {
+                        watchListMovie.setFavourite(1);
+                        WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                        favourite.setImageResource(R.drawable.ic_star_black_24dp);
+                    } else {
+                        watchListMovie.setFavourite(0);
+                        WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                        add.setImageResource(R.drawable.ic_add_black_24dp);
+                        favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
+                        watched.setImageResource(R.drawable.ic_check_black_24dp);
+                    }
+                }
+            }
+        });
+
+        watched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(watchListMovie == null) {
+                    WatchListTable.getInstance().addMovie(mMovie, dbHelper);
+                    add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                    watched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+                } else {
+                    if(watchListMovie.getWatched() == 0) {
+                        watchListMovie.setWatched(1);
+                        WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                        watched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+                    } else {
+                        watchListMovie.setWatched(0);
+                        WatchListTable.getInstance().updateMovie(watchListMovie, dbHelper);
+                        add.setImageResource(R.drawable.ic_add_black_24dp);
+                        favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
+                        watched.setImageResource(R.drawable.ic_check_black_24dp);
+                    }
+                }
+            }
+        });
 
 
         return view;
