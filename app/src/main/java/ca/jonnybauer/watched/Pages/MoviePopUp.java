@@ -21,12 +21,12 @@ import ca.jonnybauer.watched.Tables.WatchListTable;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link moviePopUp.OnFragmentInteractionListener} interface
+ * {@link MoviePopUp.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link moviePopUp#newInstance} factory method to
+ * Use the {@link MoviePopUp#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class moviePopUp extends Fragment {
+public class MoviePopUp extends Fragment {
     private static final String ARG_MOVIE = "movie";
 
     private Movie mMovie;
@@ -46,12 +46,12 @@ public class moviePopUp extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public moviePopUp() {
+    public MoviePopUp() {
         // Required empty public constructor
     }
 
-    public static moviePopUp newInstance(Movie movie) {
-        moviePopUp fragment = new moviePopUp();
+    public static MoviePopUp newInstance(Movie movie) {
+        MoviePopUp fragment = new MoviePopUp();
         Bundle args = new Bundle();
         args.putParcelable(ARG_MOVIE, movie);
         fragment.setArguments(args);
@@ -89,7 +89,7 @@ public class moviePopUp extends Fragment {
         title.setText(mMovie.getTitle());
         double ratingValue = (mMovie.getRating() / 10.0) * 5.0;
         rating.setRating((float) ratingValue);
-//        credits.setText(mMovie.getTopBilling());
+        credits.setText(mMovie.getTopBilling());
         plot.setText(mMovie.getPlot());
         Picasso.get().load(mMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(poster);
 

@@ -1,12 +1,7 @@
 package ca.jonnybauer.watched.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,12 +13,11 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.Models.WatchListStyle;
-import ca.jonnybauer.watched.Pages.moviePopUp;
+import ca.jonnybauer.watched.Pages.MoviePopUp;
 import ca.jonnybauer.watched.R;
 import ca.jonnybauer.watched.Tables.WatchListTable;
 
@@ -127,7 +121,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     activity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_content, moviePopUp.newInstance(movie), "Movie Pop Up")
+                            .replace(R.id.main_content, MoviePopUp.newInstance(movie), "Movie Pop Up")
                             .addToBackStack(null).commit();
                 }
             });
@@ -200,7 +194,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     activity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_content, moviePopUp.newInstance(movie), "Movie Pop Up")
+                            .replace(R.id.main_content, MoviePopUp.newInstance(movie), "Movie Pop Up")
                             .addToBackStack(null).commit();
                 }
             });

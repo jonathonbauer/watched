@@ -9,18 +9,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import ca.jonnybauer.watched.Pages.SearchPage;
 import ca.jonnybauer.watched.Pages.UpcomingPage;
 import ca.jonnybauer.watched.Pages.WatchListPage;
-import ca.jonnybauer.watched.Pages.moviePopUp;
+import ca.jonnybauer.watched.Pages.MoviePopUp;
 
 public class MainActivity extends AppCompatActivity implements
         SearchPage.OnFragmentInteractionListener,
         UpcomingPage.OnFragmentInteractionListener,
         WatchListPage.OnFragmentInteractionListener,
-        moviePopUp.OnFragmentInteractionListener{
+        MoviePopUp.OnFragmentInteractionListener{
 
 
 

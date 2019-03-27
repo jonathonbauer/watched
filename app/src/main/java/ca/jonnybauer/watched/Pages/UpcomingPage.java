@@ -35,6 +35,8 @@ public class UpcomingPage extends Fragment {
     RecyclerView recyclerView;
     UpcomingAdapter adapter;
     ProgressBar progressBar;
+    ArrayList<Movie> upcomingMovies;
+    ArrayList<Movie> sortedMovies;
 
     public UpcomingPage() {
         // Required empty public constructor
@@ -66,8 +68,20 @@ public class UpcomingPage extends Fragment {
         APIHelper.getInstance().getUpcoming(getContext(), new APIHelper.RequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                ArrayList<Movie> upcomingMovies = APIHelper.getInstance().parseMovies(response);
-                ArrayList<Movie> sortedMovies = APIHelper.getInstance().sortByDate(upcomingMovies);
+                upcomingMovies = APIHelper.getInstance().parseMovies(response);
+                sortedMovies = APIHelper.getInstance().sortByDate(upcomingMovies);
+                for(int i=0; i< sortedMovies.size(); i++) {
+                    final int index = i;
+                    APIHelper.getInstance().getCredits(sortedMovies.get(index).getTmdbID(), getContext(), new APIHelper.RequestListener() {
+                        @Override
+                        public void onSuccess(JSONObject response) {
+                            ArrayList<String> credits = APIHelper.getInstance().parseCredits(response);
+                            sortedMovies.get(index).setCredits(credits);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+
                 adapter = new UpcomingAdapter(sortedMovies, getContext());
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
