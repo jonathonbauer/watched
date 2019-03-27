@@ -55,7 +55,8 @@ public class WatchListPage extends Fragment {
         recyclerView = view.findViewById(R.id.watchListRV);
 
         // Get the Watch List
-        watchList = WatchListTable.getInstance().getAllMovies(dbHelper);
+        watchList = WatchListTable.getInstance().filterDeletedMovies(WatchListTable.getInstance().getAllMovies(dbHelper));
+
 
         // TODO: Figure out which layout the user has set as preferred
 

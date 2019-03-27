@@ -217,6 +217,17 @@ public class WatchListTable {
         return movies;
     }
 
+    public ArrayList<Movie> filterDeletedMovies(ArrayList<Movie> movies) {
+        ArrayList<Movie> filteredMovies = new ArrayList<>();
+        for(int i=0; i<movies.size(); i++) {
+            if(movies.get(i).getDeleted() == 0) {
+                filteredMovies.add(movies.get(i));
+            }
+        }
+        return filteredMovies;
+    }
+
+
     // Update Record Query
     public void updateMovie(Movie movie, DBHelper dbHelper){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
