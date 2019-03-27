@@ -14,11 +14,13 @@ import android.widget.TextView;
 import ca.jonnybauer.watched.Pages.SearchPage;
 import ca.jonnybauer.watched.Pages.UpcomingPage;
 import ca.jonnybauer.watched.Pages.WatchListPage;
+import ca.jonnybauer.watched.Pages.moviePopUp;
 
 public class MainActivity extends AppCompatActivity implements
         SearchPage.OnFragmentInteractionListener,
         UpcomingPage.OnFragmentInteractionListener,
-        WatchListPage.OnFragmentInteractionListener {
+        WatchListPage.OnFragmentInteractionListener,
+        moviePopUp.OnFragmentInteractionListener{
 
 
 

@@ -88,7 +88,7 @@ public class moviePopUp extends Fragment {
         // Set the appropriate text values to the XML
         title.setText(mMovie.getTitle());
         rating.setRating((float) mMovie.getRating());
-        credits.setText(mMovie.getTopBilling());
+//        credits.setText(mMovie.getTopBilling());
         plot.setText(mMovie.getPlot());
         Picasso.get().load(mMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(poster);
 
