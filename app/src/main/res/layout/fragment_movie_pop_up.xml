@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/moviePopUpPoster"
-            android:layout_width="200dp"
-            android:layout_height="360dp"
+            android:layout_width="0dp"
+            android:layout_height="400dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -48,7 +48,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/moviePopUpTitle"
             app:srb_numberOfStars="5"
-            app:srb_starSize="15dp"
+            app:srb_starSize="25dp"
             app:srb_stepSize="1" />
 
         <LinearLayout
@@ -104,9 +104,9 @@
             android:id="@+id/moviePopUpPlot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:text="@string/search_result_plot_placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
