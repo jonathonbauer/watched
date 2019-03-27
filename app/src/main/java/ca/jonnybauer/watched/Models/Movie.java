@@ -1,5 +1,8 @@
 package ca.jonnybauer.watched.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +14,7 @@ import java.util.Date;
  * @version 1.0
  *
  */
-public class Movie {
+public class Movie implements Parcelable {
 
     // Properties
     private int id = 0;                          // Unique ID of the movie
@@ -57,7 +60,30 @@ public class Movie {
         this.plot = plot;
     }
 
-    // Getters and Setters
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(tmdbID);
+        dest.writeString(title);
+        dest.writeString(posterPath);
+        dest.writeStringList(credits);
+        dest.writeLong(releaseDate.getTime());
+        dest.writeDouble(rating);
+        dest.writeInt(favourite);
+        dest.writeInt(watched);
+        dest.writeInt(deleted);
+        dest.writeLong(dateAdded.getTime());
+        dest.writeLong(lastUpdated.getTime());
+    }
+
+
+// Getters and Setters
 
 
     public int getId() {
