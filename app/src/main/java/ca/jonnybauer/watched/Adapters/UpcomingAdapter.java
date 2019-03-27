@@ -19,6 +19,7 @@ import java.util.Date;
 
 import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
+import ca.jonnybauer.watched.Pages.MoviePopUp;
 import ca.jonnybauer.watched.R;
 import ca.jonnybauer.watched.Tables.WatchListTable;
 
@@ -103,6 +104,18 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
                         .putExtra(CalendarContract.Events.DESCRIPTION, movie.getPlot());
                 context.startActivity(intent);
 
+            }
+        });
+
+
+        // View event handler
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                activity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_content, MoviePopUp.newInstance(movie), "Movie Pop Up")
+                        .addToBackStack(null).commit();
             }
         });
 

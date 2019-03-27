@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -221,6 +222,19 @@ public class SearchPage extends Fragment {
                 }
             }
         });
+
+
+        // Poster event handler - launch a MoviePopUp
+        resultPoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                activity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_content, MoviePopUp.newInstance(selectedResult), "Movie Pop Up")
+                        .addToBackStack(null).commit();
+            }
+        });
+
 
         // Card View event handlers - add, mark as watched or favourite
 
