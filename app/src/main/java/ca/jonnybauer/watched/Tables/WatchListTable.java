@@ -252,6 +252,7 @@ public class WatchListTable {
         String selection = COLUMN_ID + " LIKE ?";
         String[] args = { movie.getId() + "" };
         db.update(TABLE_NAME, values, selection, args);
+        db.close();
     }
 
 
@@ -261,6 +262,7 @@ public class WatchListTable {
         String selection = COLUMN_ID + "LIKE ?";
         String[] args = { movieID + "" };
         db.delete(TABLE_NAME, selection, args);
+        db.close();
     }
     
 
