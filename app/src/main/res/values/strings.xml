@@ -20,6 +20,18 @@
     <!-- Upcoming Page -->
     <string name="upcoming_page_title">Upcoming</string>
 
+    <!-- Watch List Page -->
+    <string name="watch_list_page_title">Watch List</string>
+
+    <string-array name="sort_options">
+        <item>Date Added (Ascending)</item>
+        <item>Date Added (Descending)</item>
+        <item>Release Date (Ascending)</item>
+        <item>Release Date (Descending)</item>
+        <item>Title (Ascending)</item>
+        <item>Title (Descending)</item>
+    </string-array>
+
 
     <!-- Credits -->
     <string name="api_source">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>

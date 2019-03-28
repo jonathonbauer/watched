@@ -11,16 +11,20 @@ package ca.jonnybauer.watched.Models;
 public class Config {
 
     // Properties
-    private int id;                           // Unique id for the config set
-    private int watchListStyle = 1;           // The watch list style the user has chosen. 1: Poster, 2: List. Default is Poster
-    private int saveLocation = 0;             // Whether the user has chosen to save their location, represented as an integer. Default as false (0)
+    private int id;                                                           // Unique id for the config set
+    private WatchListStyle watchListStyle = WatchListStyle.POSTER;           // The watch list style the user has chosen. 1: Poster, 2: List. Default is Poster
+    private int saveLocation = 0;                                           // Whether the user has chosen to save their location, represented as an integer. Default as false (0)
 
     // Constructors
     public Config(){}
 
     public Config(int id, int watchListStyle, int saveLocation) {
         this.id = id;
-        this.watchListStyle = watchListStyle;
+        if(watchListStyle == WatchListStyle.POSTER.getValue()) {
+            this.watchListStyle = WatchListStyle.POSTER;
+        } else {
+            this.watchListStyle = WatchListStyle.LIST;
+        }
         this.saveLocation = saveLocation;
     }
 
@@ -34,11 +38,11 @@ public class Config {
         this.id = id;
     }
 
-    public int getWatchListStyle() {
+    public WatchListStyle getWatchListStyle() {
         return watchListStyle;
     }
 
-    public void setWatchListStyle(int watchListStyle) {
+    public void setWatchListStyle(WatchListStyle watchListStyle) {
         this.watchListStyle = watchListStyle;
     }
 

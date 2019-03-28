@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Config;
+import ca.jonnybauer.watched.Models.WatchListStyle;
 
 /**
  * This class represents the config table, and will be used to manipulate it.
@@ -55,7 +56,7 @@ public class ConfigTable {
     public void addConfig(Config config, DBHelper dbHelper){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_WATCH_LIST_STYLE, config.getWatchListStyle());
+        values.put(COLUMN_WATCH_LIST_STYLE, config.getWatchListStyle().getValue());
         values.put(COLUMN_SAVE_LOCATION, config.getSaveLocation());
         db.insert(TABLE_NAME, null, values);
         db.close();
@@ -101,7 +102,7 @@ public class ConfigTable {
     public void updateConfig(Config config, DBHelper dbHelper){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_WATCH_LIST_STYLE, config.getWatchListStyle());
+        values.put(COLUMN_WATCH_LIST_STYLE, config.getWatchListStyle().getValue());
         values.put(COLUMN_SAVE_LOCATION, config.getSaveLocation());
         db.insert(TABLE_NAME, null, values);
         String selection = COLUMN_ID + " LIKE ?";

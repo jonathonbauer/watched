@@ -39,7 +39,7 @@ public class APIHelper {
     private static final String POPULAR_URL = "https://api.themoviedb.org/3/movie/popular" + API_KEY + "&language=en-US&page=1";
     private static final String UPCOMING_URL = "https://api.themoviedb.org/3/movie/upcoming" + API_KEY + "&language=en-US&page=1";
     private static final String TRENDING_URL = "https://api.themoviedb.org/3/trending/movie/week" + API_KEY;
-    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185/";
+    private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
 
 
 
@@ -415,24 +415,7 @@ public class APIHelper {
         }
     }
 
-    /**
-     * This function is used to sort an array of Movie objects by their release date
-     * @param movies The list of movies to be sorted.
-     * @return An ArrayList of Movie objects sorted by their release date
-     */
-    public ArrayList<Movie> sortByDate(ArrayList<Movie> movies) {
-        ArrayList<Movie> sortedMovies = new ArrayList<>();
 
-        Collections.sort(movies, new Comparator<Movie>(){
-            public int compare(Movie movie2, Movie movie1) {
-                return movie1.getReleaseDate().compareTo(movie2.getReleaseDate());
-            }
-        });
-
-
-        return movies;
-
-    }
 
 
 
