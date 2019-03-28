@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import ca.jonnybauer.watched.Adapters.UpcomingAdapter;
 import ca.jonnybauer.watched.Helpers.APIHelper;
+import ca.jonnybauer.watched.Helpers.MovieSort;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.R;
 
@@ -69,7 +70,7 @@ public class UpcomingPage extends Fragment {
             @Override
             public void onSuccess(JSONObject response) {
                 upcomingMovies = APIHelper.getInstance().parseMovies(response);
-                sortedMovies = APIHelper.getInstance().sortByDate(upcomingMovies);
+                sortedMovies = MovieSort.sortByDate(upcomingMovies, 1);
                 for(int i=0; i< sortedMovies.size(); i++) {
                     final int index = i;
                     APIHelper.getInstance().getCredits(sortedMovies.get(index).getTmdbID(), getContext(), new APIHelper.RequestListener() {

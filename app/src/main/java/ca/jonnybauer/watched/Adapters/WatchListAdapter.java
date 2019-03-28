@@ -37,6 +37,9 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.style = style;
     }
 
+    public void setWatchList(ArrayList<Movie> watchList) {
+        this.watchList = watchList;
+    }
 
     @NonNull
     @Override

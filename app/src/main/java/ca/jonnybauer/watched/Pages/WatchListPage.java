@@ -10,11 +10,15 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
 import ca.jonnybauer.watched.Adapters.WatchListAdapter;
 import ca.jonnybauer.watched.Helpers.DBHelper;
+import ca.jonnybauer.watched.Helpers.MovieSort;
 import ca.jonnybauer.watched.Models.Config;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.Models.WatchListStyle;
@@ -36,6 +40,7 @@ public class WatchListPage extends Fragment {
     private WatchListAdapter adapter;
     private ArrayList<Movie> watchList;
     private DBHelper dbHelper;
+    private Spinner spinner;
 
     public WatchListPage() {
         // Required empty public constructor
@@ -84,8 +89,45 @@ public class WatchListPage extends Fragment {
             recyclerView.setAdapter(adapter);
         }
 
+        // Sort By Spinner
+        spinner = view.findViewById(R.id.watchListFilterSpinner);
 
 
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, R.layout.support_simple_spinner_dropdown_item);
+        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = spinner.getSelectedItem().toString();
+
+                if(selection.equals("Date Added (Ascending)")){
+                    adapter.setWatchList(MovieSort.sortByDateAdded(watchList, 0));
+                    adapter.notifyDataSetChanged();
+                } else if(selection.equals("Date Added (Descending)")) {
+                    adapter.setWatchList(MovieSort.sortByDateAdded(watchList, 1));
+                    adapter.notifyDataSetChanged();
+                } else if(selection.equals("Title (Ascending)")){
+                    adapter.setWatchList(MovieSort.sortByTitle(watchList, 0));
+                    adapter.notifyDataSetChanged();
+                } else if(selection.equals("Title (Descending)")) {
+                    adapter.setWatchList(MovieSort.sortByTitle(watchList, 1));
+                    adapter.notifyDataSetChanged();
+                } else if(selection.equals("Release Date (Ascending)")){
+                    adapter.setWatchList(MovieSort.sortByDate(watchList, 0));
+                    adapter.notifyDataSetChanged();
+                } else if(selection.equals("Release Date (Descending)")){
+                    adapter.setWatchList(MovieSort.sortByDate(watchList, 1));
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         return view;
     }
