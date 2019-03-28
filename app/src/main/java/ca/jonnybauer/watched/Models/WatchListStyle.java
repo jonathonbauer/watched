@@ -25,5 +25,12 @@ public enum WatchListStyle {
         return value;
     }
 
+    public WatchListStyle getWatchListStyleFromValue(int value){
+        if(value == POSTER.getValue()) {
+            return POSTER;
+        } else {
+            return LIST;
+        }
+    }
 
 }
