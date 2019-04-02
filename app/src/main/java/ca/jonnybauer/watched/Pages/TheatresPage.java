@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class TheatresPage extends Fragment {
     private MapView mapView;
     private GoogleMap map;
     private ArrayList<Theatre> theatres;
+    private RecyclerView recyclerView;
     private double userLat;
     private double userLng;
 
@@ -76,45 +78,9 @@ public class TheatresPage extends Fragment {
         // Get the user location
         final LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        final LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},1 );
 
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},1 );
-
-        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            System.out.println("Permission Granted");
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        } else {
-            System.out.println("No Permission");
-        }
-
-
-
-        // Get the nearby theatres
-
-
-
-
+        // Get the users location and nearby theatres
 
         mapView = view.findViewById(R.id.theatreMV);
         mapView.onCreate(savedInstanceState);
@@ -176,10 +142,14 @@ public class TheatresPage extends Fragment {
                     });
 
                 }
-
-
             }
         });
+
+        // Get the recyclerview and display the theatres on it
+
+        recyclerView = view.findViewById(R.id.theatreRV);
+
+
 
         return view;
     }
