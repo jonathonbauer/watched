@@ -13,11 +13,10 @@ import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import ca.jonnybauer.watched.Adapters.UpcomingAdapter;
-import ca.jonnybauer.watched.Helpers.APIHelper;
+import ca.jonnybauer.watched.Helpers.MovieAPIHelper;
 import ca.jonnybauer.watched.Helpers.MovieSort;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.R;
@@ -66,17 +65,17 @@ public class UpcomingPage extends Fragment {
         progressBar = view.findViewById(R.id.upcomingProgress);
 
 
-        APIHelper.getInstance().getUpcoming(getContext(), new APIHelper.RequestListener() {
+        MovieAPIHelper.getInstance().getUpcoming(getContext(), new MovieAPIHelper.RequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
-                upcomingMovies = APIHelper.getInstance().parseMovies(response);
+                upcomingMovies = MovieAPIHelper.getInstance().parseMovies(response);
                 sortedMovies = MovieSort.sortByDate(upcomingMovies, 1);
                 for(int i=0; i< sortedMovies.size(); i++) {
                     final int index = i;
-                    APIHelper.getInstance().getCredits(sortedMovies.get(index).getTmdbID(), getContext(), new APIHelper.RequestListener() {
+                    MovieAPIHelper.getInstance().getCredits(sortedMovies.get(index).getTmdbID(), getContext(), new MovieAPIHelper.RequestListener() {
                         @Override
                         public void onSuccess(JSONObject response) {
-                            ArrayList<String> credits = APIHelper.getInstance().parseCredits(response);
+                            ArrayList<String> credits = MovieAPIHelper.getInstance().parseCredits(response);
                             sortedMovies.get(index).setCredits(credits);
                             adapter.notifyDataSetChanged();
                         }

@@ -5,9 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,24 +13,30 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 import ca.jonnybauer.watched.Models.Movie;
+import ca.jonnybauer.watched.Models.Theatre;
 
 /**
  * This class is used to make API calls and parse their results.
  * @author Jonathon Bauer
  * @version 1.0
  */
-public class APIHelper {
-    private static APIHelper instance;
+public class MovieAPIHelper {
+    private static MovieAPIHelper instance;
 
     // API Constants
     private static final String API_KEY = "?api_key=28cc34f7d78c1be918490d1e22896393";
+    private static final String MAP_KEY = "&key=AIzaSyDy7SPJ3HXAZ6keb25gLulUbG6FU5SfQsI";
 
-    // API Queries
+    // Map API Queries
+    private static final String MAP_URL = "https://maps.googleapis.com/maps/api/place/search/json?location=";
+
+    // https://maps.googleapis.com/maps/api/place/search/json?location=42.327628,-82.972314&radius=15000&sensor=true&key=AIzaSyCVE1f4uvNaB44As1ay_ycT1OflBEZdNls&types=movie_theater
+    // https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJDflW6xfRJIgRHUtzg4n1ElY&fields=name,geometry,formatted_phone_number,formatted_address,url,opening_hours,website&key=AIzaSyDy7SPJ3HXAZ6keb25gLulUbG6FU5SfQsI
+
+    // Movie API Queries
     private static final String MOVIE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String SEARCH_URL = "https://api.themoviedb.org/3/search/movie" + API_KEY + "&language=en-US&query=";
     private static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing" + API_KEY + "&language=en-US&page=1";
@@ -44,15 +48,15 @@ public class APIHelper {
 
 
     // Constructor
-    private APIHelper(){}
+    private MovieAPIHelper(){}
 
     /**
-     * This function is used to either instantiate, or return the APIHelper that is used to manipulate the API
-     * @return Either a new or the existing APIHelper
+     * This function is used to either instantiate, or return the MovieAPIHelper that is used to manipulate the API
+     * @return Either a new or the existing MovieAPIHelper
      */
-    public static APIHelper getInstance() {
+    public static MovieAPIHelper getInstance() {
         if(instance == null) {
-            instance = new APIHelper();
+            instance = new MovieAPIHelper();
         }
         return instance;
     }
@@ -414,10 +418,6 @@ public class APIHelper {
             return null;
         }
     }
-
-
-
-
 
 
     /**
