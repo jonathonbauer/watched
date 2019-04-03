@@ -3,6 +3,7 @@ package ca.jonnybauer.watched;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -52,7 +53,10 @@ public class MainActivity extends AppCompatActivity implements
                 transaction.commit();
                 return true;
             case R.id.menu_settings:
-
+                Intent intent = new Intent(this, SettingsActivity.class);
+                intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName());
+                intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+                startActivity(intent);
 
                 default:
                     return super.onOptionsItemSelected(item);

@@ -45,6 +45,30 @@
     <!-- Settings -->
     <string name="settings_title">Settings</string>
 
+    <string name="watch_list_style_title">Watch List Style</string>
+    <string name="watch_list_style_poster">Poster</string>
+    <string name="watch_list_style_list">List</string>
+
+    <string-array name="watch_list_style_titles">
+        <item>@string/watch_list_style_poster</item>
+        <item>@string/watch_list_style_list</item>
+    </string-array>
+
+    <string-array name="watch_list_style_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="save_location_title">Save Location</string>
+    <string name="save_location_description">Should watched save your location, or ask every time?</string>
+
+    <string name="credits_title">Credits</string>
+    <string name="credits_description">Credits for the watched application</string>
+
+    <string name="clear_data">Clear Data</string>
+    <string name="bug_report">Report a Bug</string>
+    <string name="request_feature">Request a Feature</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
