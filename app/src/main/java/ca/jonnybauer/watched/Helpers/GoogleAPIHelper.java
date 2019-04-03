@@ -30,7 +30,7 @@ public class GoogleAPIHelper {
     private static final String API_KEY = "&key=AIzaSyDy7SPJ3HXAZ6keb25gLulUbG6FU5SfQsI";
     private static final String MAP_URL = "https://maps.googleapis.com/maps/api/place/search/json?location=";
     private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
-    private static final String PLACES_FIELDS = "&fields=name,geometry,formatted_phone_number,formatted_address,url,opening_hours,website";
+    private static final String PLACES_FIELDS = "&fields=name,geometry,formatted_phone_number,formatted_address,url,opening_hours,website,place_id";
 
     // https://maps.googleapis.com/maps/api/place/search/json?location=42.327628,-82.972314&radius=15000&sensor=true&key=AIzaSyCVE1f4uvNaB44As1ay_ycT1OflBEZdNls&types=movie_theater
     // https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJDflW6xfRJIgRHUtzg4n1ElY&fields=name,geometry,formatted_phone_number,formatted_address,url,opening_hours,website&key=AIzaSyDy7SPJ3HXAZ6keb25gLulUbG6FU5SfQsI
@@ -55,7 +55,7 @@ public class GoogleAPIHelper {
     public void getNearbyTheatres(Double lat, Double lng, Context context, final RequestListener requestListener) {
         // Build the query
         String url = MAP_URL + lat + "," + lng + "&radius=15000&sensor=true" + API_KEY + "&types=movie_theater";
-        System.out.println("Get Nearby Theatres query: " + url);
+//        System.out.println("Get Nearby Theatres query: " + url);
 
         // Create a new request
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -82,7 +82,7 @@ public class GoogleAPIHelper {
 
         // Build the query
         String url = PLACES_URL + placeID + PLACES_FIELDS + API_KEY;
-        System.out.println("Theatre query: " + url);
+//        System.out.println("Theatre query: " + url);
 
         // Create a new request
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -106,11 +106,35 @@ public class GoogleAPIHelper {
     }
 
     public Theatre parseTheatre(JSONObject response) {
+//        System.out.println("Parsing theatre...");
+        Theatre theatre = new Theatre();
+        try {
+//            System.out.println("Name: " + response.getString("name"));
+            theatre.setName(response.getJSONObject("result").getString("name"));
+            theatre.setPlacesID(response.getJSONObject("result").getString("place_id"));
+            theatre.setAddress(response.getJSONObject("result").getString("formatted_address"));
+            theatre.setPhone(response.getJSONObject("result").getString("formatted_phone_number"));
+            theatre.setWebsite(response.getJSONObject("result").getString("website"));
+            theatre.setLatitude(response.getJSONObject("result").getJSONObject("geometry").getJSONObject("location").getDouble("lat"));
+            theatre.setLongitude(response.getJSONObject("result").getJSONObject("geometry").getJSONObject("location").getDouble("lng"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+
+        return theatre;
+    }
+
+
+
+    public Theatre parseNearbyTheatre(JSONObject response) {
         Theatre theatre = new Theatre();
         try {
             theatre.setName(response.getString("name"));
             theatre.setPlacesID(response.getString("place_id"));
             theatre.setAddress(response.getString("vicinity"));
+//            theatre.setPhone(response.getString("formatted_phone_number"));
+//            theatre.setWebsite(response.getString("website"));
             theatre.setLatitude(response.getJSONObject("geometry").getJSONObject("location").getDouble("lat"));
             theatre.setLongitude(response.getJSONObject("geometry").getJSONObject("location").getDouble("lng"));
         } catch (JSONException e) {
@@ -121,13 +145,13 @@ public class GoogleAPIHelper {
     }
 
 
-    public ArrayList<Theatre> parseTheatres(JSONObject response) {
+    public ArrayList<Theatre> parseNearbyTheatres(JSONObject response) {
         ArrayList<Theatre> theatres = new ArrayList<>();
 
         try {
             JSONArray results = response.getJSONArray("results");
             for(int i=0; i < results.length(); i++) {
-                theatres.add(parseTheatre(results.getJSONObject(i)));
+                theatres.add(parseNearbyTheatre(results.getJSONObject(i)));
             }
         } catch(JSONException e) {
             e.printStackTrace();

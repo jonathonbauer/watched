@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ca.jonnybauer.watched.Adapters.TheatreAdapter;
 import ca.jonnybauer.watched.Helpers.GoogleAPIHelper;
 import ca.jonnybauer.watched.Helpers.MovieAPIHelper;
 import ca.jonnybauer.watched.Models.Theatre;
@@ -50,7 +52,9 @@ public class TheatresPage extends Fragment {
     private MapView mapView;
     private GoogleMap map;
     private ArrayList<Theatre> theatres;
+    private ArrayList<Theatre> completeTheatres;
     private RecyclerView recyclerView;
+    TheatreAdapter adapter;
     private double userLat;
     private double userLng;
 
@@ -72,8 +76,13 @@ public class TheatresPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_theatres_page, container, false);
+
+        theatres = new ArrayList<>();
+        completeTheatres = new ArrayList<>();
+
 
         // Get the user location
         final LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -120,7 +129,21 @@ public class TheatresPage extends Fragment {
                     GoogleAPIHelper.getInstance().getNearbyTheatres(userLat, userLng, getContext(), new GoogleAPIHelper.RequestListener() {
                         @Override
                         public void onSuccess(JSONObject response) {
-                            theatres = GoogleAPIHelper.getInstance().parseTheatres(response);
+                            theatres = GoogleAPIHelper.getInstance().parseNearbyTheatres(response);
+                            System.out.println("Found " + theatres.size() + " theatres nearby");
+
+                            for(int i=0; i< theatres.size(); i++) {
+                                final Theatre currentTheatre = theatres.get(i);
+                                GoogleAPIHelper.getInstance().getTheatre(currentTheatre.getPlacesID(), getContext(), new GoogleAPIHelper.RequestListener() {
+                                    @Override
+                                    public void onSuccess(JSONObject response) {
+                                        completeTheatres.add(GoogleAPIHelper.getInstance().parseTheatre(response));
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                });
+
+
+                            }
                             System.out.println(theatres.size() + " theatres found");
                             mapView.getMapAsync(new OnMapReadyCallback() {
                                 @Override
@@ -138,6 +161,12 @@ public class TheatresPage extends Fragment {
                                 }
                             });
 
+                            adapter = null;
+                            adapter = new TheatreAdapter(completeTheatres, getContext());
+                            LinearLayoutManager manager = new LinearLayoutManager(getContext());
+                            manager.setOrientation(LinearLayoutManager.VERTICAL);
+                            recyclerView.setLayoutManager(manager);
+                            recyclerView.setAdapter(adapter);
                         }
                     });
 
@@ -149,7 +178,11 @@ public class TheatresPage extends Fragment {
 
         recyclerView = view.findViewById(R.id.theatreRV);
 
-
+        adapter = new TheatreAdapter(theatres, getContext());
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
