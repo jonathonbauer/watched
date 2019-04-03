@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -112,22 +114,19 @@ public class TheatresPage extends Fragment{
 
         try {
             MapsInitializer.initialize(getContext());
-            System.out.println("Map Created");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+
+
+
+
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                System.out.println("Map Ready");
                 map = googleMap;
-                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
-                    findNearbyTheatres();
-                } else {
-                    requestLocation();
-                }
+                findNearbyTheatres();
             }
         });
 
@@ -201,6 +200,36 @@ public class TheatresPage extends Fragment{
     }
 
     public void findNearbyTheatres(){
+
+        // Get the preferences file to find out if the user has asked to save their location
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        if(preferences.getBoolean("save_location", true)) {
+
+            System.out.println("User enabled save location");
+            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+
+                if(preferences.getLong("user_lat", 0) == 0) {
+                    location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
+                    preferences.edit().putLong("user_lat", Double.doubleToRawLongBits(location.getLatitude())).apply();
+                    preferences.edit().putLong("user_lng", Double.doubleToRawLongBits(location.getLongitude())).apply();
+                    System.out.println("New Location saved: " + preferences.getAll());
+                } else {
+                    location = new Location("");
+                    location.setLatitude(Double.longBitsToDouble(preferences.getLong("user_lat",0)));
+                    location.setLongitude(Double.longBitsToDouble(preferences.getLong("user_lng", 0)));
+                }
+
+            } else {
+                requestLocation();
+            }
+        } else {
+            System.out.println("User disabled save location");
+            location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
+
+        }
+
+
         if (location != null) {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
 
@@ -211,11 +240,11 @@ public class TheatresPage extends Fragment{
             userLat = location.getLatitude();
             userLng = location.getLongitude();
 
-            System.out.println("Location changed: " + userLat + userLng);
-
             GoogleAPIHelper.getInstance().getNearbyTheatres(userLat, userLng, getContext(), new GoogleAPIHelper.RequestListener() {
                 @Override
                 public void onSuccess(JSONObject response) {
+                    theatres.clear();
+                    completeTheatres.clear();
                     theatres = GoogleAPIHelper.getInstance().parseNearbyTheatres(response);
                     System.out.println("Found " + theatres.size() + " theatres nearby");
 
