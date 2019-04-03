@@ -19,12 +19,12 @@ public class Theatre {
     private Double longitude;
     private String phone;            // Phone number for the theatre
     private String website;          // Website for the theatre
-    private int favourite = 0;       // Whether the user has marked the theatre as a favourite represented as an int. Default as false (0)
+    private int selected = 0;       // Whether the user has marked the theatre as a selected represented as an int. Default as false (0)
 
     // Constructors
     public Theatre(){}
 
-    public Theatre(int id, String placesID, String name, String address, Double latitude, Double longitude, String phone, String website, int favourite) {
+    public Theatre(int id, String placesID, String name, String address, Double latitude, Double longitude, String phone, String website, int selected) {
         this.id = id;
         this.placesID = placesID;
         this.name = name;
@@ -33,7 +33,7 @@ public class Theatre {
         this.longitude = longitude;
         this.phone = phone;
         this.website = website;
-        this.favourite = favourite;
+        this.selected = selected;
     }
 
     // Getters and Setters
@@ -102,10 +102,10 @@ public class Theatre {
     }
 
     public int getFavourite() {
-        return favourite;
+        return selected;
     }
 
-    public void setFavourite(int favourite) {
-        this.favourite = favourite;
+    public void setFavourite(int selected) {
+        this.selected = selected;
     }
 }

@@ -4,11 +4,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,9 +40,14 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
     private ArrayList<Theatre> theatres;
     private Context context;
     private DBHelper dbHelper;
+    private Theatre theatre;
+    private ArrayList<Marker> markers;
+    private GoogleMap googleMap;
 
 
-    public TheatreAdapter(ArrayList<Theatre> theatres, Context context) {
+    public TheatreAdapter(ArrayList<Theatre> theatres, ArrayList<Marker> markers, GoogleMap googleMap, Context context) {
+        this.googleMap = googleMap;
+        this.markers = markers;
         this.theatres = theatres;
         this.context = context;
         this.dbHelper = new DBHelper(context);
@@ -50,9 +64,48 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
 
     @Override
     public void onBindViewHolder(@NonNull final TheatreViewHolder viewHolder, int i) {
-        final Theatre theatre = theatres.get(i);
+        theatre = theatres.get(viewHolder.getAdapterPosition());
         viewHolder.name.setText(theatre.getName());
         viewHolder.address.setText(theatre.getAddress());
+
+        if(theatre.getFavourite() == 1) {
+            System.out.println("Highlighting: " + theatre.getName());
+            viewHolder.cardView.setCardBackgroundColor(Color.YELLOW);
+        } else {
+            viewHolder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+        }
+
+        // Selecting a theatre event handler
+        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Card clicked");
+//                Theatre selectedTheatre = theatres.get(viewHolder.getAdapterPosition());
+                for(int i=0; i<theatres.size(); i++) {
+                    if(theatres.get(i).getFavourite() == 1) {
+                        theatres.get(i).setFavourite(0);
+                        markers.get(i).hideInfoWindow();
+                        markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+
+                    }
+                }
+
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(theatres.get(viewHolder.getAdapterPosition()).getLatitude(), theatres.get(viewHolder.getAdapterPosition()).getLongitude()), 13));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(theatres.get(viewHolder.getAdapterPosition()).getLatitude(),
+                                theatres.get(viewHolder.getAdapterPosition()).getLongitude())).zoom(10).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                markers.get(viewHolder.getAdapterPosition()).showInfoWindow();
+                markers.get(viewHolder.getAdapterPosition()).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                theatres.get(viewHolder.getAdapterPosition()).setFavourite(1);
+                notifyDataSetChanged();
+
+
+            }
+        });
+
 
         // Phone Intent
         viewHolder.phone.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +174,7 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
     // Custom ViewHolder to be used to hold the List Item
     class TheatreViewHolder extends RecyclerView.ViewHolder {
         protected TextView name;
+        protected CardView cardView;
         protected TextView address;
         protected ImageView phone;
         protected ImageView directions;
@@ -131,6 +185,7 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         public TheatreViewHolder(View view, Context context) {
             super(view);
             this.name = view.findViewById(R.id.theatreName);
+            this.cardView = view.findViewById(R.id.theatreCard);
             this.address = view.findViewById(R.id.theatreAddress);
             this.phone = view.findViewById(R.id.theatrePhone);
             this.directions = view.findViewById(R.id.theatreDirections);

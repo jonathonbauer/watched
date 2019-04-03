@@ -23,8 +23,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
@@ -45,7 +47,7 @@ import ca.jonnybauer.watched.R;
  * Use the {@link TheatresPage#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TheatresPage extends Fragment {
+public class TheatresPage extends Fragment{
 
     private OnFragmentInteractionListener mListener;
 
@@ -53,7 +55,9 @@ public class TheatresPage extends Fragment {
     private GoogleMap map;
     private ArrayList<Theatre> theatres;
     private ArrayList<Theatre> completeTheatres;
+    private ArrayList<Marker> markers;
     private RecyclerView recyclerView;
+    LinearLayoutManager manager;
     TheatreAdapter adapter;
     private double userLat;
     private double userLng;
@@ -73,6 +77,8 @@ public class TheatresPage extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,6 +88,7 @@ public class TheatresPage extends Fragment {
 
         theatres = new ArrayList<>();
         completeTheatres = new ArrayList<>();
+        markers = new ArrayList<>();
 
 
         // Get the user location
@@ -154,16 +161,40 @@ public class TheatresPage extends Fragment {
                                     }
                                     for(int i=0; i < theatres.size(); i++) {
                                         LatLng coordinates = new LatLng(theatres.get(i).getLatitude(), theatres.get(i).getLongitude());
-                                        googleMap.addMarker(new MarkerOptions().position(coordinates).title(theatres.get(i).getName()));
+                                        markers.add(googleMap.addMarker(new MarkerOptions().position(coordinates).title(theatres.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))));
+
                                     }
+
+                                    map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                        @Override
+                                        public boolean onMarkerClick(Marker marker) {
+                                            System.out.println("Pin tapped");
+                                            System.out.println("Number of markers: " + markers.size());
+                                            for(int i=0; i< markers.size(); i++) {
+                                                if(marker.equals(markers.get(i))) {
+                                                    System.out.println("Tapped on: " + completeTheatres.get(i).getName());
+                                                    completeTheatres.get(i).setFavourite(1);
+                                                    markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                                    manager.scrollToPositionWithOffset(i, 5);
+                                                } else {
+                                                    System.out.println("No match");
+                                                    completeTheatres.get(i).setFavourite(0);
+                                                    markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                                                }
+                                            }
+                                            adapter.notifyDataSetChanged();
+                                            return false;
+                                        }
+                                    });
+
 
 
                                 }
                             });
 
                             adapter = null;
-                            adapter = new TheatreAdapter(completeTheatres, getContext());
-                            LinearLayoutManager manager = new LinearLayoutManager(getContext());
+                            adapter = new TheatreAdapter(completeTheatres, markers, map, getContext());
+                            manager = new LinearLayoutManager(getContext());
                             manager.setOrientation(LinearLayoutManager.VERTICAL);
                             recyclerView.setLayoutManager(manager);
                             recyclerView.setAdapter(adapter);
@@ -174,11 +205,13 @@ public class TheatresPage extends Fragment {
             }
         });
 
+
+
         // Get the recyclerview and display the theatres on it
 
         recyclerView = view.findViewById(R.id.theatreRV);
 
-        adapter = new TheatreAdapter(theatres, getContext());
+        adapter = new TheatreAdapter(theatres, markers, map, getContext());
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
@@ -186,9 +219,6 @@ public class TheatresPage extends Fragment {
 
         return view;
     }
-
-
-
 
     @Override
     public void onAttach(Context context) {
