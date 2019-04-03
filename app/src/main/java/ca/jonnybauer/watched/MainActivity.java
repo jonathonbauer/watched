@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements
         MoviePopUp.OnFragmentInteractionListener,
         TheatresPage.OnFragmentInteractionListener{
 
+    Fragment selectedFragment;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_menu, menu);
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
             // Fragment Objects
-            Fragment selectedFragment;
+
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
 
@@ -141,8 +143,24 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Fragment Objects
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        selectedFragment = fm.findFragmentByTag("Watch List");
+        if(selectedFragment == null) {
+            transaction.replace(R.id.main_content, new WatchListPage(), "Watch List");
+
+        } else if(!selectedFragment.isVisible()) {
+            transaction.replace(R.id.main_content, selectedFragment);
+        }
+        setTitle(getString(R.string.watch_list_page_title));
+        transaction.addToBackStack(null);
+        transaction.commit();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_watch_list);
     }
 
 

@@ -2,6 +2,7 @@ package ca.jonnybauer.watched;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -17,10 +18,14 @@ import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.List;
+
+import ca.jonnybauer.watched.Helpers.DBHelper;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -64,6 +69,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return true;
         }
     };
+
+
+
+
+
+
+
+
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -140,12 +153,80 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+
     public static class GeneralPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
+
+            // Preference on click listeners
+
+
+            Preference clearData = findPreference("clear_data");
+            clearData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    System.out.println("Clear Data Clicked");
+
+                    AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+                    dialog.setTitle("Clear Data");
+                    dialog.setMessage("Are you sure you want to clear ALL data? This cannot be undone.");
+                    dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Clear Data", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+//                            DBHelper dbHelper = new DBHelper(getContext());
+                            getContext().deleteDatabase(DBHelper.DATABASE_NAME);
+                            Toast.makeText(getContext(), "Data Cleared", Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+
+                    return false;
+                }
+            });
+
+            Preference bugReport = findPreference("bug_report");
+            bugReport.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    System.out.println("Bug Report Clicked");
+
+                    return false;
+                }
+            });
+
+            Preference requestFeature = findPreference("request_feature");
+            requestFeature.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    System.out.println("RequestFeature Clicked");
+
+                    return false;
+                }
+            });
+
+            Preference credits = findPreference("credits");
+            credits.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    System.out.println("Credits Clicked");
+
+                    return false;
+                }
+            });
+
+
 
 //            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 //            System.out.println(sharedPreferences.getAll());

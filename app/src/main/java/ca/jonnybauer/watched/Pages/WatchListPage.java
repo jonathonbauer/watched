@@ -132,6 +132,18 @@ public class WatchListPage extends Fragment {
         return view;
     }
 
+    public void refreshItems(){
+        watchList = WatchListTable.getInstance().filterDeletedMovies(WatchListTable.getInstance().getAllMovies(dbHelper));
+        adapter = new WatchListAdapter(watchList, getContext(), WatchListStyle.POSTER);
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshItems();
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

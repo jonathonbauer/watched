@@ -15,10 +15,10 @@
         android:summary="@string/save_location_description"
         android:title="@string/save_location_title" />
 
-    <Preference android:title="@string/clear_data"/>
-    <Preference android:title="@string/bug_report"/>
-    <Preference android:title="@string/request_feature"/>
-    <Preference android:title="@string/credits_title"/>
+    <Preference android:title="@string/clear_data" android:key="clear_data"/>
+    <Preference android:title="@string/bug_report" android:key="bug_report"/>
+    <Preference android:title="@string/request_feature" android:key="request_feature"/>
+    <Preference android:title="@string/credits_title" android:key="credits"/>
 
 
 
