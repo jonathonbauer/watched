@@ -113,9 +113,6 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
             public void onClick(View v) {
                 System.out.println("Phone Clicked");
 
-                // TODO: Request permissions properly
-
-                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE},2);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("tel:" + theatre.getPhone()));
                 if(intent.resolveActivity(context.getPackageManager()) != null) {
@@ -131,9 +128,6 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         viewHolder.directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Request permissions properly
-
-//                Uri location = Uri.parse("geo:0,0?q=" + theatre.getLatitude() + "," + theatre.getLongitude() + "(" + theatre.getName() + ")");
                 Uri location = Uri.parse("geo:0,0?q=" + theatre.getName());
                 System.out.println(location);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
