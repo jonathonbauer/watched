@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import ca.jonnybauer.watched.Pages.SearchPage;
@@ -24,7 +25,41 @@ public class MainActivity extends AppCompatActivity implements
         MoviePopUp.OnFragmentInteractionListener,
         TheatresPage.OnFragmentInteractionListener{
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_search:
+                // Fragment Objects
+                Fragment selectedFragment;
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+
+                selectedFragment = fm.findFragmentByTag("Search");
+                if(selectedFragment == null) {
+                    transaction.replace(R.id.main_content, new SearchPage(), "Search");
+
+                } else if(!selectedFragment.isVisible()) {
+                    transaction.replace(R.id.main_content, selectedFragment);
+                }
+                setTitle(getString(R.string.search_page_title));
+                transaction.addToBackStack(null);
+                transaction.commit();
+                return true;
+            case R.id.menu_settings:
+
+
+                default:
+                    return super.onOptionsItemSelected(item);
+        }
+
+
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,18 +85,18 @@ public class MainActivity extends AppCompatActivity implements
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;
-                case R.id.navigation_search:
-                    selectedFragment = fm.findFragmentByTag("Search");
-                    if(selectedFragment == null) {
-                        transaction.replace(R.id.main_content, new SearchPage(), "Search");
-
-                    } else if(!selectedFragment.isVisible()) {
-                        transaction.replace(R.id.main_content, selectedFragment);
-                    }
-                    setTitle(getString(R.string.search_page_title));
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                    return true;
+//                case R.id.navigation_search:
+//                    selectedFragment = fm.findFragmentByTag("Search");
+//                    if(selectedFragment == null) {
+//                        transaction.replace(R.id.main_content, new SearchPage(), "Search");
+//
+//                    } else if(!selectedFragment.isVisible()) {
+//                        transaction.replace(R.id.main_content, selectedFragment);
+//                    }
+//                    setTitle(getString(R.string.search_page_title));
+//                    transaction.addToBackStack(null);
+//                    transaction.commit();
+//                    return true;
 
                 case R.id.navigation_watch_list:
                     selectedFragment = fm.findFragmentByTag("Watch List");
