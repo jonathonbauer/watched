@@ -1,9 +1,13 @@
 package ca.jonnybauer.watched.Adapters;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +50,7 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
 
     @Override
     public void onBindViewHolder(@NonNull final TheatreViewHolder viewHolder, int i) {
-        Theatre theatre = theatres.get(i);
+        final Theatre theatre = theatres.get(i);
         viewHolder.name.setText(theatre.getName());
         viewHolder.address.setText(theatre.getAddress());
 
@@ -53,6 +58,18 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         viewHolder.phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("Phone Clicked");
+
+                // TODO: Request permissions properly
+
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE},2);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("tel:" + theatre.getPhone()));
+                if(intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, "An error occurred", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -61,7 +78,18 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         viewHolder.directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO: Request permissions properly
 
+//                Uri location = Uri.parse("geo:0,0?q=" + theatre.getLatitude() + "," + theatre.getLongitude() + "(" + theatre.getName() + ")");
+                Uri location = Uri.parse("geo:0,0?q=" + theatre.getName());
+                System.out.println(location);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(location);
+                if(intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, "An error occurred", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -69,7 +97,15 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         viewHolder.website.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Uri website = Uri.parse(theatre.getWebsite());
+                System.out.println(website);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(website);
+                if(intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, "An error occurred", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
