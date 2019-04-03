@@ -1,5 +1,6 @@
 package ca.jonnybauer.watched;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import ca.jonnybauer.watched.Pages.SearchPage;
+import ca.jonnybauer.watched.Pages.TheatresPage;
 import ca.jonnybauer.watched.Pages.UpcomingPage;
 import ca.jonnybauer.watched.Pages.WatchListPage;
 import ca.jonnybauer.watched.Pages.MoviePopUp;
@@ -19,7 +21,8 @@ public class MainActivity extends AppCompatActivity implements
         SearchPage.OnFragmentInteractionListener,
         UpcomingPage.OnFragmentInteractionListener,
         WatchListPage.OnFragmentInteractionListener,
-        MoviePopUp.OnFragmentInteractionListener{
+        MoviePopUp.OnFragmentInteractionListener,
+        TheatresPage.OnFragmentInteractionListener{
 
 
 
@@ -72,7 +75,24 @@ public class MainActivity extends AppCompatActivity implements
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;
+
+                case R.id.navigation_theatres:
+                    selectedFragment = fm.findFragmentByTag("Theatres");
+                    if(selectedFragment == null) {
+                        transaction.replace(R.id.main_content, new TheatresPage(), "Theatres");
+
+                    } else if(!selectedFragment.isVisible()) {
+                        transaction.replace(R.id.main_content, selectedFragment);
+                    }
+                    setTitle(getString(R.string.theatres_page_title));
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    return true;
+
             }
+
+
+
             return false;
         }
     };

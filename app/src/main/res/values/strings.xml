@@ -33,11 +33,18 @@
     </string-array>
 
 
+    <!-- Theatres Page -->
+    <string name="theatres_page_title">Theatres</string>
+    <string name="theatre_name_placeholder">Name</string>
+    <string name="theatre_address_placeholder">Address</string>
+
+
     <!-- Credits -->
     <string name="api_source">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>
