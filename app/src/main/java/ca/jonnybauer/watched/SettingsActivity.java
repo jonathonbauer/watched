@@ -202,6 +202,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     System.out.println("Bug Report Clicked");
 
+                    Uri email = Uri.parse("mailto:info@jonnybauer.ca");
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Watched App Bug Report");
+                    intent.putExtra(Intent.EXTRA_TEXT, "Hello, I have encountered a bug in your app.\n\n" +
+                                                            "To replicate the bug, do the following:");
+                    intent.setData(email);
+                    if(intent.resolveActivity(getContext().getPackageManager()) != null) {
+                        getContext().startActivity(intent);
+                    }
+
                     return false;
                 }
             });
@@ -211,6 +221,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     System.out.println("RequestFeature Clicked");
+
+                    Uri email = Uri.parse("mailto:info@jonnybauer.ca");
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Watched App Feature Request");
+                    intent.putExtra(Intent.EXTRA_TEXT, "Hello, I have an idea for a new feature.\n\n" +
+                            "The feature is as follows:");
+                    intent.setData(email);
+                    if(intent.resolveActivity(getContext().getPackageManager()) != null) {
+                        getContext().startActivity(intent);
+                    }
 
                     return false;
                 }
