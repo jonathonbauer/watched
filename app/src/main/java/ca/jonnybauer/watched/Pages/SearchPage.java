@@ -19,28 +19,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import ca.jonnybauer.watched.Helpers.APIHelper;
+import ca.jonnybauer.watched.Helpers.MovieAPIHelper;
 import ca.jonnybauer.watched.Helpers.DBHelper;
-import ca.jonnybauer.watched.Helpers.RequestHelper;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.R;
 import ca.jonnybauer.watched.Tables.WatchListTable;
@@ -482,19 +474,19 @@ public class SearchPage extends Fragment {
             movieCredits = new ArrayList<>();
             credits = new ArrayList<>();
 
-            APIHelper.getInstance().searchMovie(cleanInput, getContext(), new APIHelper.RequestListener(){
+            MovieAPIHelper.getInstance().searchMovie(cleanInput, getContext(), new MovieAPIHelper.RequestListener(){
                 @Override
                 public void onSuccess(JSONObject response) {
-                    results = APIHelper.getInstance().parseMovies(response);
+                    results = MovieAPIHelper.getInstance().parseMovies(response);
                     System.out.println("Found " + results.size() + " matching " + searchInput);
 
                     if(results.size() != 0) {
                         for(int i=0; i<results.size(); i++) {
                             final int index = i;
-                            APIHelper.getInstance().getCredits(results.get(index).getTmdbID(), getContext(), new APIHelper.RequestListener() {
+                            MovieAPIHelper.getInstance().getCredits(results.get(index).getTmdbID(), getContext(), new MovieAPIHelper.RequestListener() {
                                 @Override
                                 public void onSuccess(JSONObject response) {
-                                    ArrayList<String> credits = APIHelper.getInstance().parseCredits(response);
+                                    ArrayList<String> credits = MovieAPIHelper.getInstance().parseCredits(response);
                                     results.get(index).setCredits(credits);
                                     adapter.notifyDataSetChanged();
                                 }
