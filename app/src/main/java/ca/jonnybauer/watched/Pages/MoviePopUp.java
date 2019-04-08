@@ -93,23 +93,7 @@ public class MoviePopUp extends Fragment {
         plot.setText(mMovie.getPlot());
         Picasso.get().load(mMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(poster);
 
-        // Change the ImageView buttons depending on whether or not the movie has been watched, added, or favourited
-
-        watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, mMovie.getTmdbID());
-        if(watchListMovie != null && watchListMovie.getDeleted() != 1) {
-            add.setImageResource(R.drawable.ic_add_circle_black_24dp);
-            if(watchListMovie.getFavourite() == 1) {
-                favourite.setImageResource(R.drawable.ic_star_black_24dp);
-            }
-            if(watchListMovie.getWatched() == 1) {
-                watched.setImageResource(R.drawable.ic_check_circle_black_24dp);
-            }
-        } else {
-            add.setImageResource(R.drawable.ic_add_black_24dp);
-            favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
-            watched.setImageResource(R.drawable.ic_check_black_24dp);
-        }
-
+        changeButtons();
 
         // ImageView Button event handlers
 
@@ -186,6 +170,34 @@ public class MoviePopUp extends Fragment {
 
 
         return view;
+    }
+
+
+    public void changeButtons(){
+        // Change the ImageView buttons depending on whether or not the movie has been watched, added, or favourited
+
+        watchListMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, mMovie.getTmdbID());
+        if(watchListMovie != null && watchListMovie.getDeleted() != 1) {
+            add.setImageResource(R.drawable.ic_add_circle_black_24dp);
+            if(watchListMovie.getFavourite() == 1) {
+                favourite.setImageResource(R.drawable.ic_star_black_24dp);
+            }
+            if(watchListMovie.getWatched() == 1) {
+                watched.setImageResource(R.drawable.ic_check_circle_black_24dp);
+            }
+        } else {
+            add.setImageResource(R.drawable.ic_add_black_24dp);
+            favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
+            watched.setImageResource(R.drawable.ic_check_black_24dp);
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeButtons();
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

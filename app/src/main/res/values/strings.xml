@@ -40,11 +40,79 @@
 
 
     <!-- Credits -->
-    <string name="api_source">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="credit_title">Credits</string>
+    <string name="credit_desc">Desc</string>
+    <string name="credit_link">Credit Link</string>
+
+
+    <string name="api_title">TMDb API</string>
+    <string name="api_desc">
+    The Movie Database (TMDb) is a community built movie and TV database.
+        Every piece of data has been added by our amazing community dating back to 2008.
+        TMDb\'s strong international focus and breadth of data is largely unmatched and something we\'re incredibly proud of.
+        Put simply, we live and breathe community and that\'s precisely what makes us different.
+        \n\n
+        This product uses the TMDb API but is not endorsed or certified by TMDb.
+    </string>
+    <string name="api_link">https://www.themoviedb.org/documentation/api</string>
+
+    <string name="logo_title">Stephanie Markert</string>
+    <string name="logo_desc">The logo was designed by local graphic designer Stephanie Markert.</string>
+    <string name="logo_link">https://www.stephdesigns.ca</string>
+
+    <string name="volley_title">Volley by Google</string>
+    <string name="volley_desc">Volley is an HTTP library that makes networking for Android apps easier and, most importantly, faster.</string>
+    <string name="volley_link">https://github.com/google/volley</string>
+
+    <string name="picasso_title">Picasso by Square</string>
+    <string name="picasso_desc">Picasso is a powerful image downloading and caching library for Android.</string>
+    <string name="picasso_link">http://square.github.io/picasso/</string>
+
+    <string name="gson_title">Gson by Google</string>
+    <string name="gson_desc">
+        Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object.
+        Gson can work with arbitrary Java objects including pre-existing objects that you do not have source-code of.
+    </string>
+    <string name="gson_link">https://github.com/google/gson</string>
+
+    <string name="rating_bar_title">Simple Rating Bar</string>
+    <string name="rating_bar_desc">Simple Rating Bar is an open source project which features a simple yet powerful RatingBar alternative to Android\'s default.tm</string>
+    <string name="rating_bar_link">https://github.com/FlyingPumba/SimpleRatingBar</string>
+
+    <!--<string name="_title"></string>-->
+    <!--<string name="_desc"></string>-->
+    <!--<string name="_link"></string>-->
+
+
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+
+    <string name="watch_list_style_title">Watch List Style</string>
+    <string name="watch_list_style_poster">Poster</string>
+    <string name="watch_list_style_list">List</string>
+
+    <string-array name="watch_list_style_titles">
+        <item>@string/watch_list_style_poster</item>
+        <item>@string/watch_list_style_list</item>
+    </string-array>
+
+    <string-array name="watch_list_style_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="save_location_title">Save Location</string>
+    <string name="save_location_description">Should watched save your location, or ask every time?</string>
+
+    <string name="credits_title">Credits</string>
+    <string name="credits_description">Credits for the watched application</string>
+
+    <string name="clear_data">Clear Data</string>
+    <string name="bug_report">Report a Bug</string>
+    <string name="request_feature">Request a Feature</string>
+
 
 
 </resources>

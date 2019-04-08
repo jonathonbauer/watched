@@ -16,10 +16,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ca.jonnybauer.watched.Adapters.UpcomingAdapter;
+import ca.jonnybauer.watched.Adapters.WatchListAdapter;
 import ca.jonnybauer.watched.Helpers.MovieAPIHelper;
 import ca.jonnybauer.watched.Helpers.MovieSort;
 import ca.jonnybauer.watched.Models.Movie;
+import ca.jonnybauer.watched.Models.WatchListStyle;
 import ca.jonnybauer.watched.R;
+import ca.jonnybauer.watched.Tables.WatchListTable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,8 +66,11 @@ public class UpcomingPage extends Fragment {
 
         recyclerView = view.findViewById(R.id.upcomingRV);
         progressBar = view.findViewById(R.id.upcomingProgress);
+        getUpcomingMovies();
+        return view;
+    }
 
-
+    public void getUpcomingMovies(){
         MovieAPIHelper.getInstance().getUpcoming(getContext(), new MovieAPIHelper.RequestListener() {
             @Override
             public void onSuccess(JSONObject response) {
@@ -87,17 +93,16 @@ public class UpcomingPage extends Fragment {
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setAdapter(adapter);
-
-
             }
         });
-
-
-
-
-
-        return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUpcomingMovies();
+    }
+
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

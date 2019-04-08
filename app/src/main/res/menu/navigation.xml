@@ -16,11 +16,10 @@
         android:icon="@drawable/ic_theaters_black_24dp"
         android:title="@string/theatres_page_title" />
 
-    <item
-        android:id="@+id/navigation_search"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:title="@string/search_page_title" />
-
+    <!--<item-->
+        <!--android:id="@+id/navigation_search"-->
+        <!--android:icon="@drawable/ic_search_black_24dp"-->
+        <!--android:title="@string/search_page_title" />-->
 
 
 </menu>
