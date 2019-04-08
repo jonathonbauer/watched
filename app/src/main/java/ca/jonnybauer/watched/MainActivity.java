@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ca.jonnybauer.watched.Pages.CreditFragment;
+import ca.jonnybauer.watched.Pages.CreditsPage;
 import ca.jonnybauer.watched.Pages.SearchPage;
 import ca.jonnybauer.watched.Pages.TheatresPage;
 import ca.jonnybauer.watched.Pages.UpcomingPage;
@@ -24,7 +26,9 @@ public class MainActivity extends AppCompatActivity implements
         UpcomingPage.OnFragmentInteractionListener,
         WatchListPage.OnFragmentInteractionListener,
         MoviePopUp.OnFragmentInteractionListener,
-        TheatresPage.OnFragmentInteractionListener{
+        TheatresPage.OnFragmentInteractionListener,
+        CreditsPage.OnFragmentInteractionListener,
+        CreditFragment.OnFragmentInteractionListener {
 
     Fragment selectedFragment;
 
@@ -54,6 +58,24 @@ public class MainActivity extends AppCompatActivity implements
                 transaction.addToBackStack(null);
                 transaction.commit();
                 return true;
+            case R.id.menu_credits:
+                // Fragment Objects
+                Fragment selectedFragment2;
+                FragmentManager fm2 = getSupportFragmentManager();
+                FragmentTransaction transaction2 = fm2.beginTransaction();
+
+                selectedFragment = fm2.findFragmentByTag("Credits");
+                if(selectedFragment == null) {
+                    transaction2.replace(R.id.main_content, new CreditsPage(), "Credits");
+
+                } else if(!selectedFragment.isVisible()) {
+                    transaction2.replace(R.id.main_content, selectedFragment);
+                }
+                setTitle(getString(R.string.credit_title));
+                transaction2.addToBackStack(null);
+                transaction2.commit();
+                return true;
+
             case R.id.menu_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName());

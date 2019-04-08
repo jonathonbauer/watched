@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import ca.jonnybauer.watched.Helpers.DBHelper;
+import ca.jonnybauer.watched.Pages.CreditsPage;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -241,6 +242,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     System.out.println("Credits Clicked");
+
+
 
                     return false;
                 }

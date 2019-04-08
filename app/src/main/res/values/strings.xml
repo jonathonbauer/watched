@@ -40,7 +40,51 @@
 
 
     <!-- Credits -->
-    <string name="api_source">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
+
+    <string name="credit_title">Credits</string>
+    <string name="credit_desc">Desc</string>
+    <string name="credit_link">Credit Link</string>
+
+
+    <string name="api_title">TMDb API</string>
+    <string name="api_desc">
+    The Movie Database (TMDb) is a community built movie and TV database.
+        Every piece of data has been added by our amazing community dating back to 2008.
+        TMDb\'s strong international focus and breadth of data is largely unmatched and something we\'re incredibly proud of.
+        Put simply, we live and breathe community and that\'s precisely what makes us different.
+        \n\n
+        This product uses the TMDb API but is not endorsed or certified by TMDb.
+    </string>
+    <string name="api_link">https://www.themoviedb.org/documentation/api</string>
+
+    <string name="logo_title">Stephanie Markert</string>
+    <string name="logo_desc">The logo was designed by local graphic designer Stephanie Markert.</string>
+    <string name="logo_link">https://www.stephdesigns.ca</string>
+
+    <string name="volley_title">Volley by Google</string>
+    <string name="volley_desc">Volley is an HTTP library that makes networking for Android apps easier and, most importantly, faster.</string>
+    <string name="volley_link">https://github.com/google/volley</string>
+
+    <string name="picasso_title">Picasso by Square</string>
+    <string name="picasso_desc">Picasso is a powerful image downloading and caching library for Android.</string>
+    <string name="picasso_link">http://square.github.io/picasso/</string>
+
+    <string name="gson_title">Gson by Google</string>
+    <string name="gson_desc">
+        Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object.
+        Gson can work with arbitrary Java objects including pre-existing objects that you do not have source-code of.
+    </string>
+    <string name="gson_link">https://github.com/google/gson</string>
+
+    <string name="rating_bar_title">Simple Rating Bar</string>
+    <string name="rating_bar_desc">Simple Rating Bar is an open source project which features a simple yet powerful RatingBar alternative to Android\'s default.tm</string>
+    <string name="rating_bar_link">https://github.com/FlyingPumba/SimpleRatingBar</string>
+
+    <!--<string name="_title"></string>-->
+    <!--<string name="_desc"></string>-->
+    <!--<string name="_link"></string>-->
+
+
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
@@ -69,83 +113,6 @@
     <string name="bug_report">Report a Bug</string>
     <string name="request_feature">Request a Feature</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_settings">Settings</string>
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
 
 
 </resources>

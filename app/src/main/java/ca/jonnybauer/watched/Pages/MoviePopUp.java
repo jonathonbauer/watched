@@ -92,7 +92,7 @@ public class MoviePopUp extends Fragment {
         credits.setText(mMovie.getTopBilling());
         plot.setText(mMovie.getPlot());
         Picasso.get().load(mMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(poster);
-        
+
         changeButtons();
 
         // ImageView Button event handlers
