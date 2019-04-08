@@ -124,6 +124,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     activity.getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out)
                             .replace(R.id.main_content, MoviePopUp.newInstance(movie), "Movie Pop Up")
                             .addToBackStack(null).commit();
                 }

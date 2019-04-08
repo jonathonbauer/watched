@@ -121,6 +121,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
 
     }
 
+
     @Override
     public int getItemCount() {
         return upcomingMovies.size();

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements
                 Fragment selectedFragment;
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
+                transaction.setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out);
 
                 selectedFragment = fm.findFragmentByTag("Search");
                 if(selectedFragment == null) {
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements
                 Fragment selectedFragment2;
                 FragmentManager fm2 = getSupportFragmentManager();
                 FragmentTransaction transaction2 = fm2.beginTransaction();
+                transaction2.setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out);
 
                 selectedFragment = fm2.findFragmentByTag("Credits");
                 if(selectedFragment == null) {
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements
 
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
+//            transaction.setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out);
 
             switch (item.getItemId()) {
                 case R.id.navigation_upcoming:
@@ -113,18 +116,6 @@ public class MainActivity extends AppCompatActivity implements
                     transaction.addToBackStack(null);
                     transaction.commit();
                     return true;
-//                case R.id.navigation_search:
-//                    selectedFragment = fm.findFragmentByTag("Search");
-//                    if(selectedFragment == null) {
-//                        transaction.replace(R.id.main_content, new SearchPage(), "Search");
-//
-//                    } else if(!selectedFragment.isVisible()) {
-//                        transaction.replace(R.id.main_content, selectedFragment);
-//                    }
-//                    setTitle(getString(R.string.search_page_title));
-//                    transaction.addToBackStack(null);
-//                    transaction.commit();
-//                    return true;
 
                 case R.id.navigation_watch_list:
                     selectedFragment = fm.findFragmentByTag("Watch List");
