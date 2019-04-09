@@ -227,6 +227,18 @@ public class WatchListTable {
         return filteredMovies;
     }
 
+    public ArrayList<Movie> filterWatchedAndDeletedMovies(ArrayList<Movie> movies) {
+        ArrayList<Movie> filteredMovies = new ArrayList<>();
+        for(int i=0; i < movies.size(); i++) {
+            if(movies.get(i).getWatched() == 0 && movies.get(i).getDeleted() == 0) {
+                filteredMovies.add(movies.get(i));
+                System.out.println("Adding " + movies.get(i).getTitle() + " watched: " + movies.get(i).getWatched());
+            }
+        }
+        return filteredMovies;
+    }
+
+
 
     // Update Record Query
     public void updateMovie(Movie movie, DBHelper dbHelper){

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,8 @@ public class WatchListPage extends Fragment {
     private DBHelper dbHelper;
     private Spinner spinner;
     private String watchListStyle;
+    private Boolean showWatchedMovies;
+    private View view;
 
     public WatchListPage() {
         // Required empty public constructor
@@ -58,7 +61,7 @@ public class WatchListPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_watch_list_page, container, false);
+        view = inflater.inflate(R.layout.fragment_watch_list_page, container, false);
 
         // Get the Database
         dbHelper = new DBHelper(getContext());
@@ -66,13 +69,21 @@ public class WatchListPage extends Fragment {
         // Get the Recycler View
         recyclerView = view.findViewById(R.id.watchListRV);
 
-        // Get the Watch List
-        watchList = WatchListTable.getInstance().filterDeletedMovies(WatchListTable.getInstance().getAllMovies(dbHelper));
 
-
-        // TODO: Figure out which layout the user has set as preferred
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         watchListStyle = preferences.getString("watch_list_style", "1");
+        showWatchedMovies = preferences.getBoolean("show_watched", true);
+
+
+        // Get the Watch List
+
+        if(!showWatchedMovies) {
+            watchList = null;
+            watchList = WatchListTable.getInstance().filterWatchedAndDeletedMovies(WatchListTable.getInstance().getAllMovies(dbHelper));
+        } else {
+            watchList = null;
+            watchList = WatchListTable.getInstance().filterDeletedMovies(WatchListTable.getInstance().getAllMovies(dbHelper));
+        }
 
         if(watchListStyle.equals("1")) {
             // Create the adapter
@@ -104,6 +115,7 @@ public class WatchListPage extends Fragment {
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, R.layout.support_simple_spinner_dropdown_item);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(spinnerAdapter);
+        spinner.setSelection(0);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -112,6 +124,9 @@ public class WatchListPage extends Fragment {
                 if(selectedItem != null) {
                     selectedItem.setTextColor(getResources().getColor(R.color.mainFontColor));
                 }
+
+
+
 //                selectedItem.setTextSize(25);
 
                 String selection = spinner.getSelectedItem().toString();
@@ -148,7 +163,19 @@ public class WatchListPage extends Fragment {
     public void refreshItems(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         watchListStyle = preferences.getString("watch_list_style", "1");
-        watchList = WatchListTable.getInstance().filterDeletedMovies(WatchListTable.getInstance().getAllMovies(dbHelper));
+        showWatchedMovies = preferences.getBoolean("show_watched", true);
+
+
+        // Get the Watch List
+
+        if(!showWatchedMovies) {
+            watchList = null;
+            watchList = WatchListTable.getInstance().filterWatchedAndDeletedMovies(WatchListTable.getInstance().getAllMovies(dbHelper));
+        } else {
+            watchList = null;
+            watchList = WatchListTable.getInstance().filterDeletedMovies(WatchListTable.getInstance().getAllMovies(dbHelper));
+        }
+
         if(watchListStyle.equals("1")) {
             StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
@@ -168,6 +195,7 @@ public class WatchListPage extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle(getString(R.string.watch_list_page_title));
         refreshItems();
     }
 
@@ -188,6 +216,7 @@ public class WatchListPage extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
 
     @Override
     public void onDetach() {

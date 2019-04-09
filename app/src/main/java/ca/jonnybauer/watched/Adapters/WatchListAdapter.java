@@ -64,7 +64,6 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             final Movie movie = watchList.get(listViewHolder.getAdapterPosition());
             Movie currentMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
 
-
             // Set the title
             listViewHolder.title.setText(movie.getTitle());
 
@@ -147,6 +146,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     activity.getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out)
                             .replace(R.id.main_content, MoviePopUp.newInstance(movie), "Movie Pop Up")
                             .addToBackStack(null).commit();
                 }
