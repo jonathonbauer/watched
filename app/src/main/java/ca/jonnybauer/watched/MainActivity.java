@@ -1,6 +1,7 @@
 package ca.jonnybauer.watched;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        navigation.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         navigation.setSelectedItemId(R.id.navigation_watch_list);
     }
 

@@ -2,6 +2,7 @@ package ca.jonnybauer.watched.Pages;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -98,14 +102,19 @@ public class WatchListPage extends Fragment {
 
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, R.layout.support_simple_spinner_dropdown_item);
-        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(spinnerAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selection = spinner.getSelectedItem().toString();
+                TextView selectedItem = (TextView) parent.getChildAt(0);
+                if(selectedItem != null) {
+                    selectedItem.setTextColor(getResources().getColor(R.color.mainFontColor));
+                }
+//                selectedItem.setTextSize(25);
 
+                String selection = spinner.getSelectedItem().toString();
                 if(selection.equals("Date Added (Ascending)")){
                     adapter.setWatchList(MovieSort.sortByDateAdded(watchList, 0));
                     adapter.notifyDataSetChanged();

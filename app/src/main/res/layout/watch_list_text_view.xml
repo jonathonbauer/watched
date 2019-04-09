@@ -13,14 +13,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:minHeight="40dp"
-        app:cardBackgroundColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/card_background">
 
             <TextView
                 android:id="@+id/watchListTextTitle"
@@ -32,6 +32,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/search_result_title_placeholder"
                 android:textAlignment="viewStart"
+                android:textColor="@color/mainFontColor"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/iconsLayout"
