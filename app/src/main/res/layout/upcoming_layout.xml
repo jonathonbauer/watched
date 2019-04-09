@@ -30,8 +30,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/nunito"
                 android:text="@string/search_result_title_placeholder"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/title_font_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,11 +46,13 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:ellipsize="end"
+                android:fontFamily="@font/titilliumweb"
                 android:maxLines="6"
                 android:text="@string/search_result_plot_placeholder"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/content_font_size"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/upcomingReleaseDate"
+                app:layout_constraintEnd_toStartOf="@+id/upcomingCalendar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingTitle" />
 
@@ -58,8 +62,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:fontFamily="@font/raleway"
                 android:text="Date"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/subtitle_font_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

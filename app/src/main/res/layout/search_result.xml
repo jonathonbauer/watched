@@ -24,8 +24,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/nunito"
                 android:text="@string/search_result_title_placeholder"
                 android:textColor="@color/mainFontColor"
+                android:textSize="@dimen/title_font_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,8 +37,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:fontFamily="@font/raleway"
                 android:text="@string/search_result_rating_placeholder"
                 android:textColor="@color/mainFontColor"
+                android:textSize="@dimen/subtitle_font_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +51,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:fontFamily="@font/titilliumweb"
                 android:textColor="@color/mainFontColor"
+                android:textSize="@dimen/subtitle_font_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/resultViewTitle" />
