@@ -178,6 +178,7 @@ public class WatchListTable {
             db.close();
             return movie;
         } else {
+            db.close();
             return null;
         }
     }
@@ -211,8 +212,6 @@ public class WatchListTable {
                     new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_DATE_ADDED))),
                     new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_LAST_UPDATED))));
             movies.add(movie);
-            System.out.println("Release date from db: " + movie.getReleaseDate());
-            System.out.println("Release date from db: " + cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE)));
         }
         cursor.close();
         db.close();

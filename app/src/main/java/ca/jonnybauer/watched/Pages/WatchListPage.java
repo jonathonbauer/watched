@@ -113,7 +113,7 @@ public class WatchListPage extends Fragment {
 
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, R.layout.support_simple_spinner_dropdown_item);
-        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+//        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(0);
 
@@ -124,8 +124,6 @@ public class WatchListPage extends Fragment {
                 if(selectedItem != null) {
                     selectedItem.setTextColor(getResources().getColor(R.color.mainFontColor));
                 }
-
-
 
 //                selectedItem.setTextSize(25);
 
