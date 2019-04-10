@@ -13,6 +13,10 @@ import android.widget.TextView;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
 import ca.jonnybauer.watched.R;
@@ -35,6 +39,7 @@ public class MoviePopUp extends Fragment {
     private DBHelper dbHelper;
 
     private TextView title;
+    private TextView releaseDate;
     private SimpleRatingBar rating;
     private ImageView poster;
     private TextView credits;
@@ -53,6 +58,7 @@ public class MoviePopUp extends Fragment {
     public static MoviePopUp newInstance(Movie movie) {
         MoviePopUp fragment = new MoviePopUp();
         Bundle args = new Bundle();
+        System.out.println(movie.getReleaseDate());
         args.putParcelable(ARG_MOVIE, movie);
         fragment.setArguments(args);
         return fragment;
@@ -77,6 +83,7 @@ public class MoviePopUp extends Fragment {
 
         // Get the XML elements
         title = view.findViewById(R.id.moviePopUpTitle);
+        releaseDate = view.findViewById(R.id.moviePopUpReleaseDate);
         rating = view.findViewById(R.id.moviePopUpRating);
         poster = view.findViewById(R.id.moviePopUpPoster);
         credits = view.findViewById(R.id.moviePopUpTopBilling);
@@ -88,6 +95,13 @@ public class MoviePopUp extends Fragment {
         // Set the appropriate text values to the XML
         title.setText(mMovie.getTitle());
         double ratingValue = (mMovie.getRating() / 10.0) * 5.0;
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(mMovie.getReleaseDate());
+        String dateString = String.format("%1$tb %1$te, %1$tY", date);
+        releaseDate.setText(dateString);
+
+
         rating.setRating((float) ratingValue);
         credits.setText(mMovie.getTopBilling());
         plot.setText(mMovie.getPlot());

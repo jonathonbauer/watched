@@ -144,6 +144,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             posterViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    System.out.println(movie.getReleaseDate());
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     activity.getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out)
