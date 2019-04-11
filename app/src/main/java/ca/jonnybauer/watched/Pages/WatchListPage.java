@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -168,14 +169,31 @@ public class WatchListPage extends Fragment {
         Point screenSize = new Point();
         display.getSize(screenSize);
 
-        if(screenSize.x > 1440) {
-            System.out.println("Screen size is larger: " + screenSize.x);
-            spanCount = 3;
+        float dpiX = screenSize.x / getResources().getDisplayMetrics().density;
 
+        System.out.println(dpiX);
+        if(dpiX > 450 && dpiX < 680) {
+            System.out.println("Span count is " + spanCount);
+            spanCount = 3;
+        } else if(dpiX >= 680 && dpiX < 1000){
+            System.out.println("Span count is " + spanCount);
+            spanCount = 4;
+        } else if(dpiX > 1000) {
+            System.out.println("Span count is " + spanCount);
+            spanCount = 7;
         } else {
-            System.out.println("Screen size is smaller: " + screenSize.x);
+            System.out.println("Span count is " + spanCount);
             spanCount = 2;
         }
+
+//        if(screenSize.x > 1440) {
+////            System.out.println("Screen size is larger: " + screenSize.x);
+//            spanCount = 3;
+//
+//        } else {
+////            System.out.println("Screen size is smaller: " + screenSize.x);
+//            spanCount = 2;
+//        }
     }
 
     public void refreshItems(){
@@ -213,6 +231,25 @@ public class WatchListPage extends Fragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point screenSize = new Point();
+        display.getSize(screenSize);
+
+        float dpiY = screenSize.y / getResources().getDisplayMetrics().density;
+
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+//        getActivity().getActionBar().hide();
+//        System.out.println("Config changed, " )
+        if(dpiY < 500) {
+            System.out.println("hiding bar");
+            ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        } else if(!((AppCompatActivity)getActivity()).getSupportActionBar().isShowing()){
+            System.out.println("showing bar");
+            ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        }
+
         setGridSpan();
         refreshItems();
 
@@ -223,7 +260,24 @@ public class WatchListPage extends Fragment {
         super.onResume();
         getActivity().setTitle(getString(R.string.watch_list_page_title));
         refreshItems();
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point screenSize = new Point();
+        display.getSize(screenSize);
+
+        float dpiY = screenSize.y / getResources().getDisplayMetrics().density;
+
+        if(dpiY < 500) {
+            System.out.println("hiding bar");
+            ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        } else if(!((AppCompatActivity)getActivity()).getSupportActionBar().isShowing()){
+            System.out.println("showing bar");
+            ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        }
+
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -243,6 +297,15 @@ public class WatchListPage extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        System.out.println("Stopping");
+        if(!((AppCompatActivity)getActivity()).getSupportActionBar().isShowing()){
+            System.out.println("showing bar");
+            ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        }
+    }
 
     @Override
     public void onDetach() {
