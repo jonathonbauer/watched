@@ -18,7 +18,7 @@ The application does not require any initial setup.
 
 ## Mockup
 
-![Watch List](https://github.com/jonathonbauer/watched/blob/polish/images/watch_list.png | width=100)
+![Watch List](https://github.com/jonathonbauer/watched/blob/polish/images/watch_list.png)
 ![Upcoming Movies](https://github.com/jonathonbauer/watched/blob/polish/images/upcoming_movies.png)
 <br/>
 ![Search A Movie](https://github.com/jonathonbauer/watched/blob/polish/images/search_movie.png)
