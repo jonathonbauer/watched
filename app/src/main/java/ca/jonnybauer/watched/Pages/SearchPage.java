@@ -144,20 +144,19 @@ public class SearchPage extends Fragment {
 
 
 //         Search Field event handler - when the users taps the search icon
-//        searchField.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                // Make sure the event was fired on the search icon
-//                if(event.getAction() == MotionEvent.ACTION_UP) {
-//                    if(event.getRawX() >= searchField.getRight() - searchField.getCompoundDrawables()[2].getBounds().width()){
-//                        processSearchQuery();
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//        });
+        searchField.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Make sure the event was fired on the search icon
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= searchField.getRight() - searchField.getCompoundDrawables()[2].getBounds().width()){
+                        processSearchQuery();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         // Search Field event listener - when the user presses enter
         searchField.setOnKeyListener(new View.OnKeyListener() {

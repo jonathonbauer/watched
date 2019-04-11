@@ -121,7 +121,8 @@ public class WatchListPage extends Fragment {
         spinner = view.findViewById(R.id.watchListFilterSpinner);
 
 
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, R.layout.support_simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, R.layout.spinner_item);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(0);
 
@@ -129,6 +130,7 @@ public class WatchListPage extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView selectedItem = (TextView) parent.getChildAt(0);
+
                 if(selectedItem != null) {
                     selectedItem.setTextColor(getResources().getColor(R.color.mainFontColor));
                 }
@@ -172,6 +174,7 @@ public class WatchListPage extends Fragment {
         float dpiX = screenSize.x / getResources().getDisplayMetrics().density;
 
         System.out.println(dpiX);
+
         if(dpiX > 450 && dpiX < 680) {
             System.out.println("Span count is " + spanCount);
             spanCount = 3;
