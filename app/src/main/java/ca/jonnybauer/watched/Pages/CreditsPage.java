@@ -60,6 +60,9 @@ public class CreditsPage extends Fragment {
         CreditsAdapter adapter = new CreditsAdapter(getChildFragmentManager(), credits);
         viewPager.setAdapter(adapter);
 
+        // Set the animation to the viewpager
+        viewPager.setPageTransformer(true, new CreditAnimation());
+
         // Get the pageviewIndicator
         PageIndicatorView pageIndicatorView = view.findViewById(R.id.credits_indicator);
         pageIndicatorView.setViewPager(viewPager);

@@ -4,7 +4,15 @@
     <color name="colorPrimaryDark">#540005</color>
     <color name="colorAccent">#A00000</color>
     <color name="backgroundColor">#1B2335</color>
-    <color name="accentBackgroundColor">#000000</color>
+    <color name="accentBackgroundColor">#8fa3a3</color>
+
+    <!--<color name="colorPrimary">#b71c1c</color>-->
+    <!--<color name="colorPrimaryDark">#7f0000</color>-->
+    <!--<color name="colorAccent">#ff5f52</color>-->
+    <!--<color name="backgroundColor">#1B2335</color>-->
+    <!--<color name="accentBackgroundColor">#00000f</color>-->
+
+
 
     <color name="mainFontColor">#FFFFFF</color>
     <color name="creditBackground">#57637D</color>
