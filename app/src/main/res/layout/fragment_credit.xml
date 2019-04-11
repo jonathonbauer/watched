@@ -3,16 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".Pages.CreditFragment">
 
     <android.support.v7.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="500dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/creditBackground"
+        app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,8 +23,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/credit_background">
 
             <TextView
                 android:id="@+id/credit_title"
@@ -30,7 +34,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:fontFamily="@font/nunito"
                 android:text="@string/credit_title"
+                android:textColor="@color/mainFontColor"
                 android:textSize="@dimen/title_font_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,25 +49,32 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                android:fontFamily="@font/raleway"
                 android:padding="5dp"
                 android:text="@string/search_result_plot_placeholder"
+                android:textColor="@color/mainFontColor"
                 android:textSize="@dimen/content_font_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/credit_title" />
 
-            <ImageView
+            <Button
                 android:id="@+id/credit_link"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:contentDescription="@string/credit_link"
-                android:src="@drawable/ic_web_black_24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/button"
+                android:elevation="7dp"
+                android:text="Website"
+                android:textColor="@color/mainFontColor"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/credit_desc" />
+
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

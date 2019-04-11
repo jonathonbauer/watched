@@ -7,4 +7,5 @@
     <color name="accentBackgroundColor">#000000</color>
 
     <color name="mainFontColor">#FFFFFF</color>
+    <color name="creditBackground">#57637D</color>
 </resources>

@@ -240,18 +240,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     return false;
                 }
             });
-
-            Preference credits = findPreference("credits");
-            credits.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    System.out.println("Credits Clicked");
-
-
-
-                    return false;
-                }
-            });
+//
+//            Preference credits = findPreference("credits");
+//            credits.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference) {
+//                    System.out.println("Credits Clicked");
+//
+//
+//
+//                    return false;
+//                }
+//            });
 
 
 
