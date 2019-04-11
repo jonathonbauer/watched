@@ -184,8 +184,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Clear Data", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-//                            DBHelper dbHelper = new DBHelper(getContext());
+                            // Delete the database
                             getContext().deleteDatabase(DBHelper.DATABASE_NAME);
+                            // Remove the users location in the preferences
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            preferences.edit().putLong("user_lat", 0).apply();
+                            preferences.edit().putLong("user_lng", 0).apply();
                             Toast.makeText(getContext(), "Data Cleared", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }

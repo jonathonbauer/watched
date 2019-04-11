@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -214,10 +215,14 @@ public class TheatresPage extends Fragment{
                     preferences.edit().putLong("user_lat", Double.doubleToRawLongBits(location.getLatitude())).apply();
                     preferences.edit().putLong("user_lng", Double.doubleToRawLongBits(location.getLongitude())).apply();
                     System.out.println("New Location saved: " + preferences.getAll());
+                    map.setMyLocationEnabled(true);
+                    Toast toast = Toast.makeText(getContext(), "Getting location for the first time.", Toast.LENGTH_LONG);
+                    toast.show();
                 } else {
                     location = new Location("");
                     location.setLatitude(Double.longBitsToDouble(preferences.getLong("user_lat",0)));
                     location.setLongitude(Double.longBitsToDouble(preferences.getLong("user_lng", 0)));
+                    map.setMyLocationEnabled(false);
                 }
 
             } else {
@@ -226,6 +231,12 @@ public class TheatresPage extends Fragment{
         } else {
             System.out.println("User disabled save location");
             location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
+            if(preferences.getLong("user_lat", 0) != 0) {
+                preferences.edit().putLong("user_lat", 0).apply();
+                preferences.edit().putLong("user_lng", 0).apply();
+                map.setMyLocationEnabled(true);
+            }
+            preferences.getLong("user_lat", 0);
 
         }
 
@@ -266,7 +277,7 @@ public class TheatresPage extends Fragment{
                         public void onMapReady(GoogleMap googleMap) {
                             map = googleMap;
                             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                                map.setMyLocationEnabled(true);
+
                             }
                             for (int i = 0; i < theatres.size(); i++) {
                                 LatLng coordinates = new LatLng(theatres.get(i).getLatitude(), theatres.get(i).getLongitude());
