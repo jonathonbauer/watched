@@ -86,7 +86,7 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
                     if(theatres.get(i).getFavourite() == 1) {
                         theatres.get(i).setFavourite(0);
                         markers.get(i).hideInfoWindow();
-                        markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                        markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
                     }
                 }
@@ -99,7 +99,7 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 markers.get(viewHolder.getAdapterPosition()).showInfoWindow();
-                markers.get(viewHolder.getAdapterPosition()).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                markers.get(viewHolder.getAdapterPosition()).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                 selectedTheatre.setFavourite(1);
                 notifyDataSetChanged();
 
@@ -161,6 +161,14 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         });
 
 
+    }
+
+    public ArrayList<Marker> getMarkers() {
+        return markers;
+    }
+
+    public void setMarkers(ArrayList<Marker> markers) {
+        this.markers = markers;
     }
 
     @Override

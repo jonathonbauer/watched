@@ -284,14 +284,17 @@ public class TheatresPage extends Fragment{
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             map = googleMap;
-                            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-                            }
+                            markers.clear();
+                            adapter.setMarkers(markers);
+                            adapter.notifyDataSetChanged();
+
                             for (int i = 0; i < theatres.size(); i++) {
                                 LatLng coordinates = new LatLng(theatres.get(i).getLatitude(), theatres.get(i).getLongitude());
-                                markers.add(googleMap.addMarker(new MarkerOptions().position(coordinates).title(theatres.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))));
+                                markers.add(googleMap.addMarker(new MarkerOptions().position(coordinates).title(theatres.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))));
 
                             }
+
 
                             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                 @Override
@@ -302,12 +305,12 @@ public class TheatresPage extends Fragment{
                                         if (marker.equals(markers.get(i))) {
                                             System.out.println("Tapped on: " + completeTheatres.get(i).getName());
                                             completeTheatres.get(i).setFavourite(1);
-                                            markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                            markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                                             manager.scrollToPositionWithOffset(i, 5);
                                         } else {
                                             System.out.println("No match");
                                             completeTheatres.get(i).setFavourite(0);
-                                            markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                                            markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                                         }
                                     }
                                     adapter.notifyDataSetChanged();
