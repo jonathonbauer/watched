@@ -21,7 +21,7 @@ The application does not require any initial setup.
 ![Watch List](https://github.com/jonathonbauer/watched/blob/polish/images/watch_list.jpg)
 ![Upcoming Movies](https://github.com/jonathonbauer/watched/blob/polish/images/upcoming_movies.jpg)
 <br/>
-![Search A Movie](https://github.com/jonathonbauer/watched/blob/polish/images/search_movie.jpg)
+![Search A Movie](https://github.com/jonathonbauer/watched/blob/polish/images/movie_search.jpg)
 ![Movie Page](https://github.com/jonathonbauer/watched/blob/polish/images/movie_page.jpg)
 <br/>
 ![Nearby Theatres](https://github.com/jonathonbauer/watched/blob/polish/images/nearby_theatres.jpg)
