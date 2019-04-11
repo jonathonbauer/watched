@@ -168,23 +168,23 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         super.onBackPressed();
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        selectedFragment = fm.findFragmentByTag("Watch List");
-        if(selectedFragment == null) {
-            transaction.replace(R.id.main_content, new WatchListPage(), "Watch List");
-
-        } else if(!selectedFragment.isVisible()) {
-            transaction.replace(R.id.main_content, selectedFragment);
-        }
-        setTitle(getString(R.string.watch_list_page_title));
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_watch_list);
-
-        transaction.addToBackStack(null);
-        transaction.commit();
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction transaction = fm.beginTransaction();
+//        selectedFragment = fm.findFragmentByTag("Watch List");
+//        if(selectedFragment == null) {
+//            transaction.replace(R.id.main_content, new WatchListPage(), "Watch List");
+//
+//        } else if(!selectedFragment.isVisible()) {
+//            transaction.replace(R.id.main_content, selectedFragment);
+//        }
+//        setTitle(getString(R.string.watch_list_page_title));
+//
+//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        navigation.setSelectedItemId(R.id.navigation_watch_list);
+//
+//        transaction.addToBackStack(null);
+//        transaction.commit();
 
 
     }

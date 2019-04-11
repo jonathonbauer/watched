@@ -58,7 +58,6 @@ public class MoviePopUp extends Fragment {
     public static MoviePopUp newInstance(Movie movie) {
         MoviePopUp fragment = new MoviePopUp();
         Bundle args = new Bundle();
-        System.out.println(movie.getReleaseDate());
         args.putParcelable(ARG_MOVIE, movie);
         fragment.setArguments(args);
         return fragment;
@@ -77,6 +76,8 @@ public class MoviePopUp extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie_pop_up, container, false);
+
+
 
         // Create the DB connection
         dbHelper = new DBHelper(getContext());
@@ -182,8 +183,6 @@ public class MoviePopUp extends Fragment {
                 }
             }
         });
-
-
         return view;
     }
 
@@ -212,6 +211,7 @@ public class MoviePopUp extends Fragment {
     public void onResume() {
         super.onResume();
         changeButtons();
+        getActivity().setTitle(watchListMovie.getTitle());
 
     }
 

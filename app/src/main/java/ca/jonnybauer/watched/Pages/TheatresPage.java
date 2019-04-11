@@ -312,6 +312,13 @@ public class TheatresPage extends Fragment{
         }
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.theatres_page_title));
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
