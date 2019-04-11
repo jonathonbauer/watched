@@ -211,7 +211,7 @@ public class MoviePopUp extends Fragment {
     public void onResume() {
         super.onResume();
         changeButtons();
-        getActivity().setTitle(watchListMovie.getTitle());
+        getActivity().setTitle(mMovie.getTitle());
 
     }
 

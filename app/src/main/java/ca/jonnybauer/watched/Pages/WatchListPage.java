@@ -2,6 +2,7 @@ package ca.jonnybauer.watched.Pages;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -53,6 +54,7 @@ public class WatchListPage extends Fragment {
     private String watchListStyle;
     private Boolean showWatchedMovies;
     private View view;
+    private int spanCount;
 
     public WatchListPage() {
         // Required empty public constructor
@@ -91,20 +93,12 @@ public class WatchListPage extends Fragment {
             // Create the adapter
             adapter = new WatchListAdapter(watchList, getContext(), WatchListStyle.POSTER);
 
-            Display display = getActivity().getWindowManager().getDefaultDisplay();
-            Point screenSize = new Point();
-            display.getSize(screenSize);
+            setGridSpan();
 
             StaggeredGridLayoutManager layoutManager;
 
-            if(screenSize.x > 480) {
-                System.out.println("Screen size is larger: " + screenSize.x);
-                layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-            } else {
-                System.out.println("Screen size is smaller: " + screenSize.x);
-                layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            }
 
+            layoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
 
             // Pair the recyclerview with the layout manager and adapter
             recyclerView.setLayoutManager(layoutManager);
@@ -127,7 +121,6 @@ public class WatchListPage extends Fragment {
 
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, R.layout.support_simple_spinner_dropdown_item);
-//        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(0);
 
@@ -138,8 +131,6 @@ public class WatchListPage extends Fragment {
                 if(selectedItem != null) {
                     selectedItem.setTextColor(getResources().getColor(R.color.mainFontColor));
                 }
-
-//                selectedItem.setTextSize(25);
 
                 String selection = spinner.getSelectedItem().toString();
                 if(selection.equals("Date Added (Ascending)")){
@@ -172,6 +163,21 @@ public class WatchListPage extends Fragment {
         return view;
     }
 
+    public void setGridSpan(){
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point screenSize = new Point();
+        display.getSize(screenSize);
+
+        if(screenSize.x > 1440) {
+            System.out.println("Screen size is larger: " + screenSize.x);
+            spanCount = 3;
+
+        } else {
+            System.out.println("Screen size is smaller: " + screenSize.x);
+            spanCount = 2;
+        }
+    }
+
     public void refreshItems(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         watchListStyle = preferences.getString("watch_list_style", "1");
@@ -189,7 +195,7 @@ public class WatchListPage extends Fragment {
         }
 
         if(watchListStyle.equals("1")) {
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
             adapter = new WatchListAdapter(watchList, getContext(), WatchListStyle.POSTER);
         } else {
@@ -202,6 +208,14 @@ public class WatchListPage extends Fragment {
         }
 
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setGridSpan();
+        refreshItems();
+
     }
 
     @Override

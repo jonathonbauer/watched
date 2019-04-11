@@ -2,9 +2,11 @@ package ca.jonnybauer.watched.Pages;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
@@ -141,21 +143,21 @@ public class SearchPage extends Fragment {
         });
 
 
-        // Search Field event handler - when the users taps the search icon
-        searchField.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                // Make sure the event was fired on the search icon
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= searchField.getRight() - searchField.getCompoundDrawables()[2].getBounds().width()){
-                        processSearchQuery();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+//         Search Field event handler - when the users taps the search icon
+//        searchField.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                // Make sure the event was fired on the search icon
+//                if(event.getAction() == MotionEvent.ACTION_UP) {
+//                    if(event.getRawX() >= searchField.getRight() - searchField.getCompoundDrawables()[2].getBounds().width()){
+//                        processSearchQuery();
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            }
+//        });
 
         // Search Field event listener - when the user presses enter
         searchField.setOnKeyListener(new View.OnKeyListener() {
@@ -220,10 +222,14 @@ public class SearchPage extends Fragment {
         resultPoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_content, MoviePopUp.newInstance(selectedResult), "Movie Pop Up")
-                        .addToBackStack(null).commit();
+                if(selectedResult != null) {
+                    System.out.println("Clicked on " + selectedResult.getTitle());
+                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                    activity.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_content, MoviePopUp.newInstance(selectedResult), "Movie Pop Up")
+                            .addToBackStack(null).commit();
+                }
+
             }
         });
 
@@ -357,6 +363,16 @@ public class SearchPage extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.detach(this);
+        transaction.attach(this);
+        transaction.commit();
+    }
+
 
     /**
      * This adapter is going to be used to load the ListView on the search page with all the results.

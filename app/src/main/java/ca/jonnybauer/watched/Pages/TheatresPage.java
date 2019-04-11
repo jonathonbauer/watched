@@ -6,17 +6,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,12 +67,15 @@ public class TheatresPage extends Fragment{
     private ArrayList<Theatre> completeTheatres;
     private ArrayList<Marker> markers;
     private RecyclerView recyclerView;
-    LinearLayoutManager manager;
-    LocationManager locationManager;
-    TheatreAdapter adapter;
-    Location location;
+    private LinearLayoutManager manager;
+    private LocationManager locationManager;
+    private TheatreAdapter adapter;
+    private Location location;
     private double userLat;
     private double userLng;
+    private View view;
+    private LayoutInflater inflater;
+    private ViewGroup container;
 
 
     public TheatresPage() {
@@ -93,7 +99,9 @@ public class TheatresPage extends Fragment{
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_theatres_page, container, false);
+        view = inflater.inflate(R.layout.fragment_theatres_page, container, false);
+        this.inflater = inflater;
+        this.container = container;
 
 
         theatres = new ArrayList<>();
@@ -323,6 +331,14 @@ public class TheatresPage extends Fragment{
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.detach(this);
+        transaction.attach(this);
+        transaction.commit();
+    }
 
     @Override
     public void onResume() {
