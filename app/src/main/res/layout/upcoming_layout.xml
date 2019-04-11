@@ -24,6 +24,18 @@
             android:layout_height="wrap_content"
             android:background="@drawable/card_background">
 
+            <ImageView
+                android:id="@+id/upcomingPoster"
+                android:layout_width="100dp"
+                android:layout_height="180dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/noimagefound" />
+
             <TextView
                 android:id="@+id/upcomingTitle"
                 android:layout_width="0dp"
@@ -35,41 +47,41 @@
                 android:text="@string/search_result_title_placeholder"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/title_font_size"
-                app:layout_constraintEnd_toStartOf="@+id/upcomingReleaseDate"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/upcomingPoster"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/upcomingPlot"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/titilliumweb"
-                android:maxLines="6"
+                android:maxLines="4"
                 android:text="@string/search_result_plot_placeholder"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/content_font_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/upcomingCalendar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/upcomingTitle" />
+                app:layout_constraintStart_toEndOf="@+id/upcomingPoster"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingReleaseDate" />
 
             <TextView
                 android:id="@+id/upcomingReleaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:fontFamily="@font/raleway"
                 android:text="Date"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/subtitle_font_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/upcomingPoster"
+                app:layout_constraintTop_toBottomOf="@+id/upcomingTitle" />
 
             <ImageView
                 android:id="@+id/upcomingCalendar"
