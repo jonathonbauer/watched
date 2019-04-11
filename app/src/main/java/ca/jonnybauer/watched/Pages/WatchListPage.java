@@ -3,6 +3,7 @@ package ca.jonnybauer.watched.Pages;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,8 +91,20 @@ public class WatchListPage extends Fragment {
             // Create the adapter
             adapter = new WatchListAdapter(watchList, getContext(), WatchListStyle.POSTER);
 
-            // Create the layout manager
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            Point screenSize = new Point();
+            display.getSize(screenSize);
+
+            StaggeredGridLayoutManager layoutManager;
+
+            if(screenSize.x > 480) {
+                System.out.println("Screen size is larger: " + screenSize.x);
+                layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+            } else {
+                System.out.println("Screen size is smaller: " + screenSize.x);
+                layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            }
+
 
             // Pair the recyclerview with the layout manager and adapter
             recyclerView.setLayoutManager(layoutManager);
