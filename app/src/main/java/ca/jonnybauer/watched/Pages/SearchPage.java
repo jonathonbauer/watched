@@ -395,6 +395,7 @@ public class SearchPage extends Fragment {
             title.setText(titleString);
             String ratingString = result.getRating() + "";
             rating.setText(ratingString);
+
             if(result.getCredits() != null) {
                 actors.setText(result.getTopBilling());
             }
@@ -419,6 +420,7 @@ public class SearchPage extends Fragment {
         double rating = (selectedResult.getRating() / 10.0) * 5.0;
 
         resultRating.setRating((float) rating);
+        resultRating.setIndicator(true);
         resultPlot.setText(selectedResult.getPlot());
         Picasso.get().load(selectedResult.getPosterPath()).placeholder(R.drawable.noimagefound).into(resultPoster);
 

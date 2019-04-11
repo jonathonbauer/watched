@@ -103,6 +103,7 @@ public class MoviePopUp extends Fragment {
 
 
         rating.setRating((float) ratingValue);
+        rating.setIndicator(true);
         credits.setText(mMovie.getTopBilling());
         plot.setText(mMovie.getPlot());
         Picasso.get().load(mMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(poster);
