@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class SearchPage extends Fragment {
     ImageView resultWatched;
     ImageView resultAdd;
     ArrayList<Movie> results;
+    ProgressBar progressBar;
 
     // Define an ArrayList for the credits
     ArrayList<String> movieCredits;
@@ -123,6 +125,7 @@ public class SearchPage extends Fragment {
         resultFavourite = view.findViewById(R.id.searchResultFavourite);
         resultWatched = view.findViewById(R.id.searchResultWatched);
         resultAdd = view.findViewById(R.id.searchResultAdd);
+        progressBar = view.findViewById(R.id.searchFieldProgress);
 
         // Hide the cardview elements by default
         toggleCardView();
@@ -472,6 +475,9 @@ public class SearchPage extends Fragment {
      * It makes the API call and updates the listview with the results
      */
     public void processSearchQuery(){
+        listView.setVisibility(View.GONE);
+        resultsCardview.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         searchFlag = true;
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -515,6 +521,9 @@ public class SearchPage extends Fragment {
 
                         selectedResult = adapter.getItem(0);
                         setCardViewValues(selectedResult);
+                        progressBar.setVisibility(View.GONE);
+                        listView.setVisibility(View.VISIBLE);
+                        resultsCardview.setVisibility(View.VISIBLE);
                     } else {
                         String noResults = "No results for " + cleanInput;
                         Toast toast = Toast.makeText(getContext(), noResults, Toast.LENGTH_LONG);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
@@ -66,6 +67,19 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             // Set the title
             listViewHolder.title.setText(movie.getTitle());
+
+            // Set the Plot
+            listViewHolder.plot.setText(movie.getPlot());
+
+            // Set the poster
+            Picasso.get().load(movie.getPosterPath()).placeholder(R.drawable.noimagefound).into(listViewHolder.poster);
+
+            // Set the release date
+            Calendar date = Calendar.getInstance();
+            date.setTime(movie.getReleaseDate());
+            String dateString = String.format("%1$tb %1$te, %1$tY", date);
+            listViewHolder.date.setText(dateString);
+
 
             // Change the add icon if it has been added already and hasn't been deleted
 
@@ -176,9 +190,32 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
 
-    // Custom ViewHolder to be used to hold the List Layout
+//    // Custom ViewHolder to be used to hold the List Layout
+//    class ListViewHolder extends RecyclerView.ViewHolder {
+//        protected TextView title;
+//        protected ImageView favourite;
+//        protected ImageView watched;
+//        protec
+//        protected Context context;
+//
+//
+//        public ListViewHolder(View view, Context context) {
+//            super(view);
+//            this.title = view.findViewById(R.id.watchListTextTitle);
+//            this.favourite = view.findViewById(R.id.watchListTextFavourite);
+//            this.watched = view.findViewById(R.id.watchListTextWatched);
+//            this.context = context;
+//        }
+//
+//               
+//    }
+
+    // Custom ViewHolder to be used to hold the List Item
     class ListViewHolder extends RecyclerView.ViewHolder {
         protected TextView title;
+        protected TextView date;
+        protected TextView plot;
+        protected ImageView poster;
         protected ImageView favourite;
         protected ImageView watched;
         protected Context context;
@@ -187,6 +224,9 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public ListViewHolder(View view, Context context) {
             super(view);
             this.title = view.findViewById(R.id.watchListTextTitle);
+            this.date = view.findViewById(R.id.watchListTextReleaseDate);
+            this.plot = view.findViewById(R.id.watchListTextPlot);
+            this.poster = view.findViewById(R.id.watchListTextPoster);
             this.favourite = view.findViewById(R.id.watchListTextFavourite);
             this.watched = view.findViewById(R.id.watchListTextWatched);
             this.context = context;
