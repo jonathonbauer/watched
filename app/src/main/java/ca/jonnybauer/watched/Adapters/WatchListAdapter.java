@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
@@ -64,9 +65,21 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             final Movie movie = watchList.get(listViewHolder.getAdapterPosition());
             Movie currentMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
 
-
             // Set the title
             listViewHolder.title.setText(movie.getTitle());
+
+            // Set the Plot
+            listViewHolder.plot.setText(movie.getPlot());
+
+            // Set the poster
+            Picasso.get().load(movie.getPosterPath()).placeholder(R.drawable.noimagefound).into(listViewHolder.poster);
+
+            // Set the release date
+            Calendar date = Calendar.getInstance();
+            date.setTime(movie.getReleaseDate());
+            String dateString = String.format("%1$tb %1$te, %1$tY", date);
+            listViewHolder.date.setText(dateString);
+
 
             // Change the add icon if it has been added already and hasn't been deleted
 
@@ -124,6 +137,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     activity.getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out)
                             .replace(R.id.main_content, MoviePopUp.newInstance(movie), "Movie Pop Up")
                             .addToBackStack(null).commit();
                 }
@@ -140,63 +154,13 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             // Set the poster
             Picasso.get().load(currentMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(posterViewHolder.poster);
 
-            // Change the add icon if it has been added already and hasn't been deleted
-
-            if(currentMovie.getWatched() == 1) {
-                posterViewHolder.watched.setImageResource(R.drawable.ic_check_circle_black_24dp);
-            } else {
-                posterViewHolder.watched.setImageResource(R.drawable.ic_check_black_24dp);
-            }
-
-            // Change the add icon if it has been added already and hasn't been deleted
-            if(currentMovie.getFavourite() == 1) {
-                posterViewHolder.favourite.setImageResource(R.drawable.ic_star_black_24dp);
-            } else {
-                posterViewHolder.favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
-            }
-
-            // Event handlers
-
-            // watched button event handler
-            posterViewHolder.watched.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Movie selectedMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
-                    if(selectedMovie.getWatched() == 0) {
-                        posterViewHolder.watched.setImageResource(R.drawable.ic_check_circle_black_24dp);
-                        selectedMovie.setWatched(1);
-                    } else {
-                        posterViewHolder.watched.setImageResource(R.drawable.ic_check_black_24dp);
-                        selectedMovie.setWatched(0);
-                    }
-                    WatchListTable.getInstance().updateMovie(selectedMovie, dbHelper);
-                    System.out.println("Watched button clicked on: " + selectedMovie.getTitle() + " ID: " + viewHolder.getAdapterPosition());
-                }
-            });
-
-            // Favourite button event handler
-            posterViewHolder.favourite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Movie selectedMovie = WatchListTable.getInstance().getMovieWithTmdbID(dbHelper, movie.getTmdbID());
-                    if(selectedMovie.getFavourite() == 0) {
-                        posterViewHolder.favourite.setImageResource(R.drawable.ic_star_black_24dp);
-                        selectedMovie.setFavourite(1);
-                    } else {
-                        posterViewHolder.favourite.setImageResource(R.drawable.ic_star_border_black_24dp);
-                        selectedMovie.setFavourite(0);
-                    }
-                    WatchListTable.getInstance().updateMovie(selectedMovie, dbHelper);
-                }
-            });
-
-
 
             posterViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
                     activity.getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out)
                             .replace(R.id.main_content, MoviePopUp.newInstance(movie), "Movie Pop Up")
                             .addToBackStack(null).commit();
                 }
@@ -214,25 +178,44 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     // Custom ViewHolder to be used to hold the Poster Layout
     class PosterViewHolder extends RecyclerView.ViewHolder {
         protected ImageView poster;
-        protected ImageView favourite;
-        protected ImageView watched;
         protected Context context;
 
 
         public PosterViewHolder(View view, Context context) {
             super(view);
             this.poster = view.findViewById(R.id.watchListPoster);
-            this.favourite = view.findViewById(R.id.watchListPosterFavorite);
-            this.watched = view.findViewById(R.id.watchListPosterWatched);
             this.context = context;
         }
 
     }
 
 
-    // Custom ViewHolder to be used to hold the List Layout
+//    // Custom ViewHolder to be used to hold the List Layout
+//    class ListViewHolder extends RecyclerView.ViewHolder {
+//        protected TextView title;
+//        protected ImageView favourite;
+//        protected ImageView watched;
+//        protec
+//        protected Context context;
+//
+//
+//        public ListViewHolder(View view, Context context) {
+//            super(view);
+//            this.title = view.findViewById(R.id.watchListTextTitle);
+//            this.favourite = view.findViewById(R.id.watchListTextFavourite);
+//            this.watched = view.findViewById(R.id.watchListTextWatched);
+//            this.context = context;
+//        }
+//
+//               
+//    }
+
+    // Custom ViewHolder to be used to hold the List Item
     class ListViewHolder extends RecyclerView.ViewHolder {
         protected TextView title;
+        protected TextView date;
+        protected TextView plot;
+        protected ImageView poster;
         protected ImageView favourite;
         protected ImageView watched;
         protected Context context;
@@ -241,6 +224,9 @@ public class WatchListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public ListViewHolder(View view, Context context) {
             super(view);
             this.title = view.findViewById(R.id.watchListTextTitle);
+            this.date = view.findViewById(R.id.watchListTextReleaseDate);
+            this.plot = view.findViewById(R.id.watchListTextPlot);
+            this.poster = view.findViewById(R.id.watchListTextPoster);
             this.favourite = view.findViewById(R.id.watchListTextFavourite);
             this.watched = view.findViewById(R.id.watchListTextWatched);
             this.context = context;

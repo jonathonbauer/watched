@@ -2,9 +2,11 @@ package ca.jonnybauer.watched.Pages;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +66,7 @@ public class SearchPage extends Fragment {
     ImageView resultWatched;
     ImageView resultAdd;
     ArrayList<Movie> results;
+    ProgressBar progressBar;
 
     // Define an ArrayList for the credits
     ArrayList<String> movieCredits;
@@ -121,6 +125,7 @@ public class SearchPage extends Fragment {
         resultFavourite = view.findViewById(R.id.searchResultFavourite);
         resultWatched = view.findViewById(R.id.searchResultWatched);
         resultAdd = view.findViewById(R.id.searchResultAdd);
+        progressBar = view.findViewById(R.id.searchFieldProgress);
 
         // Hide the cardview elements by default
         toggleCardView();
@@ -141,11 +146,10 @@ public class SearchPage extends Fragment {
         });
 
 
-        // Search Field event handler - when the users taps the search icon
+//         Search Field event handler - when the users taps the search icon
         searchField.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 // Make sure the event was fired on the search icon
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= searchField.getRight() - searchField.getCompoundDrawables()[2].getBounds().width()){
@@ -220,10 +224,14 @@ public class SearchPage extends Fragment {
         resultPoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_content, MoviePopUp.newInstance(selectedResult), "Movie Pop Up")
-                        .addToBackStack(null).commit();
+                if(selectedResult != null) {
+                    System.out.println("Clicked on " + selectedResult.getTitle());
+                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                    activity.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_content, MoviePopUp.newInstance(selectedResult), "Movie Pop Up")
+                            .addToBackStack(null).commit();
+                }
+
             }
         });
 
@@ -358,6 +366,16 @@ public class SearchPage extends Fragment {
         return view;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.detach(this);
+        transaction.attach(this);
+        transaction.commit();
+    }
+
+
     /**
      * This adapter is going to be used to load the ListView on the search page with all the results.
      * It is an extension of the ArrayAdapter class
@@ -395,6 +413,7 @@ public class SearchPage extends Fragment {
             title.setText(titleString);
             String ratingString = result.getRating() + "";
             rating.setText(ratingString);
+
             if(result.getCredits() != null) {
                 actors.setText(result.getTopBilling());
             }
@@ -419,6 +438,7 @@ public class SearchPage extends Fragment {
         double rating = (selectedResult.getRating() / 10.0) * 5.0;
 
         resultRating.setRating((float) rating);
+        resultRating.setIndicator(true);
         resultPlot.setText(selectedResult.getPlot());
         Picasso.get().load(selectedResult.getPosterPath()).placeholder(R.drawable.noimagefound).into(resultPoster);
 
@@ -455,6 +475,9 @@ public class SearchPage extends Fragment {
      * It makes the API call and updates the listview with the results
      */
     public void processSearchQuery(){
+        listView.setVisibility(View.GONE);
+        resultsCardview.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         searchFlag = true;
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -498,6 +521,9 @@ public class SearchPage extends Fragment {
 
                         selectedResult = adapter.getItem(0);
                         setCardViewValues(selectedResult);
+                        progressBar.setVisibility(View.GONE);
+                        listView.setVisibility(View.VISIBLE);
+                        resultsCardview.setVisibility(View.VISIBLE);
                     } else {
                         String noResults = "No results for " + cleanInput;
                         Toast toast = Toast.makeText(getContext(), noResults, Toast.LENGTH_LONG);
@@ -551,6 +577,12 @@ public class SearchPage extends Fragment {
         }
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.search_page_title));
+    }
 
     @Override
     public void onAttach(Context context) {

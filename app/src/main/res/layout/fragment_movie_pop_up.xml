@@ -7,7 +7,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundColor">
 
 
         <ImageView
@@ -28,9 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:fontFamily="@font/nunito"
             android:text="@string/search_result_title_placeholder"
             android:textAlignment="center"
-            android:textSize="@dimen/title_font_size"
+            android:textColor="@color/mainFontColor"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/moviePopUpPoster" />
@@ -42,14 +45,31 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:clickable="false"
             android:isIndicator="true"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/moviePopUpTitle"
+            app:srb_borderColor="@color/mainFontColor"
             app:srb_numberOfStars="5"
             app:srb_starSize="25dp"
             app:srb_stepSize="1" />
+
+        <TextView
+            android:id="@+id/moviePopUpReleaseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/raleway"
+            android:text="Release Date"
+            android:textColor="@color/mainFontColor"
+            android:textSize="@dimen/subtitle_font_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/moviePopUpRating" />
 
         <LinearLayout
             android:id="@+id/moviePopUpIconsLayout"
@@ -62,7 +82,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/moviePopUpRating">
+            app:layout_constraintTop_toBottomOf="@+id/moviePopUpReleaseDate">
 
             <ImageView
                 android:id="@+id/moviePopUpFavourite"
@@ -94,8 +114,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:fontFamily="@font/raleway"
             android:text="@string/search_result_actors_placeholder"
             android:textAlignment="center"
+            android:textColor="@color/mainFontColor"
+            android:textSize="@dimen/subtitle_font_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/moviePopUpIconsLayout" />
@@ -104,11 +127,14 @@
             android:id="@+id/moviePopUpPlot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
+            android:fontFamily="@font/titilliumweb"
             android:text="@string/search_result_plot_placeholder"
+            android:textColor="@color/mainFontColor"
+            android:textSize="@dimen/content_font_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".Pages.TheatresPage">
 
     <com.google.android.gms.maps.MapView
@@ -26,10 +27,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:layoutAnimation="@anim/recyclerview_animation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/theatreMV" >
+        app:layout_constraintTop_toBottomOf="@+id/theatreMV">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -41,7 +43,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:src="@drawable/ic_theaters_black_24dp"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/accentBackgroundColor"
         app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/theatreRV"
         app:layout_constraintEnd_toEndOf="parent"

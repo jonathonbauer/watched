@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,10 +54,11 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
 
         Calendar date = Calendar.getInstance();
         date.setTime(movie.getReleaseDate());
-//        String dateString = date.get(Calendar.MONTH) + "/" + date.get(Calendar.DATE) + "/" + date.get(Calendar.YEAR);
         String dateString = String.format("%1$tb %1$te, %1$tY", date);
-//        String.format("Duke's Birthday: %1$tb %1$te, %1$tY", c)
         viewHolder.date.setText(dateString);
+
+        // Set the poster
+        Picasso.get().load(movie.getPosterPath()).placeholder(R.drawable.noimagefound).into(viewHolder.poster);
 
         viewHolder.plot.setText(movie.getPlot());
 
@@ -114,12 +117,14 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.move_in, R.anim.move_out, R.anim.move_back_in, R.anim.move_back_out)
                         .replace(R.id.main_content, MoviePopUp.newInstance(movie), "Movie Pop Up")
                         .addToBackStack(null).commit();
             }
         });
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -132,6 +137,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
         protected TextView title;
         protected TextView date;
         protected TextView plot;
+        protected ImageView poster;
         protected ImageView calendar;
         protected ImageView add;
         protected Context context;
@@ -142,6 +148,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingAdapter.Upcomi
             this.title = view.findViewById(R.id.upcomingTitle);
             this.date = view.findViewById(R.id.upcomingReleaseDate);
             this.plot = view.findViewById(R.id.upcomingPlot);
+            this.poster = view.findViewById(R.id.upcomingPoster);
             this.calendar = view.findViewById(R.id.upcomingCalendar);
             this.add = view.findViewById(R.id.upcomingAddButton);
             this.context = context;

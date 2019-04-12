@@ -126,7 +126,7 @@ public class WatchListTable {
                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
                     credits,
-                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
+                    new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
                     cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_FAVOURITE)),
@@ -166,7 +166,7 @@ public class WatchListTable {
                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
                     credits,
-                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
+                    new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
                     cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_FAVOURITE)),
@@ -178,6 +178,7 @@ public class WatchListTable {
             db.close();
             return movie;
         } else {
+            db.close();
             return null;
         }
     }
@@ -202,7 +203,7 @@ public class WatchListTable {
                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH)),
                     credits,
-                    new Date(cursor.getInt(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
+                    new Date(cursor.getLong(cursor.getColumnIndex(COLUMN_RELEASE_DATE))),
                     cursor.getDouble(cursor.getColumnIndex(COLUMN_RATING)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_PLOT)),
                     cursor.getInt(cursor.getColumnIndex(COLUMN_FAVOURITE)),
@@ -226,6 +227,17 @@ public class WatchListTable {
         }
         return filteredMovies;
     }
+
+    public ArrayList<Movie> filterWatchedAndDeletedMovies(ArrayList<Movie> movies) {
+        ArrayList<Movie> filteredMovies = new ArrayList<>();
+        for(int i=0; i < movies.size(); i++) {
+            if(movies.get(i).getWatched() == 0 && movies.get(i).getDeleted() == 0) {
+                filteredMovies.add(movies.get(i));
+            }
+        }
+        return filteredMovies;
+    }
+
 
 
     // Update Record Query
