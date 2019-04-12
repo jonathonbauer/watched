@@ -1,9 +1,11 @@
 package ca.jonnybauer.watched.Pages;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,10 @@ import android.widget.TextView;
 
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.squareup.picasso.Picasso;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import ca.jonnybauer.watched.Helpers.DBHelper;
 import ca.jonnybauer.watched.Models.Movie;
@@ -35,6 +41,7 @@ public class MoviePopUp extends Fragment {
     private DBHelper dbHelper;
 
     private TextView title;
+    private TextView releaseDate;
     private SimpleRatingBar rating;
     private ImageView poster;
     private TextView credits;
@@ -72,11 +79,14 @@ public class MoviePopUp extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie_pop_up, container, false);
 
+
+
         // Create the DB connection
         dbHelper = new DBHelper(getContext());
 
         // Get the XML elements
         title = view.findViewById(R.id.moviePopUpTitle);
+        releaseDate = view.findViewById(R.id.moviePopUpReleaseDate);
         rating = view.findViewById(R.id.moviePopUpRating);
         poster = view.findViewById(R.id.moviePopUpPoster);
         credits = view.findViewById(R.id.moviePopUpTopBilling);
@@ -88,7 +98,15 @@ public class MoviePopUp extends Fragment {
         // Set the appropriate text values to the XML
         title.setText(mMovie.getTitle());
         double ratingValue = (mMovie.getRating() / 10.0) * 5.0;
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(mMovie.getReleaseDate());
+        String dateString = String.format("%1$tb %1$te, %1$tY", date);
+        releaseDate.setText(dateString);
+
+
         rating.setRating((float) ratingValue);
+        rating.setIndicator(true);
         credits.setText(mMovie.getTopBilling());
         plot.setText(mMovie.getPlot());
         Picasso.get().load(mMovie.getPosterPath()).placeholder(R.drawable.noimagefound).into(poster);
@@ -167,8 +185,6 @@ public class MoviePopUp extends Fragment {
                 }
             }
         });
-
-
         return view;
     }
 
@@ -197,7 +213,18 @@ public class MoviePopUp extends Fragment {
     public void onResume() {
         super.onResume();
         changeButtons();
+        getActivity().setTitle(mMovie.getTitle());
 
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.detach(this);
+        transaction.attach(this);
+        transaction.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

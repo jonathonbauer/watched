@@ -6,23 +6,27 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,12 +67,15 @@ public class TheatresPage extends Fragment{
     private ArrayList<Theatre> completeTheatres;
     private ArrayList<Marker> markers;
     private RecyclerView recyclerView;
-    LinearLayoutManager manager;
-    LocationManager locationManager;
-    TheatreAdapter adapter;
-    Location location;
+    private LinearLayoutManager manager;
+    private LocationManager locationManager;
+    private TheatreAdapter adapter;
+    private Location location;
     private double userLat;
     private double userLng;
+    private View view;
+    private LayoutInflater inflater;
+    private ViewGroup container;
 
 
     public TheatresPage() {
@@ -92,7 +99,9 @@ public class TheatresPage extends Fragment{
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_theatres_page, container, false);
+        view = inflater.inflate(R.layout.fragment_theatres_page, container, false);
+        this.inflater = inflater;
+        this.container = container;
 
 
         theatres = new ArrayList<>();
@@ -214,10 +223,14 @@ public class TheatresPage extends Fragment{
                     preferences.edit().putLong("user_lat", Double.doubleToRawLongBits(location.getLatitude())).apply();
                     preferences.edit().putLong("user_lng", Double.doubleToRawLongBits(location.getLongitude())).apply();
                     System.out.println("New Location saved: " + preferences.getAll());
+                    map.setMyLocationEnabled(true);
+                    Toast toast = Toast.makeText(getContext(), "Getting location for the first time.", Toast.LENGTH_LONG);
+                    toast.show();
                 } else {
                     location = new Location("");
                     location.setLatitude(Double.longBitsToDouble(preferences.getLong("user_lat",0)));
                     location.setLongitude(Double.longBitsToDouble(preferences.getLong("user_lng", 0)));
+                    map.setMyLocationEnabled(false);
                 }
 
             } else {
@@ -226,6 +239,12 @@ public class TheatresPage extends Fragment{
         } else {
             System.out.println("User disabled save location");
             location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
+            if(preferences.getLong("user_lat", 0) != 0) {
+                preferences.edit().putLong("user_lat", 0).apply();
+                preferences.edit().putLong("user_lng", 0).apply();
+                map.setMyLocationEnabled(true);
+            }
+            preferences.getLong("user_lat", 0);
 
         }
 
@@ -265,14 +284,17 @@ public class TheatresPage extends Fragment{
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             map = googleMap;
-                            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                                map.setMyLocationEnabled(true);
-                            }
+
+                            markers.clear();
+                            adapter.setMarkers(markers);
+                            adapter.notifyDataSetChanged();
+
                             for (int i = 0; i < theatres.size(); i++) {
                                 LatLng coordinates = new LatLng(theatres.get(i).getLatitude(), theatres.get(i).getLongitude());
-                                markers.add(googleMap.addMarker(new MarkerOptions().position(coordinates).title(theatres.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))));
+                                markers.add(googleMap.addMarker(new MarkerOptions().position(coordinates).title(theatres.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))));
 
                             }
+
 
                             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                 @Override
@@ -283,12 +305,12 @@ public class TheatresPage extends Fragment{
                                         if (marker.equals(markers.get(i))) {
                                             System.out.println("Tapped on: " + completeTheatres.get(i).getName());
                                             completeTheatres.get(i).setFavourite(1);
-                                            markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                            markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                                             manager.scrollToPositionWithOffset(i, 5);
                                         } else {
                                             System.out.println("No match");
                                             completeTheatres.get(i).setFavourite(0);
-                                            markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                                            markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                                         }
                                     }
                                     adapter.notifyDataSetChanged();
@@ -310,6 +332,21 @@ public class TheatresPage extends Fragment{
             });
 
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.detach(this);
+        transaction.attach(this);
+        transaction.commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.theatres_page_title));
     }
 
     @Override

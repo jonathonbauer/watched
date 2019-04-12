@@ -100,7 +100,8 @@ public class UpcomingPage extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getUpcomingMovies();
+        getActivity().setTitle(getString(R.string.upcoming_page_title));
+//        getUpcomingMovies();
     }
 
 

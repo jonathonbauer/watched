@@ -106,6 +106,10 @@
     <string name="save_location_title">Save Location</string>
     <string name="save_location_description">Should watched save your location, or ask every time?</string>
 
+    <string name="show_watched_title">Show Watched Movies</string>
+    <string name="show_watched_description">Should movies you have marked as watched be shown in the watch list?</string>
+
+
     <string name="credits_title">Credits</string>
     <string name="credits_description">Credits for the watched application</string>
 

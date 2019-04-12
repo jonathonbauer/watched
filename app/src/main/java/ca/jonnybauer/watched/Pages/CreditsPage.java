@@ -38,6 +38,9 @@ public class CreditsPage extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_credits_page, container, false);
 
+        // Set the actionbar title
+        getActivity().setTitle(getString(R.string.credit_title));
+
         // Build the credits arraylist
         ArrayList<Credit> credits = new ArrayList<>();
 
@@ -57,6 +60,9 @@ public class CreditsPage extends Fragment {
         CreditsAdapter adapter = new CreditsAdapter(getChildFragmentManager(), credits);
         viewPager.setAdapter(adapter);
 
+        // Set the animation to the viewpager
+        viewPager.setPageTransformer(true, new CreditAnimation());
+
         // Get the pageviewIndicator
         PageIndicatorView pageIndicatorView = view.findViewById(R.id.credits_indicator);
         pageIndicatorView.setViewPager(viewPager);
@@ -65,6 +71,12 @@ public class CreditsPage extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.credit_title));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

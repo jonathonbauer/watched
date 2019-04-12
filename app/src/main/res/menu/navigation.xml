@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/bottom_nav">
 
     <item
         android:id="@+id/navigation_upcoming"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_theaters_black_24dp"
         android:title="@string/upcoming_page_title"/>
 
     <item
@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/navigation_theatres"
-        android:icon="@drawable/ic_theaters_black_24dp"
+        android:icon="@drawable/ic_place_black_24dp"
         android:title="@string/theatres_page_title" />
 
     <!--<item-->

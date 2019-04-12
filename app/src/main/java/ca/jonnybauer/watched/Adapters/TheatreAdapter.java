@@ -79,27 +79,28 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Theatre selectedTheatre = theatres.get(viewHolder.getAdapterPosition());
                 System.out.println("Card clicked");
 //                Theatre selectedTheatre = theatres.get(viewHolder.getAdapterPosition());
                 for(int i=0; i<theatres.size(); i++) {
                     if(theatres.get(i).getFavourite() == 1) {
                         theatres.get(i).setFavourite(0);
                         markers.get(i).hideInfoWindow();
-                        markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                        markers.get(i).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
                     }
                 }
 
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(theatres.get(viewHolder.getAdapterPosition()).getLatitude(), theatres.get(viewHolder.getAdapterPosition()).getLongitude()), 13));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(selectedTheatre.getLatitude(), selectedTheatre.getLongitude()), 13));
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(theatres.get(viewHolder.getAdapterPosition()).getLatitude(),
-                                theatres.get(viewHolder.getAdapterPosition()).getLongitude())).zoom(10).build();
+                        .target(new LatLng(selectedTheatre.getLatitude(),
+                                selectedTheatre.getLongitude())).zoom(10).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 markers.get(viewHolder.getAdapterPosition()).showInfoWindow();
-                markers.get(viewHolder.getAdapterPosition()).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                theatres.get(viewHolder.getAdapterPosition()).setFavourite(1);
+                markers.get(viewHolder.getAdapterPosition()).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                selectedTheatre.setFavourite(1);
                 notifyDataSetChanged();
 
 
@@ -112,9 +113,10 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
             @Override
             public void onClick(View v) {
                 System.out.println("Phone Clicked");
+                Theatre selectedTheatre = theatres.get(viewHolder.getAdapterPosition());
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("tel:" + theatre.getPhone()));
+                intent.setData(Uri.parse("tel:" + selectedTheatre.getPhone()));
                 if(intent.resolveActivity(context.getPackageManager()) != null) {
                     context.startActivity(intent);
                 } else {
@@ -128,7 +130,8 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         viewHolder.directions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri location = Uri.parse("geo:0,0?q=" + theatre.getName());
+                Theatre selectedTheatre = theatres.get(viewHolder.getAdapterPosition());
+                Uri location = Uri.parse("geo:0,0?q=" + selectedTheatre.getName());
                 System.out.println(location);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(location);
@@ -144,7 +147,8 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         viewHolder.website.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri website = Uri.parse(theatre.getWebsite());
+                Theatre selectedTheatre = theatres.get(viewHolder.getAdapterPosition());
+                Uri website = Uri.parse(selectedTheatre.getWebsite());
                 System.out.println(website);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(website);
@@ -157,6 +161,14 @@ public class TheatreAdapter extends RecyclerView.Adapter<TheatreAdapter.TheatreV
         });
 
 
+    }
+
+    public ArrayList<Marker> getMarkers() {
+        return markers;
+    }
+
+    public void setMarkers(ArrayList<Marker> markers) {
+        this.markers = markers;
     }
 
     @Override

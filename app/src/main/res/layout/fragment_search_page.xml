@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".Pages.SearchPage">
 
     <android.support.v7.widget.CardView
@@ -14,6 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/searchResultsCardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +23,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor">
 
             <EditText
                 android:id="@+id/searchTextField"
@@ -30,12 +33,31 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:background="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_search_black_24dp"
                 android:drawablePadding="-24dp"
                 android:ems="10"
                 android:hint="@string/search_box_placeholder"
                 android:inputType="textPersonName"
+                android:padding="8dp"
                 android:textAlignment="center"
+                android:textColor="@color/mainFontColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/searchFieldProgress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:progressTint="@color/colorAccent"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +70,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="@color/backgroundColor"
                 android:scrollbars="vertical"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,22 +89,27 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:minHeight="40dp"
-        app:cardBackgroundColor="@color/colorAccent"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/backgroundColor"
+        app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/credit_background"
+            android:minHeight="50dp">
 
             <ImageView
                 android:id="@+id/searchResultChevron"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_keyboard_arrow_up_black_24dp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -100,9 +129,11 @@
                 android:id="@+id/searchResultTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/search_result_title_placeholder"
+                android:textColor="@color/mainFontColor"
+                android:textSize="@dimen/content_font_size"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -118,6 +149,7 @@
                 android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/searchResultPoster"
                 app:layout_constraintTop_toTopOf="@+id/searchResultPoster"
+                app:srb_borderColor="@android:color/white"
                 app:srb_numberOfStars="5"
                 app:srb_starSize="15dp"
                 app:srb_stepSize="1" />
@@ -133,6 +165,7 @@
                 android:maxLength="280"
                 android:maxLines="6"
                 android:text="@string/search_result_plot_placeholder"
+                android:textColor="@color/mainFontColor"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/iconsLayout"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -157,21 +190,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_star_border_black_24dp" />
+                    android:src="@drawable/ic_star_border_black_24dp"
+                    android:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/searchResultWatched"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_check_black_24dp" />
+                    android:src="@drawable/ic_check_black_24dp"
+                    android:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/searchResultAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_add_black_24dp" />
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:visibility="visible" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,14 +42,6 @@ public class CreditFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreditFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static CreditFragment newInstance(String title, String desc, String link) {
         CreditFragment fragment = new CreditFragment();
@@ -77,7 +71,7 @@ public class CreditFragment extends Fragment {
 
         TextView title = view.findViewById(R.id.credit_title);
         TextView desc = view.findViewById(R.id.credit_desc);
-        ImageView link = view.findViewById(R.id.credit_link);
+        Button link = view.findViewById(R.id.credit_link);
 
         title.setText(mTitle);
         desc.setText(mDesc);

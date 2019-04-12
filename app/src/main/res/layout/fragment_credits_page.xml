@@ -33,7 +33,7 @@
         app:piv_animationType="thinWorm"
         app:piv_dynamicCount="true"
         app:piv_orientation="horizontal"
-        app:piv_selectedColor="@color/colorPrimaryDark"
+        app:piv_selectedColor="@android:color/white"
         app:piv_unselectedColor="@color/colorAccent" />
 
 </android.support.constraint.ConstraintLayout>
