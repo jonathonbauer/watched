@@ -341,7 +341,12 @@ public class MovieAPIHelper {
                 int day = Integer.parseInt(dateString.substring(8, 10));
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
+
+                // TODO: Find a more appropriate fix for the release date issue
+
+                calendar.add(Calendar.MONTH, -1);
                 releaseDate = new Date(calendar.getTimeInMillis());
+                System.out.println(releaseDate);
             } else {
                 releaseDate = new Date(0);
             }
