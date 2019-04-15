@@ -16,6 +16,9 @@ The application does not require any initial setup.
 
 ## Database Design
 
+![Watch List](https://github.com/jonathonbauer/watched/blob/polish/images/watched_final_db_structure.png)
+
+
 ## Mockup
 
 ![Watch List](https://github.com/jonathonbauer/watched/blob/polish/images/watch_list.jpg)
@@ -33,7 +36,3 @@ The application does not require any initial setup.
 | Name             | Github                                              |                           Email     |
 | -------------    | --------------------------------------------------- | ----------------------------------- |
 | Jonathon Bauer   | [jonathonbauer](https://github.com/jonathonbauer)   | jonathon.bauer01@stclairconnect.ca  |
-
-
-## Acknowledgments
-
