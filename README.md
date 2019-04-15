@@ -16,7 +16,7 @@ The application does not require any initial setup.
 
 ## Database Design
 
-![Watch List](https://github.com/jonathonbauer/watched/blob/polish/images/watched_final_db_structure.png)
+![Database Design](https://github.com/jonathonbauer/watched/blob/polish/images/watched_final_db_structure.PNG)
 
 
 ## Mockup
