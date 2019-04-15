@@ -46,7 +46,7 @@
     <string name="credit_link">Credit Link</string>
 
 
-    <string name="api_title">TMDb API</string>
+    <string name="api_title">The Movie Database API</string>
     <string name="api_desc">
     The Movie Database (TMDb) is a community built movie and TV database.
         Every piece of data has been added by our amazing community dating back to 2008.
@@ -56,6 +56,13 @@
         This product uses the TMDb API but is not endorsed or certified by TMDb.
     </string>
     <string name="api_link">https://www.themoviedb.org/documentation/api</string>
+
+    <string name="places_title">Google Places API</string>
+    <string name="places_desc">
+        The Places API is a service that returns information about places using HTTP requests.
+        Places are defined within this API as establishments, geographic locations, or prominent points of interest.
+    </string>
+    <string name="places_link">https://developers.google.com/places/web-service/intro</string>
 
     <string name="logo_title">Stephanie Markert</string>
     <string name="logo_desc">The logo was designed by local graphic designer Stephanie Markert.</string>
@@ -79,12 +86,6 @@
     <string name="rating_bar_title">Simple Rating Bar</string>
     <string name="rating_bar_desc">Simple Rating Bar is an open source project which features a simple yet powerful RatingBar alternative to Android\'s default.tm</string>
     <string name="rating_bar_link">https://github.com/FlyingPumba/SimpleRatingBar</string>
-
-    <!--<string name="_title"></string>-->
-    <!--<string name="_desc"></string>-->
-    <!--<string name="_link"></string>-->
-
-
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>

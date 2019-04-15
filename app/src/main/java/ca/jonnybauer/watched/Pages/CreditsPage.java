@@ -45,6 +45,7 @@ public class CreditsPage extends Fragment {
         ArrayList<Credit> credits = new ArrayList<>();
 
         credits.add(new Credit(getString(R.string.api_title),getString(R.string.api_desc),getString(R.string.api_link)));
+        credits.add(new Credit(getString(R.string.places_title),getString(R.string.places_desc),getString(R.string.places_link)));
         credits.add(new Credit(getString(R.string.logo_title),getString(R.string.logo_desc),getString(R.string.logo_link)));
         credits.add(new Credit(getString(R.string.volley_title),getString(R.string.volley_desc),getString(R.string.volley_link)));
         credits.add(new Credit(getString(R.string.picasso_title),getString(R.string.picasso_desc),getString(R.string.picasso_link)));
