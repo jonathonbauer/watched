@@ -1,6 +1,6 @@
 # Watched <br/> Movie Tracking Application
 
-![Logo](https://github.com/jonathonbauer/watched/blob/polish/images/icon.jpg)
+![Splash Image](https://github.com/jonathonbauer/watched/blob/polish/images/splash_image.jpg)
 
 Watched is used to track upcoming movies and movies you have seen.
 <br/>
